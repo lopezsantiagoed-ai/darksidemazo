@@ -257,33 +257,28 @@
       <text font-size="4.2"><textPath href="#arc6bot" startOffset="12%">NOVUS ORDO SECLORUM</textPath></text>
     </g>`;
 
+  // Us and Them (card 7): two facing profiles — red (us) vs blue (them) — whose
+  // negative space reads as one frontal face; the shared centre line glows gold.
   H[7]=`<defs>
-    <linearGradient id="g7bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#120a1e"/><stop offset="100%" stop-color="#05060f"/></linearGradient>
-    <linearGradient id="g7red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2413b"/><stop offset="1" stop-color="#5e1116"/></linearGradient>
-    <linearGradient id="g7blue" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7fe0"/><stop offset="1" stop-color="#122a5e"/></linearGradient>
-    <linearGradient id="g7seam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7B0" stop-opacity="0"/><stop offset=".5" stop-color="#FFC24D"/><stop offset="1" stop-color="#FF7A2E" stop-opacity=".2"/></linearGradient></defs>
+    <radialGradient id="g7bg" cx="50%" cy="40%" r="78%"><stop offset="0" stop-color="#16233c"/><stop offset=".55" stop-color="#0a0f1f"/><stop offset="1" stop-color="#05060f"/></radialGradient>
+    <linearGradient id="g7red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f05a4e"/><stop offset=".55" stop-color="#cf2f2c"/><stop offset="1" stop-color="#4e0f16"/></linearGradient>
+    <linearGradient id="g7blue" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f97ee"/><stop offset=".55" stop-color="#2a63c4"/><stop offset="1" stop-color="#0f2350"/></linearGradient>
+    <linearGradient id="g7seam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7B0" stop-opacity="0"/><stop offset=".45" stop-color="#FFC24D"/><stop offset="1" stop-color="#FF7A2E" stop-opacity=".15"/></linearGradient>
+    <radialGradient id="g7eye" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff3c8"/><stop offset=".4" stop-color="#FFC24D"/><stop offset="1" stop-color="#7a3410"/></radialGradient>
+    <radialGradient id="g7warm" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFD98A" stop-opacity=".85"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient></defs>
     <rect width="100" height="140" fill="url(#g7bg)"/>
-    <rect x="49.2" y="6" width="1.6" height="122" fill="url(#g7seam)" filter="url(#glow)"/>
-    <g class="fire" filter="url(#glow)">
-      <path d="M70,90 C65,79 74,73 71,62 C79,66 81,57 80,48 C87,57 90,71 85,84 C83,92 74,96 70,90 Z" fill="#FF7A2E"/>
-      <path d="M72,88 C69,80 74,76 72,68 C78,71 79,64 78,59 C83,66 83,77 80,85 C78,90 74,90 72,88 Z" fill="#FFD23F"/>
+    <rect class="shimx" x="49.1" y="8" width="1.8" height="118" fill="url(#g7seam)" filter="url(#glow)"/>
+    <path d="M 28,17 C 39,15 46.4,23 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3 C 38,71.7 35,71.1 33.2,69.4 C 33.9,72 33.6,74.2 38,75.6 L 39,93 C 39,99 40,105 42,118 L 8,118 L 11,100 C 12,92 12,83 15,75 C 9,65 8,51 10,41 C 11,30 18,20 28,17 Z" fill="url(#g7red)"/>
+    <g transform="translate(100,0) scale(-1,1)"><path d="M 28,17 C 39,15 46.4,23 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3 C 38,71.7 35,71.1 33.2,69.4 C 33.9,72 33.6,74.2 38,75.6 L 39,93 C 39,99 40,105 42,118 L 8,118 L 11,100 C 12,92 12,83 15,75 C 9,65 8,51 10,41 C 11,30 18,20 28,17 Z" fill="url(#g7blue)"/></g>
+    <ellipse cx="50" cy="52.5" rx="6" ry="8" fill="url(#g7warm)" opacity=".4"/>
+    <g fill="none" stroke="#FFE0A0" stroke-width=".65" stroke-linecap="round" stroke-opacity=".72" filter="url(#glow)">
+      <path d="M 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3"/>
+      <path transform="translate(100,0) scale(-1,1)" d="M 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3"/>
     </g>
-    <g fill="url(#g7red)" stroke="#ff8a7a" stroke-width=".35" stroke-opacity=".45">
-      <path d="M22,130 L22,86 C22,75 29,68 39,66 L46,66 C47,73 47,80 46,88 L46,130 Z"/>
-      <path d="M34,54 C34,45 39,40 44,41 C46,44 46,48 44,51 C46,53 47,56 45,59 C42,62 37,62 34,60 C33,58 33,56 34,54 Z"/>
-    </g>
-    <g fill="url(#g7blue)" stroke="#9ec2f0" stroke-width=".35" stroke-opacity=".4">
-      <path d="M78,130 L78,86 C78,75 71,68 61,66 L54,66 C53,73 53,80 54,88 L54,130 Z"/>
-      <path d="M66,54 C66,45 61,40 56,41 C54,44 54,48 56,51 C54,53 53,56 55,59 C58,62 63,62 66,60 C67,58 67,56 66,54 Z"/>
-    </g>
-    <g stroke-linecap="round" fill="none">
-      <path d="M44,74 L50,80" stroke="url(#g7red)" stroke-width="4.6"/>
-      <path d="M56,74 L50,80" stroke="url(#g7blue)" stroke-width="4.6"/>
-      <ellipse cx="50" cy="80" rx="3.4" ry="2.6" fill="#e9dcc0" stroke="none"/>
-      <rect x="46.8" y="78.4" width="6.4" height="3.2" rx="1.5" fill="#e9dcc0" stroke="none"/>
-    </g>
-    <circle cx="41" cy="50" r="1.7" fill="#FFD23F"/><circle cx="41" cy="50" r=".8" fill="#5e1116"/>
-    <circle cx="59" cy="50" r="1.7" fill="#FFD23F"/><circle cx="59" cy="50" r=".8" fill="#122a5e"/>`;
+    <g class="diamond">
+      <circle cx="41.5" cy="43" r="2.6" fill="url(#g7eye)" filter="url(#glow)"/><circle cx="41.5" cy="43" r="1.3" fill="#3a1608"/><circle cx="41.5" cy="43" r=".5" fill="#fff3c8"/>
+      <circle cx="58.5" cy="43" r="2.6" fill="url(#g7eye)" filter="url(#glow)"/><circle cx="58.5" cy="43" r="1.3" fill="#3a1608"/><circle cx="58.5" cy="43" r=".5" fill="#fff3c8"/>
+    </g>`;
 
   H[8]=`<defs>
     <radialGradient id="g8bg" cx="38%" cy="40%" r="85%"><stop offset="0" stop-color="#0c0e18"/><stop offset="100%" stop-color="#030308"/></radialGradient>
