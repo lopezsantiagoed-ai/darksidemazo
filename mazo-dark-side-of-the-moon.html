@@ -257,33 +257,28 @@
       <text font-size="4.2"><textPath href="#arc6bot" startOffset="12%">NOVUS ORDO SECLORUM</textPath></text>
     </g>`;
 
+  // Us and Them (card 7): two facing profiles — red (us) vs blue (them) — whose
+  // negative space reads as one frontal face; the shared centre line glows gold.
   H[7]=`<defs>
-    <linearGradient id="g7bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#120a1e"/><stop offset="100%" stop-color="#05060f"/></linearGradient>
-    <linearGradient id="g7red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e2413b"/><stop offset="1" stop-color="#5e1116"/></linearGradient>
-    <linearGradient id="g7blue" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2f7fe0"/><stop offset="1" stop-color="#122a5e"/></linearGradient>
-    <linearGradient id="g7seam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7B0" stop-opacity="0"/><stop offset=".5" stop-color="#FFC24D"/><stop offset="1" stop-color="#FF7A2E" stop-opacity=".2"/></linearGradient></defs>
+    <radialGradient id="g7bg" cx="50%" cy="40%" r="78%"><stop offset="0" stop-color="#16233c"/><stop offset=".55" stop-color="#0a0f1f"/><stop offset="1" stop-color="#05060f"/></radialGradient>
+    <linearGradient id="g7red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f05a4e"/><stop offset=".55" stop-color="#cf2f2c"/><stop offset="1" stop-color="#4e0f16"/></linearGradient>
+    <linearGradient id="g7blue" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4f97ee"/><stop offset=".55" stop-color="#2a63c4"/><stop offset="1" stop-color="#0f2350"/></linearGradient>
+    <linearGradient id="g7seam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE7B0" stop-opacity="0"/><stop offset=".45" stop-color="#FFC24D"/><stop offset="1" stop-color="#FF7A2E" stop-opacity=".15"/></linearGradient>
+    <radialGradient id="g7eye" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fff3c8"/><stop offset=".4" stop-color="#FFC24D"/><stop offset="1" stop-color="#7a3410"/></radialGradient>
+    <radialGradient id="g7warm" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFD98A" stop-opacity=".85"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient></defs>
     <rect width="100" height="140" fill="url(#g7bg)"/>
-    <rect x="49.2" y="6" width="1.6" height="122" fill="url(#g7seam)" filter="url(#glow)"/>
-    <g class="fire" filter="url(#glow)">
-      <path d="M70,90 C65,79 74,73 71,62 C79,66 81,57 80,48 C87,57 90,71 85,84 C83,92 74,96 70,90 Z" fill="#FF7A2E"/>
-      <path d="M72,88 C69,80 74,76 72,68 C78,71 79,64 78,59 C83,66 83,77 80,85 C78,90 74,90 72,88 Z" fill="#FFD23F"/>
+    <rect class="shimx" x="49.1" y="8" width="1.8" height="118" fill="url(#g7seam)" filter="url(#glow)"/>
+    <path d="M 28,17 C 39,15 46.4,23 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3 C 38,71.7 35,71.1 33.2,69.4 C 33.9,72 33.6,74.2 38,75.6 L 39,93 C 39,99 40,105 42,118 L 8,118 L 11,100 C 12,92 12,83 15,75 C 9,65 8,51 10,41 C 11,30 18,20 28,17 Z" fill="url(#g7red)"/>
+    <g transform="translate(100,0) scale(-1,1)"><path d="M 28,17 C 39,15 46.4,23 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3 C 38,71.7 35,71.1 33.2,69.4 C 33.9,72 33.6,74.2 38,75.6 L 39,93 C 39,99 40,105 42,118 L 8,118 L 11,100 C 12,92 12,83 15,75 C 9,65 8,51 10,41 C 11,30 18,20 28,17 Z" fill="url(#g7blue)"/></g>
+    <ellipse cx="50" cy="52.5" rx="6" ry="8" fill="url(#g7warm)" opacity=".4"/>
+    <g fill="none" stroke="#FFE0A0" stroke-width=".65" stroke-linecap="round" stroke-opacity=".72" filter="url(#glow)">
+      <path d="M 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3"/>
+      <path transform="translate(100,0) scale(-1,1)" d="M 47,36 C 47.3,39 46,41 45.6,42.6 C 46.8,45.2 48.8,48 49.4,50.8 C 49.8,52.6 48.6,53.9 45.7,54.6 C 44.2,54.95 43.8,55.5 44.7,56.5 C 46.2,57.1 46.5,58 45.3,58.9 C 44.3,59.5 44.3,60.1 45.3,60.8 C 46.9,61.6 46.3,63.7 44.4,65.5 C 43.5,67 43.5,68.6 40.8,70.3"/>
     </g>
-    <g fill="url(#g7red)" stroke="#ff8a7a" stroke-width=".35" stroke-opacity=".45">
-      <path d="M22,130 L22,86 C22,75 29,68 39,66 L46,66 C47,73 47,80 46,88 L46,130 Z"/>
-      <path d="M34,54 C34,45 39,40 44,41 C46,44 46,48 44,51 C46,53 47,56 45,59 C42,62 37,62 34,60 C33,58 33,56 34,54 Z"/>
-    </g>
-    <g fill="url(#g7blue)" stroke="#9ec2f0" stroke-width=".35" stroke-opacity=".4">
-      <path d="M78,130 L78,86 C78,75 71,68 61,66 L54,66 C53,73 53,80 54,88 L54,130 Z"/>
-      <path d="M66,54 C66,45 61,40 56,41 C54,44 54,48 56,51 C54,53 53,56 55,59 C58,62 63,62 66,60 C67,58 67,56 66,54 Z"/>
-    </g>
-    <g stroke-linecap="round" fill="none">
-      <path d="M44,74 L50,80" stroke="url(#g7red)" stroke-width="4.6"/>
-      <path d="M56,74 L50,80" stroke="url(#g7blue)" stroke-width="4.6"/>
-      <ellipse cx="50" cy="80" rx="3.4" ry="2.6" fill="#e9dcc0" stroke="none"/>
-      <rect x="46.8" y="78.4" width="6.4" height="3.2" rx="1.5" fill="#e9dcc0" stroke="none"/>
-    </g>
-    <circle cx="41" cy="50" r="1.7" fill="#FFD23F"/><circle cx="41" cy="50" r=".8" fill="#5e1116"/>
-    <circle cx="59" cy="50" r="1.7" fill="#FFD23F"/><circle cx="59" cy="50" r=".8" fill="#122a5e"/>`;
+    <g class="diamond">
+      <circle cx="41.5" cy="43" r="2.6" fill="url(#g7eye)" filter="url(#glow)"/><circle cx="41.5" cy="43" r="1.3" fill="#3a1608"/><circle cx="41.5" cy="43" r=".5" fill="#fff3c8"/>
+      <circle cx="58.5" cy="43" r="2.6" fill="url(#g7eye)" filter="url(#glow)"/><circle cx="58.5" cy="43" r="1.3" fill="#3a1608"/><circle cx="58.5" cy="43" r=".5" fill="#fff3c8"/>
+    </g>`;
 
   H[8]=`<defs>
     <radialGradient id="g8bg" cx="38%" cy="40%" r="85%"><stop offset="0" stop-color="#0c0e18"/><stop offset="100%" stop-color="#030308"/></radialGradient>
@@ -370,34 +365,47 @@
       mk(a,'#2f6fe6',-0.5); mk(b,'#e2413b',0.5); }
   })();
 
-  // On the Run (card 3): anatomical sprinter silhouette running for his life
+  // On the Run (card 3): silhouette of a real man sprinting for his life
   (function(){ const g=cards[2].querySelector('#runner3'); if(!g)return;
-    const J={ head:[44.5,44], neck:[48,51], sho:[49.5,56.5], hip:[58.5,83],
-      kneeF:[42,77], ankF:[49,95], toeF:[39.5,98.5],
-      kneeB:[68.5,99.5], ankB:[78.5,110.5], toeB:[87,112.5],
-      elbF:[40.5,66], handF:[49,57.5], elbB:[61.5,66.5], handB:[68.5,70] };
+    // full-stride sprint pose, running to the left (leaning into the vortex)
+    const J={ head:[45,45.5], neck:[49,52], sho:[50.5,56], hip:[57.5,80],
+      elbF:[39,61], handF:[45,49.5], elbB:[61,60.5], handB:[66.5,69.5],
+      kneeF:[43,87], ankF:[40.5,101], toeF:[33.5,103.5],
+      kneeB:[67.5,97], ankB:[77,108.5], toeB:[86,112] };
     const mk=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
-    function limb(gg,p1,p2,w1,w2,fill,pad){ pad=pad||0; w1+=pad; w2+=pad; const dx=p2[0]-p1[0],dy=p2[1]-p1[1],L=Math.hypot(dx,dy)||1,nx=-dy/L,ny=dx/L;
-      gg.appendChild(mk('path',{d:`M${(p1[0]+nx*w1).toFixed(2)},${(p1[1]+ny*w1).toFixed(2)} L${(p2[0]+nx*w2).toFixed(2)},${(p2[1]+ny*w2).toFixed(2)} L${(p2[0]-nx*w2).toFixed(2)},${(p2[1]-ny*w2).toFixed(2)} L${(p1[0]-nx*w1).toFixed(2)},${(p1[1]-ny*w1).toFixed(2)} Z`,fill:fill})); }
-    function dot(gg,p,r,fill,pad){ pad=pad||0; gg.appendChild(mk('circle',{cx:p[0],cy:p[1],r:(r+pad).toFixed(2),fill:fill})); }
-    function body(gg,fill,pad){
-      limb(gg,J.sho,J.elbB,2.6,2.1,fill,pad); limb(gg,J.elbB,J.handB,2.1,1.4,fill,pad); dot(gg,J.elbB,2.1,fill,pad); dot(gg,J.handB,1.5,fill,pad);
-      limb(gg,J.hip,J.kneeB,4.4,3.1,fill,pad); limb(gg,J.kneeB,J.ankB,3.0,1.9,fill,pad); dot(gg,J.kneeB,3.0,fill,pad); limb(gg,J.ankB,J.toeB,2.1,1.3,fill,pad);
-      limb(gg,J.hip,J.sho,6.4,4.8,fill,pad); dot(gg,J.hip,4.6,fill,pad); dot(gg,J.sho,3.6,fill,pad);
-      limb(gg,J.sho,J.neck,2.7,2.3,fill,pad); dot(gg,J.head,5.4,fill,pad);
-      limb(gg,J.hip,J.kneeF,5.0,3.5,fill,pad); limb(gg,J.kneeF,J.ankF,3.3,2.0,fill,pad); dot(gg,J.kneeF,3.3,fill,pad); limb(gg,J.ankF,J.toeF,2.2,1.3,fill,pad);
-      limb(gg,J.sho,J.elbF,2.8,2.2,fill,pad); limb(gg,J.elbF,J.handF,2.2,1.4,fill,pad); dot(gg,J.elbF,2.2,fill,pad); dot(gg,J.handF,1.5,fill,pad);
+    const f=p=>p[0].toFixed(2)+','+p[1].toFixed(2);
+    // muscular capsule between two joints: rounded ends, tapered, with an outward muscle bulge
+    function cap(p1,p2,w1,w2,pad,bulge){ pad=pad||0; bulge=bulge||0; w1+=pad; w2+=pad;
+      const dx=p2[0]-p1[0],dy=p2[1]-p1[1],L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L,nx=-uy,ny=ux;
+      const A=[p1[0]+nx*w1,p1[1]+ny*w1], B=[p2[0]+nx*w2,p2[1]+ny*w2],
+            C=[p2[0]-nx*w2,p2[1]-ny*w2], D=[p1[0]-nx*w1,p1[1]-ny*w1],
+            mx=(p1[0]+p2[0])/2, my=(p1[1]+p2[1])/2, mE=(w1+w2)/2+bulge,
+            M1=[mx+nx*mE,my+ny*mE], M2=[mx-nx*mE,my-ny*mE],
+            cap2=[p2[0]+ux*2*w2,p2[1]+uy*2*w2], cap1=[p1[0]-ux*2*w1,p1[1]-uy*2*w1];
+      return `M${f(A)} Q${f(M1)} ${f(B)} Q${f(cap2)} ${f(C)} Q${f(M2)} ${f(D)} Q${f(cap1)} ${f(A)} Z`; }
+    function limb(gg,p1,p2,w1,w2,fill,pad,bulge){ gg.appendChild(mk('path',{d:cap(p1,p2,w1,w2,pad,bulge),fill:fill})); }
+    function body(gg,fill,pad){ pad=pad||0;
+      // trailing (back) arm + leg sit behind the body
+      limb(gg,J.sho,J.elbB,2.5,2.0,fill,pad,.4); limb(gg,J.elbB,J.handB,2.0,1.35,fill,pad,.3);
+      limb(gg,J.hip,J.kneeB,5.0,3.4,fill,pad,1.2); limb(gg,J.kneeB,J.ankB,3.3,1.9,fill,pad,1.1); limb(gg,J.ankB,J.toeB,2.2,1.3,fill,pad,.4);
+      // torso + neck
+      limb(gg,J.sho,J.hip,6.0,5.0,fill,pad,.9); limb(gg,J.sho,J.neck,2.9,2.5,fill,pad,0);
+      // head (tilted forward into the run)
+      gg.appendChild(mk('ellipse',{cx:J.head[0],cy:J.head[1],rx:(5.5+pad).toFixed(2),ry:(6.0+pad).toFixed(2),fill:fill,transform:`rotate(-13 ${J.head[0]} ${J.head[1]})`}));
+      // leading (front) leg + arm on top
+      limb(gg,J.hip,J.kneeF,5.3,3.6,fill,pad,1.3); limb(gg,J.kneeF,J.ankF,3.5,2.0,fill,pad,1.2); limb(gg,J.ankF,J.toeF,2.3,1.3,fill,pad,.4);
+      limb(gg,J.sho,J.elbF,2.7,2.1,fill,pad,.4); limb(gg,J.elbF,J.handF,2.1,1.4,fill,pad,.3);
     }
-    const halo=mk('g',{filter:'url(#glow)','fill-opacity':'.55'}); body(halo,'#f4eeff',1.5); g.appendChild(halo);
+    const halo=mk('g',{filter:'url(#glow)','fill-opacity':'.55'}); body(halo,'#f4eeff',1.4); g.appendChild(halo);
     const sil=mk('g',{}); body(sil,'#09070f',0); g.appendChild(sil);
-    // muscle sheen / rim light on leading edges
+    // rim light / muscle sheen on the leading edges
     const rim=mk('g',{fill:'none',stroke:'#fdf7ff','stroke-linecap':'round','stroke-opacity':'.6',filter:'url(#glow)'});
-    const rl=(p1,p2,w,o)=>rim.appendChild(mk('path',{d:`M${p1[0]},${p1[1]} L${p2[0]},${p2[1]}`,'stroke-width':w,'stroke-opacity':o}));
-    rl(J.hip,J.kneeF,1.1,.6); rl(J.kneeF,J.ankF,.85,.6); rl(J.sho,J.hip,1.1,.5); rl(J.kneeB,J.ankB,.75,.5); rl(J.sho,J.elbF,.75,.5); rl(J.hip,J.kneeB,.85,.4);
+    const rl=(p1,p2,w,o)=>rim.appendChild(mk('path',{d:`M${f(p1)} L${f(p2)}`,'stroke-width':w,'stroke-opacity':o}));
+    rl(J.hip,J.kneeF,1.1,.55); rl(J.kneeF,J.ankF,.85,.55); rl(J.sho,J.hip,1.1,.45); rl(J.kneeB,J.ankB,.75,.45); rl(J.sho,J.elbF,.75,.45); rl(J.hip,J.kneeB,.85,.35);
     g.appendChild(rim);
     // motion streaks trailing behind (speed)
     const ms=mk('g',{stroke:'#e8e1ff','stroke-linecap':'round',filter:'url(#blur)'});
-    [[J.toeB,15,.5],[J.ankB,19,.42],[J.handB,12,.45],[J.kneeB,16,.3],[J.toeF,-9,.35]].forEach(([p,len,op])=>{
+    [[J.toeB,16,.5],[J.ankB,20,.42],[J.handB,13,.45],[J.kneeB,16,.3],[J.toeF,-9,.35]].forEach(([p,len,op])=>{
       ms.appendChild(mk('line',{x1:p[0],y1:p[1],x2:(p[0]+len).toFixed(1),y2:(p[1]+1.6).toFixed(1),'stroke-width':'1.1','stroke-opacity':op})); });
     g.appendChild(ms);
   })();
