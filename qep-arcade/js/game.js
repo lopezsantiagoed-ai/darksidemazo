@@ -640,6 +640,12 @@ function drawFighter(g, e) {
       rect(ctx, hx - 3, hy - 5, 6, 6, '#6b3e1f'); rect(ctx, hx - 2, hy - 6, 4, 1, '#4caf50'); rect(ctx, hx + e.face, hy - 10, 1, 5, '#ddd');
     }
   }
+  if (e.look.beer && (pose === 'idle' || pose === 'walk')) {
+    // chopp de birra en la mano
+    const s = e.scale * (e.look.h || 1), hx = Math.round(sx + e.face * 4 * e.scale), hy = Math.round(sy - 15 * s);
+    rect(ctx, hx - 3, hy - 7, 7, 9, 'rgba(230,240,255,0.7)'); rect(ctx, hx - 2, hy - 5, 5, 6, '#e8a020'); rect(ctx, hx - 3, hy - 8, 7, 3, '#fffbe8');
+    rect(ctx, hx + e.face * 4, hy - 5, 1, 5, 'rgba(230,240,255,0.9)');
+  }
   if (e.cpu) txt(ctx, 'CPU', sx, sy - 44 * e.scale, '#9ff', 5, 'center');
   else if (e.kind === 'player' && g.players[1]) txt(ctx, 'P' + (e.idx + 1), sx, sy - 44 * e.scale * (e.look.h || 1), e.idx ? '#ff7070' : '#7dff5a', 5, 'center');
 }

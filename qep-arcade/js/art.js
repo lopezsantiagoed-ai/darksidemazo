@@ -50,9 +50,9 @@ function drawShirt(c, L, x, y, w, h) {
       break;
     case 'rojo':
       rect(c, x, y, w, h, '#d3141b');
-      rect(c, x + w / 2 - 2, y, 4, 1, '#fff');
-      rect(c, x + w / 2 - 1, y + 1, 2, 1, '#fff');
-      rect(c, x + 1, y + 3, 2, 2, '#fff');
+      rect(c, x + 3, y, w - 6, 1, '#fff');
+      rect(c, x + w - 4, y + 3, 2, 2, '#fff');
+      rect(c, x + 2, y + 7, w - 4, 1, '#f3d0d0');
       break;
     case 'jacket':
       rect(c, x, y, w, h, base);
@@ -93,21 +93,21 @@ function drawShirt(c, L, x, y, w, h) {
       rect(c, x + 2, y + 3, 3, 3, '#fff');
       break;
     case 'rayasBW':
-      for (let i = 0; i < w; i += 2) rect(c, x + i, y, 1, h, '#111');
-      for (let i = 1; i < w; i += 2) rect(c, x + i, y, 1, h, '#f4f4f4');
-      rect(c, x + 2, y, w - 4, 1, '#111');
+      rect(c, x, y, w, h, '#f4f4f4');
+      for (let i = 0; i < w; i += 4) rect(c, x + i, y, 2, h, '#111');
+      rect(c, x + 3, y, w - 6, 1, '#111');
       break;
     case 'sanfrecce':
       rect(c, x, y, w, h, '#5b2a8c'); rect(c, x, y + 5, w, 2, '#fff'); rect(c, x + w - 4, y + 1, 2, 2, '#fff');
       break;
     case 'suitDark':
-      rect(c, x, y, w, h, '#1d1f2b'); rect(c, x + w - 5, y, 3, 6, '#fff'); rect(c, x + w - 4, y + 1, 1, 7, '#c0a030');
-      rect(c, x + w - 6, y + 6, 1, 1, '#d4af37');
+      rect(c, x, y, w, h, '#1f2a4e'); rect(c, x + w - 5, y, 3, 6, '#fff'); rect(c, x + w - 4, y + 1, 1, 7, '#141a30');
+      rect(c, x + w - 6, y, 1, 7, '#2c3a66'); rect(c, x + w - 2, y, 1, 7, '#2c3a66');
       break;
     case 'suitCeleste':
-      rect(c, x, y, w, h, '#74b9e8'); rect(c, x + w - 6, y, 4, 7, '#fff'); rect(c, x + w - 5, y, 2, 2, L.skin);
-      rect(c, x + w - 7, y, 1, 7, '#4f93c8'); rect(c, x + w - 2, y, 1, 7, '#4f93c8');
-      rect(c, x + 1, y + 6, 2, 2, '#f5c400');
+      rect(c, x, y, w, h, '#bcd9f0'); rect(c, x + w - 6, y, 4, 8, '#fff'); rect(c, x + w - 5, y, 2, 2, L.skin);
+      rect(c, x + w - 7, y, 1, 8, '#8ab6dc'); rect(c, x + w - 2, y, 1, 8, '#8ab6dc');
+      rect(c, x + w - 9, y + 3, 1, 1, '#f5c400'); rect(c, x + w - 9, y + 5, 1, 1, '#75aadb');
       break;
     case 'happi':
       rect(c, x, y, w, h, '#2245a8');
@@ -136,6 +136,15 @@ function hairCap(c, L) {
       rect(c, -6, -36, 12, 6, hc); rect(c, -5, -37, 10, 1, hc); rect(c, -7, -34, 2, 8, hc); rect(c, -5, -31, 3, 7, hc);
       rect(c, 4, -33, 2, 3, hc); rect(c, -4, -37, 1, 1, '#000'); rect(c, 1, -38, 2, 1, hc); break;
     case 'receding': rect(c, -4, -31, 5, 2, hc); rect(c, -4, -29, 3, 3, hc); rect(c, -3, -32, 4, 1, hc); break;
+    case 'mullet':
+      rect(c, -4, -33, 9, 3, hc); rect(c, -5, -32, 2, 2, hc); rect(c, 3, -31, 2, 1, hc);
+      rect(c, -5, -30, 4, 6, hc); rect(c, -6, -26, 4, 4, hc); rect(c, -4, -33, 3, 1, shade(hc, 1.25)); break;
+    case 'slick':
+      rect(c, -5, -33, 10, 3, hc); rect(c, -5, -30, 3, 4, hc); rect(c, -6, -31, 2, 3, hc);
+      rect(c, -3, -33, 6, 1, shade(hc, 1.15)); break;
+    case 'twotone':
+      rect(c, -4, -32, 8, 2, L.hair2 || hc); rect(c, -4, -30, 3, 3, L.hair2 || hc);
+      rect(c, -3, -33, 6, 2, hc); rect(c, 1, -34, 3, 1, hc); rect(c, 3, -32, 2, 1, hc); break;
     case 'bald': rect(c, -4, -30, 1, 2, shade(L.skin, 0.8)); break;
   }
 }
@@ -169,7 +178,7 @@ function hat(c, L) {
 // pose: idle walk p1 p2 p3 jump kick hurt special wave dance ride throw charge
 function paintPerson(c, L, pose, f) {
   const skin = L.skin || '#e8b58c';
-  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1d1f2b', suitCeleste: '#74b9e8', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
+  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1f2a4e', suitCeleste: '#bcd9f0', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
   const armSkinSplit = L.longSleeve ? 0.85 : 0.45;
   const pants = L.pants || '#2e3f6b', shoes = L.shoes || '#222';
   const bw = L.belly ? 14 : 10, bx = -bw / 2;
@@ -247,6 +256,7 @@ function paintPerson(c, L, pose, f) {
   if (L.mustache) rect(c, 1, -25, 4, 1, L.mustache);
   hairCap(c, L);
   if (pose === 'hurt') { rect(c, 1, -29, 2, 1, '#111'); rect(c, 2, -28, 1, 1, '#111'); }
+  else if (L.specs) { rect(c, 0, -30, 5, 1, L.specs); rect(c, 0, -30, 1, 3, L.specs); rect(c, 4, -30, 1, 3, L.specs); rect(c, 0, -28, 5, 1, L.specs); rect(c, 1, -29, 3, 1, '#cfe8ff'); rect(c, 2, -29, 1, 1, '#141018'); rect(c, -1, -29, 1, 1, L.specs); }
   else if (L.glasses) { rect(c, 0, -29, 5, 2, L.glasses); rect(c, -1, -29, 1, 1, L.glasses); }
   else rect(c, 2, -29, 1, 2, '#141018');
   if (pose === 'p1' || pose === 'p2' || pose === 'p3' || pose === 'special') rect(c, 3, -25, 2, 1, '#6b2020');

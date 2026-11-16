@@ -3,11 +3,11 @@
 
 // ---------- LOOKS ----------
 const HEROES = {
-  juani: { name: 'JUANI', look: { skin: '#f0c2a6', hair: '#111', hairStyle: 'afro', mustache: '#2a1a12', stubble: '#c99a84', shirt: 'boca', pants: '#1a1a1a', shorts: true, shoes: '#f0f0f0' } },
+  juani: { name: 'JUANI', look: { skin: '#f0c2a6', hair: '#7a4a28', hairStyle: 'mullet', specs: '#1a1a1a', mustache: '#5a3418', stubble: '#c99a84', shirt: 'boca', pants: '#1a1a1a', shorts: true, shoes: '#f0f0f0' } },
   nico: { name: 'NICO', look: { skin: '#e8b898', hair: '#1a1410', hairStyle: 'short', stubble: '#8a6a58', hat: 'cap', hatCol: '#2b2e2e', shirt: 'riverAlt', pants: '#1f1f24', shoes: '#f0f0f0' } },
   santi: { name: 'SANTI', look: { skin: '#e8b898', hair: '#1a1410', hairStyle: 'buzz', beard: '#3a2a20', mustache: '#2a1a12', hat: 'capBack', hatCol: '#5a3e2a', shirt: 'river', pants: '#2a2a30', shorts: true, socks: '#f4f4f4', shoes: '#222' } },
   fran: { name: 'FRAN', look: { skin: '#f2c8a8', hair: '#2a1d16', hairStyle: 'receding', mustache: '#2a1d16', stubble: '#c99e86', shirt: 'banfield', pants: '#2a2f3a', shoes: '#fff' } },
-  martin: { name: 'MARTIN', look: { skin: '#e0a882', hair: '#1e1e1e', hairStyle: 'buzz', beard: '#1e1e1e', shirt: 'rojo', pants: '#222', shoes: '#d3141b', h: 1.12 } },
+  martin: { name: 'MARTIN', look: { skin: '#e2ae88', hair: '#d8b878', hair2: '#2a1d16', hairStyle: 'twotone', mustache: '#2a1d16', stubble: '#b88a6c', shirt: 'rojo', pants: '#222', shoes: '#f0f0f0', h: 1.15, beer: true } },
 };
 
 const pal = (arr, i) => arr[Math.abs(i) % arr.length];
@@ -450,7 +450,7 @@ const LEVELS = [
     npc: { x: 2790, who: 'fran', look: () => HEROES.fran.look, gift: 'milanesa',
       lines: [['FRAN', 'JUANI! QUE HACES POR LA BOCA, LOCO?'], ['JUANI', 'ACA ANDO, LIMPIANDO EL BARRIO. Y VOS CON LA DEL TALADRO?'], ['FRAN', 'BANFIELD ES UN SENTIMIENTO. TOMA, UN SANGUCHE DE MILANESA DE EL GENOVES.'], ['FRAN', 'COMELO QUE EL QUE VIENE ES PESADO... SUPER IACOBELLIS.']] },
     boss: { name: 'SUPER IACOBELLIS', hp: 320, scale: 1.75, speed: 0.75, dmg: 12, attacks: ['throw', 'throw', 'charge', 'combo'], projs: ['yerba', 'fajo', 'pelota'], extra: 'mate',
-      look: { skin: '#e8b58c', hair: '#222', hairStyle: 'short', shirt: 'rayasBW', pants: '#111', shorts: true, socks: '#f4f4f4', shoes: '#111' },
+      look: { skin: '#c9906a', hair: '#1a1410', hairStyle: 'short', stubble: '#9a6a4c', shirt: 'rayasBW', pants: '#111', shorts: true, socks: '#111', shoes: '#111' },
       intro: [['SUPER IACOBELLIS', 'BUENAS... TOMATE UN MATECITO QUE ESTO VA PARA LARGO.']] },
     intro: [['JUANI', 'LA BOCA, MI BARRIO. HOY NADIE ME ARRUINA LA TARDE.']],
     song: { bpm: 112, bassWave: 'triangle', bass: [0, null, null, 0, null, null, 7, null, 5, null, null, 5, null, null, 3, null], lead: [12, null, 15, 12, 19, null, 17, 15, 12, null, 10, null, 12, null, null, null, 12, null, 15, 17, 19, null, 22, 20, 19, null, 17, null, 15, null, null, null], drums: 'k..k..s.k.k.s..h' },
@@ -497,7 +497,7 @@ const LEVELS = [
     props: [[560, 'maceta'], [1100, 'caja'], [1650, 'maceta'], [2200, 'tacho'], [3300, 'tacho']],
     waves: [W8(300, 'thug', 'thug'), W8(850, 'fast', 'thug', 'fast'), W8(1400, 'big', 'thug', 'fast'), W8(1950, 'thug', 'fast', 'big', 'fast', 'thug'), W8(3150, 'thug', 'fast', 'big', 'thug')],
     boss: { name: 'BLACKRI', hp: 340, scale: 1.75, speed: 0.7, dmg: 13, attacks: ['throw', 'throw', 'throw', 'charge'], projs: ['asfalto', 'baldosa', 'contenedor', 'poste'],
-      look: { skin: '#8d5a3b', hair: '#111', hairStyle: 'side', shirt: 'suitDark', pants: '#1d1f2b', shoes: '#111', longSleeve: true },
+      look: { skin: '#b07850', hair: '#6e6e6e', hairStyle: 'short', shirt: 'suitDark', pants: '#1f2a4e', shoes: '#111', longSleeve: true, sleeveCol: '#1f2a4e' },
       intro: [['BLACKRI', 'ESTA CIUDAD ES MIA. CADA BALDOSA, CADA POSTE... TODO ES MI ARMA.']] },
     intro: [['SANTI', 'AMSTERDAM... QUE OLOR A... TULIPANES. SI, TULIPANES.']],
     warpLines: [['SANTI', 'UN PORTAL?! ESO ES... EL OBELISCO! VOLVI A BUENOS AIRES!']],
@@ -515,7 +515,7 @@ const LEVELS = [
     props: [[540, 'tacho'], [1050, 'caja'], [1600, 'tacho'], [2150, 'caja'], [2700, 'tacho']],
     waves: [W8(300, 'thug', 'fast', 'thug'), W8(850, 'fast', 'fast', 'thug'), W8(1400, 'thug', 'big', 'fast', 'thug'), W8(1950, 'fast', 'thug', 'fast', 'big', 'thug'), W8(2550, 'big', 'thug', 'fast', 'fast', 'thug', 'big')],
     boss: { name: 'CHIQUI TAP', hp: 380, scale: 1.85, speed: 0.6, dmg: 14, attacks: ['throw', 'throw', 'charge', 'slam'], projs: ['copa', 'medalla', 'trofeo'],
-      look: { skin: '#8d5a3b', hair: '#222', hairStyle: 'short', shirt: 'suitCeleste', pants: '#74b9e8', shoes: '#fff', belly: true, longSleeve: true, sleeveCol: '#74b9e8' },
+      look: { skin: '#a8714c', hair: '#b8b8b8', hairStyle: 'slick', glasses: '#111', shirt: 'suitCeleste', pants: '#bcd9f0', shoes: '#fff', belly: true, longSleeve: true, sleeveCol: '#bcd9f0' },
       intro: [['CHIQUI TAP', 'ACA MANDA LA AFA, PIBE. TENGO COPAS, MEDALLAS Y TROFEOS PARA TIRAR.']] },
     intro: [['FRAN', 'MI BARRIO. CASITAS INGLESAS, PASTO CORTADO... Y LOS DE GORRITA.'], ['MARTIN', '(P2: APRETA F PARA SUMAR AL HINCHA DEL ROJO, O EL BOTON 2P)']],
     song: { bpm: 100, bassWave: 'square', bass: [0, null, 7, null, 0, null, 7, null, 5, null, 12, null, 5, null, 12, null], lead: [19, null, 19, 17, 15, null, 17, null, 19, null, 22, null, 19, 17, 15, null], drums: 'k.hsk.hsk.hsk.hs', leadLen: 1 },
