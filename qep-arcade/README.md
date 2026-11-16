@@ -1,0 +1,39 @@
+# QEP ARCADE
+
+Beat 'em up arcade en HTML5 Canvas, sin dependencias. Pixel art dibujado 100% por código.
+
+## Cómo jugar
+
+Abrí `index.html` en el navegador (doble click alcanza). En celular aparecen controles táctiles.
+
+| | Jugador 1 | Jugador 2 |
+|---|---|---|
+| Moverse | Flechas | W A S D |
+| Golpe (combo x3) | Z | F |
+| Salto (golpe en el aire = patada) | X | G |
+| Especial (gasta un poco de vida) | C | H |
+| Pausa | Enter | |
+
+- **F** suma al jugador 2 en los mapas co-op; **2** (o el botón `+2P CPU` en celular) lo suma manejado por la CPU.
+- **M** activa o silencia el sonido.
+
+## Personajes y mapas
+
+| Pibe | Mapa | 2P | Jefe |
+|---|---|---|---|
+| Juani (Boca) | La Boca: Caminito, la Bombonera y el almacén El Genovés con Fran de cameo | — | Super Iacobellis |
+| Juani (nivel 2) | La Boca de noche: Riachuelo, Puente Transbordador y la Bombonera iluminada | — | Macri |
+| Nico (River bordó) | Tokio: Shibuya, Shinjuku, Skytree, neones → Estadio Sanfrecce en Hiroshima | Santi | Sanfreche-San |
+| Santi (River) | Amsterdam: canales, humo, gente extrovertida → portal al Obelisco | — | Blackri |
+| Fran (Banfield) | Banfield: casas inglesas, farolas, adoquines, Florencio Solá | Martín (el hincha del Rojo) | Chiqui TAP |
+
+## Sponsor: CASEUS
+
+En todos los mapas hay un puesto de **CASEUS · Quesos & Fiambres**. Ana, con la de Vélez, te regala una picada que recarga toda la vida.
+
+## Estructura
+
+- `js/core.js`: input (teclado/táctil), audio sintetizado (efectos y música chiptune)
+- `js/art.js`: sprites de personajes, comida, objetos y proyectiles
+- `js/levels.js`: looks de los pibes, fondos de cada mapa, oleadas y jefes
+- `js/game.js`: motor (combate, IA, jefes, cámara, HUD, menús)

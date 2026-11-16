@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>QEP Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+<style>
+  :root { --bg: #07040f; --btn: rgba(255,255,255,0.12); --btn-on: rgba(255,225,77,0.55); --ink: #fff; }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden;
+    font-family: 'Press Start 2P', monospace; touch-action: none; user-select: none; -webkit-user-select: none; }
+  #wrap { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; }
+  canvas { image-rendering: pixelated; image-rendering: crisp-edges; display: block; background: #000; box-shadow: 0 0 40px rgba(120,60,255,0.25); }
+  #touch { display: none; }
+  body.touch #touch { display: block; }
+  .pad { position: fixed; left: max(16px, env(safe-area-inset-left)); bottom: max(16px, env(safe-area-inset-bottom)); width: 132px; height: 132px; border-radius: 50%;
+    background: var(--btn); border: 2px solid rgba(255,255,255,0.25); }
+  .pad .knob { position: absolute; width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.35); left: 41px; top: 41px; transition: transform .05s; }
+  .btns { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); width: 170px; height: 140px; }
+  .b { position: absolute; width: 60px; height: 60px; border-radius: 50%; background: var(--btn); border: 2px solid rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center; font-size: 9px; color: #fff; text-align: center; line-height: 1.4; }
+  .b.on { background: var(--btn-on); }
+  .b.a { right: 0; bottom: 40px; border-color: #ff5a5a; }
+  .b.b2 { right: 70px; bottom: 0; border-color: #5ab0ff; }
+  .b.c { right: 80px; bottom: 74px; width: 48px; height: 48px; border-color: #ffe14d; font-size: 7px; }
+  .top { position: fixed; top: max(8px, env(safe-area-inset-top)); display: flex; gap: 8px; }
+  .top.l { left: max(10px, env(safe-area-inset-left)); }
+  .top.r { right: max(10px, env(safe-area-inset-right)); }
+  .s { padding: 8px 10px; font-size: 8px; border-radius: 6px; background: var(--btn); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
+  .s.on { background: var(--btn-on); }
+</style>
+</head>
+<body>
+<div id="wrap"><canvas id="game" width="384" height="216"></canvas></div>
+
+<div id="touch">
+  <div class="pad" id="pad"><div class="knob" id="knob"></div></div>
+  <div class="btns">
+    <div class="b a" data-k="a">GOLPE</div>
+    <div class="b b2" data-k="b">SALTO</div>
+    <div class="b c" data-k="c">ESPE<br>CIAL</div>
+  </div>
+  <div class="top l"><div class="s" data-k="start">PAUSA</div></div>
+  <div class="top r"><div class="s" id="p2btn">+2P CPU</div><div class="s" id="mute">SONIDO</div></div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/art.js"></script>
+<script src="js/levels.js"></script>
+<script src="js/game.js"></script>
+<script>
+(function () {
+  const canvas = document.getElementById('game');
+  function fit() {
+    const touch = document.body.classList.contains('touch');
+    const availW = window.innerWidth, availH = window.innerHeight;
+    let s = Math.min(availW / 384, availH / 216);
+    if (s >= 2 && !touch) s = Math.floor(s);
+    canvas.style.width = Math.floor(384 * s) + 'px';
+    canvas.style.height = Math.floor(216 * s) + 'px';
+  }
+  const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  if (isTouch) document.body.classList.add('touch');
+  window.addEventListener('resize', fit); fit();
+
+  // botones
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const k = el.dataset.k;
+    const on = e => { e.preventDefault(); touchState[k] = 1; el.classList.add('on'); Sound.unlock(); };
+    const off = e => { e.preventDefault(); touchState[k] = 0; el.classList.remove('on'); };
+    el.addEventListener('pointerdown', on); el.addEventListener('pointerup', off);
+    el.addEventListener('pointercancel', off); el.addEventListener('pointerleave', off);
+  });
+  document.getElementById('p2btn').addEventListener('pointerdown', e => { e.preventDefault(); if (touchState.p2 !== 2) touchState.p2 = 3; });
+  const mute = document.getElementById('mute');
+  mute.addEventListener('pointerdown', e => { e.preventDefault(); Sound.unlock(); Sound.toggleMute(); mute.textContent = Sound.muted ? 'MUDO' : 'SONIDO'; });
+
+  // joystick
+  const pad = document.getElementById('pad'), knob = document.getElementById('knob');
+  let pid = null;
+  function setDir(e) {
+    const r = pad.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+    const d = Math.hypot(dx, dy), m = Math.min(d, 46), a = Math.atan2(dy, dx);
+    knob.style.transform = `translate(${Math.cos(a) * m}px, ${Math.sin(a) * m}px)`;
+    const dead = 14;
+    touchState.left = dx < -dead ? 1 : 0; touchState.right = dx > dead ? 1 : 0;
+    touchState.up = dy < -dead ? 1 : 0; touchState.down = dy > dead ? 1 : 0;
+  }
+  function release() { pid = null; knob.style.transform = ''; touchState.left = touchState.right = touchState.up = touchState.down = 0; }
+  pad.addEventListener('pointerdown', e => { e.preventDefault(); pid = e.pointerId; pad.setPointerCapture(pid); setDir(e); Sound.unlock(); });
+  pad.addEventListener('pointermove', e => { if (e.pointerId === pid) setDir(e); });
+  pad.addEventListener('pointerup', release); pad.addEventListener('pointercancel', release);
+  // al volver al menú, rehabilitar el botón 2P
+  setInterval(() => { if (window.QEP && QEP.App.mode !== 'game' && touchState.p2 === 2) touchState.p2 = 0; }, 500);
+})();
+</script>
+</body>
+</html>
