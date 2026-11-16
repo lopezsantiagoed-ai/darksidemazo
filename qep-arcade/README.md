@@ -4,7 +4,9 @@ Beat 'em up arcade en HTML5 Canvas, sin dependencias. Pixel art dibujado 100% po
 
 ## Cómo jugar
 
-Abrí `index.html` en el navegador (doble click alcanza). En celular aparecen controles táctiles.
+La forma más simple: abrí **`QEP-Arcade.html`** (el juego entero en un solo archivo) con doble click. También anda `index.html`, pero solo si el ZIP está descomprimido, porque necesita la carpeta `js/`. En celular aparecen controles táctiles.
+
+Después de cambiar algo en `js/`, regenerá el archivo único con `python3 build.py`.
 
 | | Jugador 1 | Jugador 2 |
 |---|---|---|
