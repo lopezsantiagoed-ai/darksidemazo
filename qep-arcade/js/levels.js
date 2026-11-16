@@ -717,7 +717,7 @@ const LEVELS = [
   },
   {
     id: 'tokyo', hero: 'nico', p2: 'santi', title: 'TOKIO', sub: 'SHIBUYA - SHINJUKU - SKYTREE', len: 4100, bg: bgTokyo,
-    item: 'sushi', item2: 'ramen', caseus: 1250, p2Join: 'caseus', next: 'river2',
+    item: 'sushi', item2: 'ramen', caseus: 1250, p2Join: 'caseus', p2JoinText: 'SANTI APARECE EN EL PUESTO CASEUS', next: 'river2',
     warp: { x: 2450, afterWave: 4, toX: 3000, text: 'SHINKANSEN A HIROSHIMA...' },
     enemyLooks: {
       thug: { skin: '#f0cfae', hair: '#111', hairStyle: 'side', shirt: 'suit', shirtCol: '#1b1b22', pants: '#1b1b22', shoes: '#111', glasses: '#000', tie: '#222', longSleeve: true },
@@ -818,7 +818,7 @@ const LEVELS = [
     song: { bpm: 128, bassWave: 'square', bass: [0, null, 12, null, 7, null, 12, null, 5, null, 17, null, 7, null, 19, null], lead: [12, 14, 16, 19, 16, 14, 12, null, 14, 16, 19, 21, 19, 16, 14, null], drums: 'k.h.s.h.k.hks.h.', leadLen: 0.8 },
   },
   {
-    id: 'centro', hero: 'santi', stage2: true, label: 'AMSTERDAM - NIVEL 2', title: 'CENTRO PORTENO', sub: 'SAN TELMO - MONSERRAT - CASA ROSADA', len: 4000, bg: bgCentro,
+    id: 'centro', hero: 'santi', p2: 'nico', p2Join: 'boss', stage2: true, label: 'AMSTERDAM - NIVEL 2', title: 'CENTRO PORTENO', sub: 'SAN TELMO - MONSERRAT - CASA ROSADA', len: 4000, bg: bgCentro,
     item: 'empanada', item2: 'alfajor', caseus: 1900,
     enemyLooks: {
       thug: { skin: '#e8b58c', hair: '#222', hairStyle: 'side', shirt: 'suit', shirtCol: '#2a2a35', pants: '#2a2a35', shoes: '#111', glasses: '#000', longSleeve: true },
@@ -832,6 +832,7 @@ const LEVELS = [
       look: { skin: '#eab896', hair: '#3a2a20', hairStyle: 'peluca', shirt: 'cuero3', pants: '#1a1414', shoes: '#111', belly: true, longSleeve: true, sleeveCol: '#1a1414' },
       intro: [['EL PELUCA', 'VIVA LA LIBERTAD, CARAJO!! BIENVENIDO A LA CASA ROSADA.'], ['SANTI', 'TENES TRES CAMPERAS DE CUERO PUESTAS? HACE CALOR, PELUCA.'], ['EL PELUCA', 'AFUERA! SUELTEN A LOS PERROS!']] },
     intro: [['SANTI', 'DEL OBELISCO AL CENTRO: SAN TELMO, MONSERRAT... Y AL FINAL LA CASA ROSADA.']],
+    p2Auto: [['NICO', 'SANTI!! LLEGUE DEL MONUMENTAL. CONTRA EL PELUCA NO VAS SOLO!'], ['SANTI', 'NICO! LOS DOS DE RIVER CONTRA LAS TRES CAMPERAS. VAMOS!'], ['NICO', '(P2: APRETA F PARA MANEJAR A NICO)']],
     song: { bpm: 116, bassWave: 'triangle', bass: [0, null, null, 0, null, null, 5, null, 3, null, null, 3, null, null, 7, null], lead: [12, null, 15, 17, 19, null, 17, 15, 14, null, 12, null, 10, null, null, null], drums: 'k..hs.h.k.kh.s.h' },
   },
 ];

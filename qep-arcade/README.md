@@ -28,7 +28,7 @@ Después de cambiar algo en `js/`, regenerá el archivo único con `python3 buil
 | Nico (River bordó) | Tokio: Shibuya, Shinjuku, Skytree, neones → Estadio Sanfrecce en Hiroshima | Santi (aparece en el puesto CASEUS) | Sanfreche-San |
 | Nico (nivel 2) | Barrio River: Aeroparque, Belgrano con banderas, KIPER PDTE y VAMOS TRILLO → Monumental | Santi | Yayo Cozza Di Carlo |
 | Santi (River) | Amsterdam: canales, humo, gente extrovertida → portal al Obelisco | — | Blackri |
-| Santi (nivel 2) | Centro porteño: San Telmo, Monserrat, London City, Gaumont, El Imparcial → Casa Rosada | — | El Peluca |
+| Santi (nivel 2) | Centro porteño: San Telmo, Monserrat, London City, Gaumont, El Imparcial → Casa Rosada | Nico (entra contra el jefe) | El Peluca |
 | Fran (Banfield) | Banfield: casas inglesas, farolas, adoquines, Florencio Solá | Martín (el hincha del Rojo, entra como CPU contra el jefe) | Chiqui TAP |
 | Fran (nivel 2) | Lanús de noche: estación del Roca, Pizzería Las Palmas, La Fortaleza, calles rotas e hinchas granates | Martín | Padrino Nicola |
 

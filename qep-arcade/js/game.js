@@ -171,6 +171,7 @@ function updateLevel(g) {
       const p2 = spawnPlayer(g, 1, lv.p2, true);
       p2.x = g.camX + 30; p2.y = FLOOR_TOP + 30; p2.z = 90; p2.state = 'jump'; p2.invul = 120;
       g.pendingP2Lines = lv.p2Auto;
+      g.p2Ready = true;
     }
     Sound.play(SONG_BOSS); Sound.sfx('boss');
     g.bossCard = 140;
@@ -884,7 +885,7 @@ function drawSelect() {
     if (lv.next) txt(ctx, '2 NIVELES', x + 42, y + 4, '#ffe14d', 4, 'center');
   });
   const lv = MAIN_LEVELS[App.sel];
-  txt(ctx, lv.p2 ? (lv.p2Join ? 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' APARECE EN EL PUESTO CASEUS' : 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' PUEDE SUMARSE COMO P2') : 'MAPA PARA 1 JUGADOR', W / 2, 186, '#9ff', 5, 'center');
+  txt(ctx, lv.p2 ? (lv.p2Join ? 'MAPA CO-OP: ' + (lv.p2JoinText || HEROES[lv.p2].name + ' APARECE MAS ADELANTE') : 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' PUEDE SUMARSE COMO P2') : 'MAPA PARA 1 JUGADOR', W / 2, 186, '#9ff', 5, 'center');
   if ((t >> 5) & 1) txt(ctx, '< >  ELEGIR    GOLPE / ENTER  JUGAR', W / 2, 200, '#fff', 6, 'center');
 }
 
