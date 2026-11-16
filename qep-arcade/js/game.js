@@ -92,7 +92,11 @@ function camLimit(g) {
 function updateLevel(g) {
   const lv = g.lv;
   // P2
-  if (lv.p2 && !g.players[1]) {
+  const p2Open = lv.p2 && (!lv.p2Join || g.p2Ready);
+  if (p2Open && g.players[1] && g.players[1].cpu && !g.players[1].out && (pads[1].hit('a') || pads[1].hit('start') || touchState.p2 === 1)) {
+    g.players[1].cpu = false; pads[1].cpu = null; Sound.sfx('select'); addText(g, g.players[1].x, g.players[1].y - 60, 'P2!', '#ff8080');
+  }
+  if (p2Open && !g.players[1]) {
     if (pads[1].hit('a') || pads[1].hit('start') || touchState.p2 === 1) { spawnPlayer(g, 1, lv.p2, false); Sound.sfx('select'); touchState.p2 = 2; }
     else if (keyDown['Digit2'] || touchState.p2 === 3) { spawnPlayer(g, 1, lv.p2, true); Sound.sfx('select'); touchState.p2 = 2; }
   }
@@ -139,9 +143,22 @@ function updateLevel(g) {
     if (alive.some(p => Math.abs(p.x - c.x) < 36)) {
       c.used = true;
       const hero = HEROES[lv.hero].name;
-      sayLines(g, [['ANA', hero + '! BIENVENIDO A CASEUS: SALAME, QUESOS ARTESANALES Y LAS MEJORES PICADAS.'], ['ANA', 'TOMA, LLEVATE UNA PICADA PARA RECUPERAR FUERZAS!'], [hero, 'GRACIAS ANA! AGUANTE CASEUS!']], () => {
+      const joins = lv.p2Join === 'caseus' && !g.players[1];
+      const lines = [['ANA', hero + '! BIENVENIDO A CASEUS: SALAME, QUESOS ARTESANALES Y LAS MEJORES PICADAS.'], ['ANA', 'TOMA, LLEVATE UNA PICADA PARA RECUPERAR FUERZAS!'], [hero, 'GRACIAS ANA! AGUANTE CASEUS!']];
+      if (joins) {
+        g.ents.push({ kind: 'npc', x: c.x + 60, y: FLOOR_TOP + 6, look: HEROES[lv.p2].look, face: -1, temp: true });
+        lines.push(...lv.p2JoinLines);
+      }
+      sayLines(g, lines, () => {
         g.ents.push({ kind: 'item', type: 'picada', x: c.x - 10, y: FLOOR_TOP + 14, heal: 100, t: 0 });
         Sound.sfx('pickup');
+        if (joins) {
+          g.ents = g.ents.filter(e => !(e.kind === 'npc' && e.temp));
+          g.p2Ready = true;
+          const p2 = spawnPlayer(g, 1, lv.p2, true);
+          p2.x = c.x + 60; p2.y = FLOOR_TOP + 14; p2.z = 0; p2.state = 'idle'; p2.invul = 60;
+          Sound.sfx('select');
+        }
       });
     }
   }
@@ -511,8 +528,12 @@ function updateBoss(g, b) {
 function updateGame() {
   const g = App.g;
   g.t++;
+  if (g.players[1] && g.players[1].cpu) cpuThink(g, g.players[1]);
   for (const p of pads) p.poll();
-  if (g.players[1] && g.players[1].cpu) { cpuThink(g, g.players[1]); pads[1].poll(); }
+  if (g.players[1] && g.players[1].cpu && KEYMAP[1].a.concat(KEYMAP[1].start).some(k => keyDown[k]) && !App.p2KeyWas) {
+    g.players[1].cpu = false; pads[1].cpu = null; pads[1].poll(); pads[1].prev = pads[1].cur; Sound.sfx('select'); addText(g, g.players[1].x, g.players[1].y - 60, 'P2!', '#ff8080');
+  }
+  App.p2KeyWas = KEYMAP[1].a.concat(KEYMAP[1].start).some(k => keyDown[k]);
 
   if (pads[0].hit('start') && g.state === 'play' && !g.dialog) { App.paused = !App.paused; Sound.sfx('select'); }
   if (App.paused) { if (keyDown['Escape']) { App.paused = false; Sound.play(SONG_TITLE); App.mode = 'select'; } return; }
@@ -723,7 +744,8 @@ function drawHUD(g) {
     bar(x, 15, 104, 6, p.out ? 0 : p.hp, p.maxhp, '#3ee06a');
     txt(ctx, String(p.score).padStart(7, '0'), x, 24, '#ffe14d', 6);
   });
-  if (lv.p2 && !g.players[1]) {
+  if (g.players[1] && g.players[1].cpu && lv.p2) txt(ctx, 'F = MANEJAR P2', W - 6, 33, '#9ff', 4, 'right');
+  if (lv.p2 && !g.players[1] && (!lv.p2Join || g.p2Ready)) {
     if ((g.t >> 5) & 1) txt(ctx, 'P2: ' + HEROES[lv.p2].name, W - 6, 5, '#ff8080', 6, 'right');
     txt(ctx, 'F = UNIRSE', W - 6, 14, '#fff', 5, 'right');
     txt(ctx, '2 = CPU', W - 6, 22, '#9ff', 5, 'right');
@@ -856,7 +878,7 @@ function drawSelect() {
     if (lv.next) txt(ctx, '2 NIVELES', x + 42, y + 4, '#ffe14d', 4, 'center');
   });
   const lv = MAIN_LEVELS[App.sel];
-  txt(ctx, lv.p2 ? 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' PUEDE SUMARSE COMO P2' : 'MAPA PARA 1 JUGADOR', W / 2, 186, '#9ff', 5, 'center');
+  txt(ctx, lv.p2 ? (lv.p2Join ? 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' APARECE EN EL PUESTO CASEUS' : 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' PUEDE SUMARSE COMO P2') : 'MAPA PARA 1 JUGADOR', W / 2, 186, '#9ff', 5, 'center');
   if ((t >> 5) & 1) txt(ctx, '< >  ELEGIR    GOLPE / ENTER  JUGAR', W / 2, 200, '#fff', 6, 'center');
 }
 

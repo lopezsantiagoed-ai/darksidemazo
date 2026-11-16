@@ -522,7 +522,7 @@ const LEVELS = [
   },
   {
     id: 'tokyo', hero: 'nico', p2: 'santi', title: 'TOKIO', sub: 'SHIBUYA - SHINJUKU - SKYTREE', len: 4100, bg: bgTokyo,
-    item: 'sushi', item2: 'ramen', caseus: 1250,
+    item: 'sushi', item2: 'ramen', caseus: 1250, p2Join: 'caseus',
     warp: { x: 2450, afterWave: 4, toX: 3000, text: 'SHINKANSEN A HIROSHIMA...' },
     enemyLooks: {
       thug: { skin: '#f0cfae', hair: '#111', hairStyle: 'side', shirt: 'suit', shirtCol: '#1b1b22', pants: '#1b1b22', shoes: '#111', glasses: '#000', tie: '#222', longSleeve: true },
@@ -540,7 +540,8 @@ const LEVELS = [
     boss: { name: 'SANFRECHE-SAN', hp: 340, scale: 1.7, speed: 0.85, dmg: 11, attacks: ['summon', 'charge', 'throw', 'combo'], projs: ['bufanda'], summonLooks: 'lateLooks',
       look: { skin: '#f0cfae', hair: '#111', hairStyle: 'short', shirt: 'sanfrecce', pants: '#fff', shoes: '#5b2a8c', hat: 'piluso', glasses: '#000' },
       intro: [['SANFRECHE-SAN', 'BIENVENIDO A HIROSHIMA, RIVER-SAN. MI HINCHADA NO PERDONA.']] },
-    intro: [['NICO', 'KONNICHIWA TOKIO! VINE CON LA DE RIVER Y TODOS ME MIRAN...'], ['NICO', '(P2: APRETA F PARA SUMAR A SANTI, O EL BOTON 2P)']],
+    intro: [['NICO', 'KONNICHIWA TOKIO! VINE CON LA DE RIVER Y TODOS ME MIRAN...'], ['NICO', 'DICEN QUE SANTI ANDA POR ACA... CAPAZ LO CRUZO EN ALGUN LADO.']],
+    p2JoinLines: [['SANTI', 'NICO!! QUE HACES ACA? YO VINE POR LA PICADA DE ANA.'], ['NICO', 'SANTI! JUSTO A TIEMPO. VAMOS JUNTOS A HIROSHIMA?'], ['SANTI', 'VAMOS! DE RIVER A JAPON. (P2: APRETA F PARA MANEJAR A SANTI)']],
     warpLines: [['NICO', 'AL SHINKANSEN! DICEN QUE EL JEFE ESTA EN HIROSHIMA.']],
     song: { bpm: 132, bassWave: 'sawtooth', bass: [0, null, 0, 12, null, 0, 10, null, 7, null, 7, 19, null, 7, 5, null], lead: [12, 15, 17, 19, 22, 19, 17, 15, 24, null, 22, null, 19, null, 17, null], drums: 'k.h.s.h.k.k.s.hh', leadLen: 0.8 },
   },
