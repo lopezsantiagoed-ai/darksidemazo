@@ -25,9 +25,10 @@ Después de cambiar algo en `js/`, regenerá el archivo único con `python3 buil
 |---|---|---|---|
 | Juani (Boca) | La Boca: Caminito, la Bombonera y el almacén El Genovés con Fran de cameo | — | Super Iacobellis |
 | Juani (nivel 2) | La Boca de noche: Riachuelo, Puente Transbordador y la Bombonera iluminada | — | Macri |
-| Nico (River bordó) | Tokio: Shibuya, Shinjuku, Skytree, neones → Estadio Sanfrecce en Hiroshima | Santi | Sanfreche-San |
+| Nico (River bordó) | Tokio: Shibuya, Shinjuku, Skytree, neones → Estadio Sanfrecce en Hiroshima | Santi (aparece en el puesto CASEUS) | Sanfreche-San |
 | Santi (River) | Amsterdam: canales, humo, gente extrovertida → portal al Obelisco | — | Blackri |
-| Fran (Banfield) | Banfield: casas inglesas, farolas, adoquines, Florencio Solá | Martín (el hincha del Rojo) | Chiqui TAP |
+| Fran (Banfield) | Banfield: casas inglesas, farolas, adoquines, Florencio Solá | Martín (el hincha del Rojo, entra como CPU contra el jefe) | Chiqui TAP |
+| Fran (nivel 2) | Lanús de noche: estación del Roca, Pizzería Las Palmas, La Fortaleza, calles rotas e hinchas granates | Martín | Padrino Nicola |
 
 ## Sponsor: CASEUS
 

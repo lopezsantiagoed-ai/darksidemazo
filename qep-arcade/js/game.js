@@ -166,6 +166,11 @@ function updateLevel(g) {
   if (!g.bossPhase && !lv.waves[g.waveIdx] && (!lv.warp || g.warped) && g.camX >= lv.len - W - 1) {
     g.bossPhase = 1;
     spawnBoss(g);
+    if (lv.p2Auto && !g.players[1]) {
+      const p2 = spawnPlayer(g, 1, lv.p2, true);
+      p2.x = g.camX + 30; p2.y = FLOOR_TOP + 30; p2.z = 90; p2.state = 'jump'; p2.invul = 120;
+      g.pendingP2Lines = lv.p2Auto;
+    }
     Sound.play(SONG_BOSS); Sound.sfx('boss');
     g.bossCard = 140;
   }
@@ -426,7 +431,7 @@ function updateBoss(g, b) {
   const tgt = nearestPlayer(g, b);
   if (ai.entering) {
     b.vx = -1; b.state = 'walk'; b.face = -1;
-    if (b.x < g.camX + W - 70) { ai.entering = false; b.vx = 0; b.state = 'idle'; sayLines(g, B.intro); }
+    if (b.x < g.camX + W - 70) { ai.entering = false; b.vx = 0; b.state = 'idle'; sayLines(g, B.intro.concat(g.pendingP2Lines || [])); g.pendingP2Lines = null; }
     physics(g, b); return;
   }
   if (!tgt) { b.state = 'idle'; b.vx = b.vy = 0; physics(g, b); return; }
@@ -511,9 +516,9 @@ function updateBoss(g, b) {
     case 'b_summon': {
       b.st++;
       if (b.st === 20) {
-        addText(g, b.x, b.y - 70, 'VAMOS HINCHADA!', '#c9a7ff');
+        addText(g, b.x, b.y - 70, B.summonText || 'VAMOS HINCHADA!', '#c9a7ff');
         spawnEnemy(g, 'thug', 1, B.summonLooks); spawnEnemy(g, 'fast', -1, B.summonLooks);
-        for (let k = 0; k < (rage ? 4 : 2); k++) g.ents.push({ kind: 'proj', type: 'bufanda', x: k & 1 ? g.camX - 10 : g.camX + W + 10, y: FLOOR_TOP + 8 + Math.random() * 50, z: 18, vx: (k & 1 ? 1 : -1) * 2.6, dmg: 7, w: 9, team: 1, t: -k * 30 });
+        for (let k = 0; k < (rage ? 4 : 2); k++) g.ents.push({ kind: 'proj', type: B.summonProj || 'bufanda', x: k & 1 ? g.camX - 10 : g.camX + W + 10, y: FLOOR_TOP + 8 + Math.random() * 50, z: 18, vx: (k & 1 ? 1 : -1) * 2.6, dmg: 7, w: 9, team: 1, t: -k * 30 });
       }
       if (b.st > 50) { b.state = 'idle'; ai.cool = 110; }
       break;

@@ -471,6 +471,82 @@ function bgBoca2(ctx, camX, t, g) {
 }
 
 // =====================================================================
+// LANUS (Fran nivel 2, de noche)
+// =====================================================================
+const LANUS_CROWD = { skins: ['#e8b58c', '#d9a27a', '#c68a5e', '#f0c4a0'], hairs: ['#111', '#2a1d16', '#3a2a20'], hairStyles: ['short', 'buzz', 'curly', 'spiky', 'side'],
+  shirts: ['plain', 'plain', 'jacket', 'tank'], cols: ['#7a1f2b', '#7a1f2b', '#8a2433', '#6a1a24', '#f2f2f2'], pants: ['#222', '#2a2a30', '#3b4f7a'], hatChance: 0.3, hats: ['visor', 'cap'] };
+function bgLanus(ctx, camX, t, g) {
+  skyGrad(ctx, ['#05060f', '#111528', '#241a2e']);
+  for (let i = 0; i < 30; i++) rect(ctx, (rnd(i + 21) * W) | 0, (rnd(i + 90) * 60) | 0, 1, 1, '#aab');
+  // estadio de Lanús (La Fortaleza)
+  const sx = Math.round(760 - camX * 0.25);
+  if (sx > -300 && sx < W + 20) {
+    rect(ctx, sx, 40, 270, 100, '#5a1520');
+    for (let r = 0; r < 6; r++) for (let k = 0; k < 33; k++) rect(ctx, sx + 4 + k * 8, 62 + r * 9, 6, 6, (rnd(k * 5 + r) < 0.5) ? '#8a2433' : '#f2f2f2');
+    rect(ctx, sx - 4, 36, 278, 5, '#3a0e16'); rect(ctx, sx, 44, 270, 14, '#7a1f2b');
+    txt(ctx, 'LANUS', sx + 135, 46, '#fff', 8, 'center', null);
+    txt(ctx, 'LA FORTALEZA', sx + 135, 120, '#f2d0d0', 5, 'center', '#3a0e16');
+    [sx + 6, sx + 260].forEach(lx => { rect(ctx, lx, 8, 3, 30, '#444'); rect(ctx, lx - 7, 4, 17, 8, '#fffbe0');
+      ctx.fillStyle = 'rgba(255,250,220,0.08)'; ctx.beginPath(); ctx.moveTo(lx - 7, 12); ctx.lineTo(lx + 70, 140); ctx.lineTo(lx - 70, 140); ctx.fill(); });
+  }
+  // casas del conurbano de noche
+  layer(camX, 0.5, 70, (i, x) => {
+    const h = 34 + Math.floor(rnd(i + 5) * 26), top = 140 - h, c = pal(['#6e6258', '#8a7a68', '#5a5048', '#7a6a5e', '#9a8a78'], (rnd(i) * 97) | 0);
+    rect(ctx, x, top, 66, h, c); rect(ctx, x - 1, top - 2, 68, 2, shade(c, 0.7));
+    rect(ctx, x + 6, top + 8, 14, 12, rnd(i + 1) < 0.5 ? '#ffd27a' : '#1a1a24'); for (let k = 0; k < 4; k++) rect(ctx, x + 6, top + 8 + k * 3, 14, 1, '#2a2a2a');
+    rect(ctx, x + 40, top + 8, 18, h - 8, '#2a1e18'); for (let k = 0; k < 6; k++) rect(ctx, x + 41 + k * 3, top + 8, 1, h - 8, '#555');
+    if (i % 3 === 0) { txt(ctx, 'LANUS', x + 26, top + h - 12, '#c84858', 5, 'center', null); }
+    if (i % 4 === 1) { const w = Math.round(Math.sin(t / 8 + i) * 1); rect(ctx, x + 22, top - 14, 1, 14, '#ccc'); rect(ctx, x + 23, top - 14 + w, 12, 4, '#7a1f2b'); rect(ctx, x + 23, top - 10 + w, 12, 2, '#fff'); }
+  });
+  // hinchas de Lanús en la vereda
+  layer(camX, 0.95, 30, (i, x) => {
+    if (rnd(i * 3) < 0.35) return;
+    const L = crowdPerson(i + 500, LANUS_CROWD), f = ((t / 10) | 0) + i;
+    drawPerson(ctx, L, i % 3 ? 'dance' : 'wave', f & 3, x + 12, 146, i & 1 ? 1 : -1, 0.75, { tint: 'rgba(10,10,40,0.25)' });
+    if (i % 5 === 0) { rect(ctx, x + 6, 112, 1, 18, '#ccc'); rect(ctx, x + 7, 112 + ((t >> 3) & 1), 14, 5, '#7a1f2b'); }
+  });
+  // vereda
+  rect(ctx, 0, 144, W, 10, '#5a5650'); ctx.fillStyle = '#48443e'; layer(camX, 1, 14, (i, x) => ctx.fillRect(x, 144, 1, 8)); rect(ctx, 0, 152, W, 2, '#35322e');
+  // calle rota
+  rect(ctx, 0, 154, W, H - 154, '#2e2e33');
+  layer(camX, 1, 46, (i, x) => {
+    const wx = i * 46, broken = wx > 2400 ? 0.85 : 0.45;
+    if (rnd(i) < broken) { const y = 160 + rnd(i + 1) * 44, w = 12 + rnd(i + 2) * 20;
+      ctx.fillStyle = '#1c1c20'; ctx.beginPath(); ctx.ellipse(x + 20, y, w / 2, 4, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = 'rgba(120,140,200,0.25)'; ctx.beginPath(); ctx.ellipse(x + 20, y + 1, w / 2 - 2, 2, 0, 0, 7); ctx.fill(); }
+    if (rnd(i + 7) < broken) { ctx.strokeStyle = '#1a1a1e'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x, 158 + rnd(i + 3) * 40); ctx.lineTo(x + 12, 166 + rnd(i + 4) * 40); ctx.lineTo(x + 22, 160 + rnd(i + 5) * 44); ctx.stroke(); }
+    if (wx > 2400 && rnd(i + 11) < 0.5) { rect(ctx, x + 30, 170 + rnd(i + 6) * 30, 6, 4, '#4a4a4e'); rect(ctx, x + 34, 172 + rnd(i + 6) * 30, 4, 3, '#55555a'); }
+  });
+  layer(camX, 1, 260, (i, x) => { lamppost(ctx, x + 40, 147); ctx.fillStyle = 'rgba(255,200,120,0.10)'; ctx.beginPath(); ctx.moveTo(x + 46, 101); ctx.lineTo(x + 72, 200); ctx.lineTo(x + 20, 200); ctx.fill(); });
+  // Estación Lanús + tren (inicio)
+  const st = Math.round(0 - camX);
+  if (st > -520) {
+    rect(ctx, st - 10, 40, 470, 6, '#3a3a40'); for (let k = 0; k < 6; k++) rect(ctx, st + k * 80, 46, 4, 100, '#4a4a52');
+    const go = Math.max(0, g.t - 260), tx = st - 20 + go * go * 0.02;
+    rect(ctx, tx, 76, 420, 66, '#e8eef4'); rect(ctx, tx, 108, 420, 6, '#1f5aa8'); rect(ctx, tx, 116, 420, 3, '#74b9e8');
+    for (let k = 0; k < 12; k++) rect(ctx, tx + 10 + k * 34, 84, 22, 16, '#2a3448');
+    for (let k = 0; k < 4; k++) { rect(ctx, tx + 40 + k * 100, 92, 18, 48, go ? '#c8ccd2' : '#1a1e28'); }
+    rect(ctx, tx + 404, 80, 14, 30, '#2a3448'); txt(ctx, 'ROCA', tx + 210, 120, '#1f5aa8', 6, 'center', null);
+    rect(ctx, st - 10, 140, 470, 6, '#8a8a90'); rect(ctx, st - 10, 144, 470, 2, '#f5c400');
+    rect(ctx, st + 150, 50, 90, 16, '#1f3a6e'); rect(ctx, st + 152, 52, 86, 12, '#fff'); txt(ctx, 'LANUS', st + 195, 54, '#1f3a6e', 8, 'center', null);
+    for (let k = 0; k < 6; k++) rect(ctx, st + 20 + k * 80, 48, 6, 4, '#ffe9a0');
+  }
+  // Pizzería Las Palmas
+  const px = Math.round(1150 - camX);
+  if (px > -200 && px < W + 20) {
+    rect(ctx, px, 70, 170, 78, '#d8c8a8'); rect(ctx, px - 4, 66, 178, 5, '#8a6a4a');
+    rect(ctx, px + 10, 76, 150, 22, '#14301e'); const on = ((t >> 4) % 9) !== 0;
+    txt(ctx, 'PIZZERIA', px + 85, 78, on ? '#ff6a5a' : '#552', 6, 'center', null);
+    txt(ctx, 'LAS PALMAS', px + 85, 87, on ? '#7dff9a' : '#253', 8, 'center', null);
+    for (const pxx of [px + 18, px + 150]) { rect(ctx, pxx, 82, 2, 12, '#8a5a2a'); rect(ctx, pxx - 5, 80, 12, 2, on ? '#7dff9a' : '#253'); rect(ctx, pxx - 4, 82, 3, 1, on ? '#7dff9a' : '#253'); rect(ctx, pxx + 3, 82, 3, 1, on ? '#7dff9a' : '#253'); }
+    rect(ctx, px + 10, 104, 60, 36, '#2a1a10'); rect(ctx, px + 12, 106, 56, 32, '#ffcf7a');
+    rect(ctx, px + 100, 104, 60, 36, '#2a1a10'); rect(ctx, px + 102, 106, 56, 32, '#ffcf7a');
+    for (let k = 0; k < 3; k++) { rect(ctx, px + 16 + k * 18, 126, 12, 2, '#7a3a1a'); rect(ctx, px + 106 + k * 18, 126, 12, 2, '#7a3a1a'); }
+    rect(ctx, px + 76, 104, 18, 44, '#3a2416'); txt(ctx, 'MUZZA - FAINA', px + 85, 141, '#fff', 3, 'center', null);
+  }
+}
+
+// =====================================================================
 // CONFIGURACIÓN DE NIVELES
 // =====================================================================
 const ENEMY_STATS = {
@@ -571,11 +647,11 @@ const LEVELS = [
   },
   {
     id: 'banfield', hero: 'fran', p2: 'martin', title: 'BANFIELD', sub: 'CONURBANO - FLORENCIO SOLA', len: 3600, bg: bgBanfield,
-    item: 'empanada', item2: 'mate', caseus: 1750,
+    item: 'empanada', item2: 'mate', caseus: 1750, next: 'lanus',
     enemyLooks: {
       thug: { skin: '#d9a27a', hair: '#222', hairStyle: 'buzz', shirt: 'jacket', shirtCol: '#1f2a5a', pants: '#1f2a5a', shoes: '#fff', hat: 'visor', longSleeve: true },
       fast: { skin: '#c68a5e', hair: '#222', hairStyle: 'short', shirt: 'jacket', shirtCol: '#222', pants: '#222', shoes: '#fff', hat: 'visor', longSleeve: true },
-      big: { skin: '#e0a882', hair: '#222', hairStyle: 'buzz', shirt: 'jacket', shirtCol: '#5a5a62', pants: '#2a2a2e', shoes: '#fff', hat: 'visor', belly: true, longSleeve: true },
+      big: { skin: '#e0a882', hair: '#222', hairStyle: 'buzz', shirt: 'jacket', shirtCol: '#7a1f2b', pants: '#5a1520', shoes: '#fff', hat: 'visor', belly: true, longSleeve: true },
     },
     names: { thug: ['EL TOTO', 'BRIAN', 'MAXI', 'TOBI'], fast: ['EL LAUCHA', 'DYLAN', 'KEVIN'], big: ['EL CHUECO', 'EL GORDO VALOR'] },
     props: [[540, 'tacho'], [1050, 'caja'], [1600, 'tacho'], [2150, 'caja'], [2700, 'tacho']],
@@ -583,12 +659,30 @@ const LEVELS = [
     boss: { name: 'CHIQUI TAP', hp: 380, scale: 1.85, speed: 0.6, dmg: 14, attacks: ['throw', 'throw', 'charge', 'slam'], projs: ['copa', 'medalla', 'trofeo'],
       look: { skin: '#a8714c', hair: '#b8b8b8', hairStyle: 'slick', glasses: '#111', shirt: 'suitCeleste', pants: '#bcd9f0', shoes: '#fff', belly: true, longSleeve: true, sleeveCol: '#bcd9f0' },
       intro: [['CHIQUI TAP', 'ACA MANDA LA AFA, PIBE. TENGO COPAS, MEDALLAS Y TROFEOS PARA TIRAR.']] },
-    intro: [['FRAN', 'MI BARRIO. CASITAS INGLESAS, PASTO CORTADO... Y LOS DE GORRITA.'], ['MARTIN', '(P2: APRETA F PARA SUMAR AL HINCHA DEL ROJO, O EL BOTON 2P)']],
+    intro: [['FRAN', 'MI BARRIO. CASITAS INGLESAS, PASTO CORTADO... Y LOS DE GORRITA.']],
+    p2Auto: [['MARTIN', 'FRAN!! CON ESTE GRANDOTE NO PODES SOLO. EL ROJO TE DA UNA MANO!'], ['FRAN', 'MARTIN! JUSTO A TIEMPO. VAMOS!'], ['MARTIN', '(P2: APRETA F PARA MANEJAR A MARTIN)']],
     song: { bpm: 100, bassWave: 'square', bass: [0, null, 7, null, 0, null, 7, null, 5, null, 12, null, 5, null, 12, null], lead: [19, null, 19, 17, 15, null, 17, null, 19, null, 22, null, 19, 17, 15, null], drums: 'k.hsk.hsk.hsk.hs', leadLen: 1 },
+  },
+  {
+    id: 'lanus', hero: 'fran', p2: 'martin', stage2: true, label: 'BANFIELD - NIVEL 2', title: 'LANUS', sub: 'DE NOCHE - DEL TREN A LA FORTALEZA', len: 4000, bg: bgLanus,
+    item: 'empanada', item2: 'pizza', caseus: 1700,
+    enemyLooks: {
+      thug: { skin: '#d9a27a', hair: '#222', hairStyle: 'buzz', shirt: 'plain', shirtCol: '#7a1f2b', pants: '#222', shoes: '#fff', hat: 'visor', longSleeve: false },
+      fast: { skin: '#c68a5e', hair: '#222', hairStyle: 'short', shirt: 'jacket', shirtCol: '#7a1f2b', pants: '#5a1520', shoes: '#fff', hat: 'visor', longSleeve: true },
+      big: { skin: '#e0a882', hair: '#222', hairStyle: 'bald', shirt: 'plain', shirtCol: '#7a1f2b', pants: '#2a2a2e', shoes: '#fff', belly: true },
+    },
+    names: { thug: ['GRANATE', 'EL TANO', 'PICHI', 'EL RULO'], fast: ['EL GRILLO', 'NACHO', 'RAMITA'], big: ['EL BOMBO', 'GORDO LANUS'] },
+    props: [[620, 'tacho'], [1450, 'caja'], [2100, 'tacho'], [2700, 'barril'], [3300, 'tacho']],
+    waves: [W8(450, 'thug', 'fast', 'thug'), W8(950, 'fast', 'thug', 'big'), W8(1500, 'thug', 'fast', 'fast', 'thug'), W8(2150, 'big', 'thug', 'fast', 'thug', 'fast'), W8(2800, 'fast', 'big', 'thug', 'fast', 'big', 'thug')],
+    boss: { name: 'PADRINO NICOLA', hp: 400, scale: 1.8, speed: 0.6, dmg: 14, attacks: ['throw', 'summon', 'charge', 'throw', 'slam'], projs: ['pizza', 'adoquin', 'adoquin'], summonLooks: 'enemyLooks', summonText: 'VAMOS GRANATE!', summonProj: 'adoquin',
+      look: { skin: '#e2a684', hair: '#7a5a48', hairStyle: 'bald', bigHead: true, belly: true, shirt: 'plain', shirtCol: '#8a1e2a', longSleeve: true, sleeveCol: '#8a1e2a', pants: '#2a2a30', shoes: '#3a2a1a' },
+      intro: [['PADRINO NICOLA', 'BIENVENIDO A LANUS, PIBE. ACA EL QUE MANDA ES EL PADRINO.'], ['FRAN', 'VENGO DE BANFIELD, NICOLA. NO ME ASUSTAS.'], ['PADRINO NICOLA', 'JE... VAMOS A VER CUANTO AGUANTAS EN LA FORTALEZA.']] },
+    intro: [['FRAN', 'ME BAJO DEL TREN EN LANUS... DE NOCHE Y TODO GRANATE.'], ['FRAN', 'LAS CALLES ESTAN ROTAS Y LA HINCHADA EN LA VEREDA. A NO DISTRAERSE.']],
+    p2Auto: [['MARTIN', 'FRAN! EL PADRINO ES DURO, PERO EL ROJO NO TE DEJA SOLO!'], ['MARTIN', '(P2: APRETA F PARA MANEJAR A MARTIN)']],
+    song: { bpm: 108, bassWave: 'square', bass: [0, null, 3, null, 7, null, 3, null, 5, null, 8, null, 7, null, 3, null], lead: [15, null, 15, 14, 12, null, 10, null, 12, null, 15, null, 19, 17, 15, null], drums: 'k.hsk.hsk.hsk.hs', leadLen: 1 },
   },
 ];
 
 const SONG_TITLE = { bpm: 120, bassWave: 'triangle', bass: [0, null, 12, null, 7, null, 12, null, 5, null, 17, null, 7, null, 19, null], lead: [12, 15, 19, 24, 19, 15, 12, null, 10, 14, 17, 22, 17, 14, 10, null], drums: 'k.h.s.h.k.hks.h.', leadLen: 0.8 };
 const SONG_BOSS = { bpm: 150, bassWave: 'sawtooth', bass: [0, 0, 12, 0, 1, 1, 13, 1, 0, 0, 12, 0, 3, 3, 15, 3], lead: [12, null, 13, null, 12, null, 10, null, 12, null, 15, null, 13, 12, 10, null], drums: 'k.s.kks.k.s.kkss', leadLen: 0.7 };
-
 const MAIN_LEVELS = LEVELS.filter(l => !l.stage2);

@@ -256,6 +256,7 @@ function paintPerson(c, L, pose, f) {
   if (L.belt) rect(c, bx + hurtShift + lean, -13, bw, 1, L.belt);
   // cabeza
   c.save(); c.translate(hurtShift + lean, 0);
+  if (L.bigHead) { rect(c, -5, -34, 11, 12, skin); rect(c, -6, -29, 1, 3, shade(skin, 0.85)); rect(c, -2, -34, 4, 1, shade(skin, 1.12)); rect(c, 4, -24, 2, 1, shade(skin, 0.8)); }
   rect(c, -4, -31, 8, 8, skin);
   rect(c, -1, -28, 1, 2, skinDark);
   rect(c, 4, -27, 1, 1, skin);
@@ -324,6 +325,9 @@ function drawItem(ctx, type, x, y, t) {
       for (let i = 0; i < 4; i++) { rect(ctx, x - 9 + i * 2, y - 4 + (i & 1), 2, 2, '#b8323a'); rect(ctx, x + 3 + i * 2, y - 5 + (i & 1), 2, 2, '#f2d36a'); }
       rect(ctx, x - 2, y - 6, 4, 3, '#e89aa0'); rect(ctx, x - 1, y - 5, 2, 1, '#c86a74');
       rect(ctx, x - 5, y - 2, 1, 1, '#2a3a8a'); rect(ctx, x + 4, y - 1, 1, 1, '#2a3a8a'); rect(ctx, x + 1, y - 2, 2, 1, '#f4f0e0'); break;
+    case 'pizza':
+      ctx.fillStyle = '#e8b04a'; ctx.beginPath(); ctx.moveTo(x - 7, y - 4); ctx.lineTo(x + 7, y - 4); ctx.lineTo(x, y + 3); ctx.fill();
+      rect(ctx, x - 7, y - 6, 14, 2, '#c07a2a'); rect(ctx, x - 3, y - 3, 2, 2, '#c22'); rect(ctx, x + 1, y - 2, 2, 2, '#c22'); rect(ctx, x - 1, y, 2, 1, '#2a8a2a'); break;
     case 'mate':
       rect(ctx, x - 4, y - 7, 8, 8, '#6b3e1f'); rect(ctx, x - 3, y - 8, 6, 2, '#4caf50'); rect(ctx, x + 1, y - 13, 1, 6, '#ccc'); break;
     case 'alfajor':
@@ -378,6 +382,8 @@ function drawProj(ctx, p, camX) {
     case 'trofeo': rect(ctx, -3, -10, 6, 8, '#e8c840'); rect(ctx, -1, -13, 2, 3, '#e8c840'); ctx.fillStyle = '#e8c840'; ctx.beginPath(); ctx.arc(0, -13, 3, 0, 7); ctx.fill(); rect(ctx, -5, -2, 10, 5, '#333'); rect(ctx, -3, 0, 6, 1, '#f5c400'); break;
     case 'globo': ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); ctx.fillStyle = '#ffd500'; ctx.beginPath(); ctx.ellipse(0, -4 + Math.sin(p.t / 6) * 2, 5, 6, 0, 0, 7); ctx.fill(); rect(ctx, -1, -6, 1, 2, '#fff8b0'); rect(ctx, 0, 2, 1, 6, '#eee'); break;
     case 'factura': rect(ctx, -5, -6, 10, 12, '#fff'); rect(ctx, -4, -4, 8, 1, '#c22'); rect(ctx, -4, -1, 6, 1, '#999'); rect(ctx, -4, 1, 7, 1, '#999'); rect(ctx, -4, 3, 4, 1, '#c22'); break;
+    case 'pizza': ctx.fillStyle = '#e8b04a'; ctx.beginPath(); ctx.moveTo(-7, -4); ctx.lineTo(7, -4); ctx.lineTo(0, 7); ctx.fill(); rect(ctx, -7, -5, 14, 2, '#c07a2a'); rect(ctx, -3, -2, 2, 2, '#c22'); rect(ctx, 1, 0, 2, 2, '#c22'); rect(ctx, -1, 2, 2, 1, '#2a8a2a'); break;
+    case 'adoquin': rect(ctx, -6, -4, 12, 8, '#6e6862'); rect(ctx, -6, -4, 12, 2, '#8a847c'); rect(ctx, -2, 0, 3, 1, '#4e4a46'); break;
     case 'ola': ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); rect(ctx, -6, -8, 12, 8, 'rgba(120,200,255,0.8)'); rect(ctx, -4, -10, 8, 2, '#fff'); break;
   }
   ctx.restore();
@@ -395,7 +401,7 @@ function drawCaseus(ctx, x, y, t, near) {
   for (let k = 0; k < 3; k++) rect(ctx, L + 6, y - 50 + k * 12, 84, 1, '#4e3420');
   for (let k = 0; k < 7; k++) { if (k === 3) continue; const cy = y - 55 + (k % 2) * 12; rect(ctx, L + 8 + k * 12, cy, 8, 5, k % 3 ? '#f2d36a' : '#e8c048'); rect(ctx, L + 10 + k * 12, cy + 1, 1, 1, '#c89a20'); }
   // Ana atrás del mostrador
-  drawPerson(ctx, ANA_LOOK, near ? 'wave' : 'idle', (t >> 3) & 3, x + 4, y - 2, -1, 1.3);
+  drawAnaFront(ctx, x + 2, y - 2, 1.3, near, t);
   // toldo a rayas
   for (let k = 0; k < 9; k++) {
     rect(ctx, L - 2 + k * 11, y - 78, 11, 8, k & 1 ? '#1c1c1c' : '#f3e6b0');
@@ -424,4 +430,33 @@ function drawCaseus(ctx, x, y, t, near) {
   rect(ctx, L + 12, y - 23, 2, 2, '#c89a20');
   ctx.fillStyle = '#e8c048'; ctx.beginPath(); ctx.ellipse(R - 14, y - 23, 8, 3, 0, 0, 7); ctx.fill(); rect(ctx, R - 22, y - 23, 16, 3, '#d8b038');
   drawItem(ctx, 'picada', x - 24, y - 16, 0);
+}
+
+// Ana de frente (vista frontal, camiseta de Vélez con la V azul)
+function drawAnaFront(ctx, sx, sy, scale, wave, t) {
+  const c = pcx; c.clearRect(0, 0, 64, 64); c.save(); c.translate(PFX, PFY);
+  const skin = '#c99068', hair = '#141010', V = '#1f4fbf';
+  const up = wave && ((t >> 3) & 1);
+  // pelo largo detrás
+  rect(c, -6, -33, 12, 18, hair);
+  // piernas (pantalón blanco)
+  rect(c, -4, -12, 3, 10, '#ece8dc'); rect(c, 1, -12, 3, 10, '#f2efe6'); rect(c, -4, -2, 3, 2, '#222'); rect(c, 1, -2, 3, 2, '#222');
+  // torso camiseta blanca con V azul
+  rect(c, -5, -23, 10, 11, '#f4f4f4');
+  for (let i = 0; i < 5; i++) { rect(c, -5 + i, -23 + i, 2, 1, V); rect(c, 3 - i, -23 + i, 2, 1, V); }
+  rect(c, -2, -23, 4, 1, skin);
+  rect(c, -5, -13, 10, 1, '#dcdcdc');
+  // brazos
+  rect(c, -8, -22, 3, 4, '#f4f4f4'); rect(c, -8, -18, 3, 6, skin);
+  if (up) { rect(c, 5, -26, 3, 4, '#f4f4f4'); rect(c, 6, -33, 3, 7, skin); rect(c, 6, -35, 3, 2, skin); }
+  else { rect(c, 5, -22, 3, 4, '#f4f4f4'); rect(c, 5, -18, 3, 6, skin); }
+  // cabeza de frente
+  rect(c, -4, -31, 8, 8, skin); rect(c, -1, -23, 2, 1, skin);
+  rect(c, -4, -32, 8, 2, hair); rect(c, -5, -31, 2, 8, hair); rect(c, 3, -31, 2, 8, hair); rect(c, -1, -31, 3, 1, hair);
+  rect(c, -2, -28, 1, 2, '#141018'); rect(c, 1, -28, 1, 2, '#141018');
+  rect(c, -2, -25, 4, 1, '#8a3a3a'); rect(c, -1, -24, 2, 1, '#f4e8e0');
+  rect(c, -3, -26, 1, 1, '#d88a7a'); rect(c, 2, -26, 1, 1, '#d88a7a');
+  rect(c, -1, -22, 2, 1, '#d4af37');
+  c.restore();
+  ctx.save(); ctx.translate(Math.round(sx), Math.round(sy)); ctx.scale(scale, scale); ctx.drawImage(PC, -PFX, -PFY); ctx.restore();
 }
