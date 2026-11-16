@@ -153,7 +153,7 @@ function hairCap(c, L) {
     case 'peluca':
       rect(c, -6, -36, 13, 6, hc); rect(c, -7, -34, 3, 10, hc); rect(c, -5, -37, 4, 1, hc); rect(c, 1, -37, 3, 1, hc); rect(c, 5, -35, 2, 4, hc);
       rect(c, -8, -31, 2, 5, hc); rect(c, -4, -30, 2, 7, hc); rect(c, 2, -38, 2, 1, hc); rect(c, -2, -33, 1, 2, hc);
-      rect(c, 3, -27, 2, 3, hc); break;
+      rect(c, -2, -30, 2, 7, hc); rect(c, -1, -23, 1, 1, hc); break;
     case 'mullet':
       rect(c, -4, -33, 9, 3, hc); rect(c, 3, -31, 2, 1, hc);
       rect(c, -5, -31, 3, 5, hc); rect(c, -5, -26, 2, 2, hc); rect(c, -4, -33, 3, 1, shade(hc, 1.25)); break;
