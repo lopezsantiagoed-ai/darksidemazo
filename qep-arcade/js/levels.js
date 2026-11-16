@@ -7,7 +7,7 @@ const HEROES = {
   nico: { name: 'NICO', look: { skin: '#e8b898', hair: '#1a1410', hairStyle: 'short', stubble: '#8a6a58', hat: 'cap', hatCol: '#2b2e2e', shirt: 'riverAlt', pants: '#1f1f24', shoes: '#f0f0f0' } },
   santi: { name: 'SANTI', look: { skin: '#e8b898', hair: '#1a1410', hairStyle: 'buzz', beard: '#3a2a20', mustache: '#2a1a12', hat: 'capBack', hatCol: '#5a3e2a', shirt: 'river', pants: '#2a2a30', shorts: true, socks: '#f4f4f4', shoes: '#222' } },
   fran: { name: 'FRAN', look: { skin: '#f2c8a8', hair: '#2a1d16', hairStyle: 'receding', mustache: '#2a1d16', stubble: '#c99e86', shirt: 'banfield', pants: '#2a2f3a', shoes: '#fff' } },
-  martin: { name: 'MARTIN', look: { skin: '#e2ae88', hair: '#d8b878', hair2: '#2a1d16', hairStyle: 'twotone', mustache: '#2a1d16', stubble: '#b88a6c', shirt: 'rojo', pants: '#222', shoes: '#f0f0f0', h: 1.15, beer: true } },
+  martin: { name: 'MARTIN', look: { skin: '#e2ae88', hair: '#5a3a22', hair2: '#5a3a22', hairStyle: 'twotone', mustache: '#2a1d16', stubble: '#b88a6c', shirt: 'rojo', pants: '#222', shoes: '#f0f0f0', h: 1.15, beer: true } },
 };
 
 const pal = (arr, i) => arr[Math.abs(i) % arr.length];

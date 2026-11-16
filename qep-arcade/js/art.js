@@ -137,8 +137,8 @@ function hairCap(c, L) {
       rect(c, 4, -33, 2, 3, hc); rect(c, -4, -37, 1, 1, '#000'); rect(c, 1, -38, 2, 1, hc); break;
     case 'receding': rect(c, -4, -31, 5, 2, hc); rect(c, -4, -29, 3, 3, hc); rect(c, -3, -32, 4, 1, hc); break;
     case 'mullet':
-      rect(c, -4, -33, 9, 3, hc); rect(c, -5, -32, 2, 2, hc); rect(c, 3, -31, 2, 1, hc);
-      rect(c, -5, -30, 4, 6, hc); rect(c, -6, -26, 4, 4, hc); rect(c, -4, -33, 3, 1, shade(hc, 1.25)); break;
+      rect(c, -4, -33, 9, 3, hc); rect(c, 3, -31, 2, 1, hc);
+      rect(c, -5, -31, 3, 5, hc); rect(c, -5, -26, 2, 2, hc); rect(c, -4, -33, 3, 1, shade(hc, 1.25)); break;
     case 'slick':
       rect(c, -5, -33, 10, 3, hc); rect(c, -5, -30, 3, 4, hc); rect(c, -6, -31, 2, 3, hc);
       rect(c, -3, -33, 6, 1, shade(hc, 1.15)); break;
