@@ -3,7 +3,7 @@
 
 // ---------- LOOKS ----------
 const HEROES = {
-  juani: { name: 'JUANI', look: { skin: '#f0c2a6', hair: '#7a4a28', hairStyle: 'mullet', specs: '#1a1a1a', mustache: '#5a3418', stubble: '#c99a84', shirt: 'boca', pants: '#1a1a1a', shorts: true, shoes: '#f0f0f0' } },
+  juani: { name: 'JUANI', look: { skin: '#f0c2a6', hair: '#7a4a28', hairStyle: 'mullet', specs: '#3a3030', mustache: '#5a3418', stubble: '#c99a84', shirt: 'boca', pants: '#1a1a1a', shorts: true, shoes: '#f0f0f0' } },
   nico: { name: 'NICO', look: { skin: '#e8b898', hair: '#1a1410', hairStyle: 'short', stubble: '#8a6a58', hat: 'cap', hatCol: '#2b2e2e', shirt: 'riverAlt', pants: '#1f1f24', shoes: '#f0f0f0' } },
   santi: { name: 'SANTI', look: { skin: '#e8b898', hair: '#1a1410', hairStyle: 'buzz', beard: '#3a2a20', mustache: '#2a1a12', hat: 'capBack', hatCol: '#5a3e2a', shirt: 'river', pants: '#2a2a30', shorts: true, socks: '#f4f4f4', shoes: '#222' } },
   fran: { name: 'FRAN', look: { skin: '#f2c8a8', hair: '#2a1d16', hairStyle: 'receding', mustache: '#2a1d16', stubble: '#c99e86', shirt: 'banfield', pants: '#2a2f3a', shoes: '#fff' } },

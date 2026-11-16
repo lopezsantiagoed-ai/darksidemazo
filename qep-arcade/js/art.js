@@ -256,7 +256,7 @@ function paintPerson(c, L, pose, f) {
   if (L.mustache) rect(c, 1, -25, 4, 1, L.mustache);
   hairCap(c, L);
   if (pose === 'hurt') { rect(c, 1, -29, 2, 1, '#111'); rect(c, 2, -28, 1, 1, '#111'); }
-  else if (L.specs) { rect(c, 0, -30, 5, 1, L.specs); rect(c, 0, -30, 1, 3, L.specs); rect(c, 4, -30, 1, 3, L.specs); rect(c, 0, -28, 5, 1, L.specs); rect(c, 1, -29, 3, 1, '#cfe8ff'); rect(c, 2, -29, 1, 1, '#141018'); rect(c, -1, -29, 1, 1, L.specs); }
+  else if (L.specs) { rect(c, 0, -30, 5, 1, 'rgba(30,20,20,0.45)'); rect(c, 0, -29, 1, 1, L.specs); rect(c, 4, -29, 1, 1, L.specs); rect(c, 1, -29, 3, 1, '#e4f2fb'); rect(c, 2, -29, 1, 1, '#141018'); rect(c, -1, -29, 1, 1, L.specs); }
   else if (L.glasses) { rect(c, 0, -29, 5, 2, L.glasses); rect(c, -1, -29, 1, 1, L.glasses); }
   else rect(c, 2, -29, 1, 2, '#141018');
   if (pose === 'p1' || pose === 'p2' || pose === 'p3' || pose === 'special') rect(c, 3, -25, 2, 1, '#6b2020');
