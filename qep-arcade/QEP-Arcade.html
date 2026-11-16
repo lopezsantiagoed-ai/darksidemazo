@@ -331,6 +331,12 @@ function drawShirt(c, L, x, y, w, h) {
       for (let i = 0; i < 5; i++) { rect(c, x + i, y + i, 2, 1, '#1f4fbf'); rect(c, x + w - 2 - i, y + i, 2, 1, '#1f4fbf'); }
       rect(c, x + 3, y, w - 6, 1, '#1f4fbf');
       break;
+    case 'cuero3':
+      rect(c, x, y, w, h, '#1a1414');
+      rect(c, x + w - 6, y, 4, 9, '#f4f4f4'); rect(c, x + w - 5, y + 1, 1, 7, '#6aa0e0');
+      rect(c, x + w - 8, y, 2, h, '#2e2420'); rect(c, x + w - 10, y + 1, 2, h - 1, '#3a2c26'); rect(c, x + w - 12, y + 2, 2, h - 2, '#241c1a');
+      rect(c, x + 1, y + 6, 3, 1, '#4a3a34'); rect(c, x + 1, y + 2, 1, 1, '#c8c8c8');
+      break;
     case 'happi':
       rect(c, x, y, w, h, '#2245a8');
       rect(c, x + w - 3, y, 2, h, '#fff');
@@ -361,6 +367,10 @@ function hairCap(c, L) {
     case 'longStraight':
       rect(c, -5, -33, 10, 3, hc); rect(c, 3, -31, 2, 2, hc); rect(c, -6, -31, 5, 13, hc); rect(c, -6, -18, 4, 2, hc); rect(c, 4, -29, 1, 6, hc);
       rect(c, -3, -33, 4, 1, shade(hc, 1.6)); break;
+    case 'peluca':
+      rect(c, -6, -36, 13, 6, hc); rect(c, -7, -34, 3, 10, hc); rect(c, -5, -37, 4, 1, hc); rect(c, 1, -37, 3, 1, hc); rect(c, 5, -35, 2, 4, hc);
+      rect(c, -8, -31, 2, 5, hc); rect(c, -4, -30, 2, 7, hc); rect(c, 2, -38, 2, 1, hc); rect(c, -2, -33, 1, 2, hc);
+      rect(c, 3, -27, 2, 3, hc); break;
     case 'mullet':
       rect(c, -4, -33, 9, 3, hc); rect(c, 3, -31, 2, 1, hc);
       rect(c, -5, -31, 3, 5, hc); rect(c, -5, -26, 2, 2, hc); rect(c, -4, -33, 3, 1, shade(hc, 1.25)); break;
@@ -403,7 +413,7 @@ function hat(c, L) {
 // pose: idle walk p1 p2 p3 jump kick hurt special wave dance ride throw charge
 function paintPerson(c, L, pose, f) {
   const skin = L.skin || '#e8b58c';
-  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ velez: '#f4f4f4', boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1f2a4e', suitCeleste: '#bcd9f0', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
+  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ cuero3: '#1a1414', velez: '#f4f4f4', boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1f2a4e', suitCeleste: '#bcd9f0', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
   const armSkinSplit = L.longSleeve ? 0.85 : 0.45;
   const pants = L.pants || '#2e3f6b', shoes = L.shoes || '#222';
   const bw = L.belly ? 14 : 10, bx = -bw / 2;
@@ -601,6 +611,14 @@ function drawProj(ctx, p, camX) {
     case 'factura': rect(ctx, -5, -6, 10, 12, '#fff'); rect(ctx, -4, -4, 8, 1, '#c22'); rect(ctx, -4, -1, 6, 1, '#999'); rect(ctx, -4, 1, 7, 1, '#999'); rect(ctx, -4, 3, 4, 1, '#c22'); break;
     case 'pizza': ctx.fillStyle = '#e8b04a'; ctx.beginPath(); ctx.moveTo(-7, -4); ctx.lineTo(7, -4); ctx.lineTo(0, 7); ctx.fill(); rect(ctx, -7, -5, 14, 2, '#c07a2a'); rect(ctx, -3, -2, 2, 2, '#c22'); rect(ctx, 1, 0, 2, 2, '#c22'); rect(ctx, -1, 2, 2, 1, '#2a8a2a'); break;
     case 'adoquin': rect(ctx, -6, -4, 12, 8, '#6e6862'); rect(ctx, -6, -4, 12, 2, '#8a847c'); rect(ctx, -2, 0, 3, 1, '#4e4a46'); break;
+    case 'mamadera': rect(ctx, -3, -6, 6, 11, 'rgba(240,248,255,0.9)'); rect(ctx, -2, -2, 4, 6, '#fffef6'); rect(ctx, -3, -7, 6, 2, '#7ab8e8'); rect(ctx, -1, -10, 2, 3, '#e8c8a0'); break;
+    case 'butaca': rect(ctx, -7, -8, 12, 8, '#e0141c'); rect(ctx, -7, 0, 14, 4, '#c0101a'); rect(ctx, -6, 4, 2, 4, '#444'); rect(ctx, 4, 4, 2, 4, '#444'); rect(ctx, -6, -6, 10, 1, '#ff5a5a'); break;
+    case 'motosierra': rect(ctx, -8, -3, 10, 6, '#ff8a00'); rect(ctx, -6, -5, 5, 2, '#222'); rect(ctx, 2, -2, 12, 3, '#bbb'); for (let i = 2; i < 14; i += 2) rect(ctx, i, -3, 1, 1, '#555'); rect(ctx, -9, 3, 4, 1, '#222'); break;
+    case 'campera': rect(ctx, -7, -6, 14, 11, '#1a1414'); rect(ctx, -9, -6, 3, 9, '#1a1414'); rect(ctx, 6, -6, 3, 9, '#1a1414'); rect(ctx, -1, -6, 2, 11, '#3a2c26'); rect(ctx, -3, -6, 6, 2, '#2e2420'); break;
+    case 'perro': {
+      ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); const d = Math.sign(p.vx || 1), leg = (p.t >> 2) & 1;
+      ctx.scale(d, 1); rect(ctx, -7, -6, 12, 6, '#a8743e'); rect(ctx, 4, -9, 6, 6, '#a8743e'); rect(ctx, 9, -6, 2, 2, '#3a2a1a'); rect(ctx, 5, -10, 2, 2, '#6a4422');
+      rect(ctx, 7, -8, 1, 1, '#111'); rect(ctx, -9, -7, 3, 1, '#a8743e'); rect(ctx, -6 + leg, 0, 2, 3, '#8a5a2a'); rect(ctx, 2 - leg, 0, 2, 3, '#8a5a2a'); break; }
     case 'ola': ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); rect(ctx, -6, -8, 12, 8, 'rgba(120,200,255,0.8)'); rect(ctx, -4, -10, 8, 2, '#fff'); break;
   }
   ctx.restore();
@@ -1230,6 +1248,125 @@ function bgLanus(ctx, camX, t, g) {
 }
 
 // =====================================================================
+// BARRIO RIVER (Nico nivel 2): Aeroparque -> Belgrano -> Monumental
+// =====================================================================
+function riverFlag(ctx, x, y, w = 14, h = 10) {
+  rect(ctx, x, y, w, h, '#f4f4f4');
+  for (let i = 0; i < h; i++) rect(ctx, x + Math.round((w - 3) * (i / (h - 1))), y + i, 3, 1, '#e0161b');
+}
+function poster(ctx, x, y, a, b) {
+  rect(ctx, x, y, 34, 22, '#f4f4f4'); rect(ctx, x, y, 34, 2, '#e0161b'); rect(ctx, x, y + 20, 34, 2, '#e0161b');
+  txt(ctx, a, x + 17, y + 5, '#c0101a', 5, 'center', null); txt(ctx, b, x + 17, y + 12, '#111', 5, 'center', null);
+}
+function bgRiver2(ctx, camX, t, g) {
+  skyGrad(ctx, ['#5aa8e8', '#9ad2f7', '#e8f6ff']);
+  clouds(ctx, camX, t);
+  // avión aterrizando al principio
+  const ax = Math.round(260 - camX * 0.3 - t * 0.4), ay = Math.round(20 + Math.min(40, t * 0.08));
+  if (ax > -90 && ax < W) { rect(ctx, ax, ay, 70, 9, '#f4f4f8'); rect(ctx, ax + 62, ay + 2, 10, 5, '#d8d8e0'); rect(ctx, ax + 4, ay - 8, 8, 9, '#75aadb'); rect(ctx, ax + 26, ay + 6, 22, 4, '#c8ccd4'); for (let k = 0; k < 8; k++) rect(ctx, ax + 18 + k * 5, ay + 3, 2, 2, '#4a5868'); }
+  // El Monumental
+  const mx = Math.round(1030 - camX * 0.25);
+  if (mx > -320 && mx < W + 20) {
+    rect(ctx, mx, 34, 300, 106, '#e9e9ec');
+    for (let r = 0; r < 7; r++) for (let k = 0; k < 37; k++) rect(ctx, mx + 4 + k * 8, 58 + r * 10, 6, 7, rnd(k + r * 40) < 0.3 ? '#e0161b' : rnd(k * 3 + r) < 0.5 ? '#f4f4f4' : '#d0d0d6');
+    rect(ctx, mx - 4, 30, 308, 5, '#c0101a'); rect(ctx, mx, 40, 300, 14, '#e0161b');
+    txt(ctx, 'EL MONUMENTAL', mx + 150, 43, '#fff', 8, 'center', null);
+    for (let i = 0; i < 26; i++) rect(ctx, mx + Math.round(i * 11.5), 128 + Math.round(Math.sin(i) * 0), 9, 2, '#e0161b');
+    [mx + 6, mx + 290].forEach(lx => { rect(ctx, lx, 8, 3, 24, '#555'); rect(ctx, lx - 7, 4, 17, 8, '#fffbe0'); });
+  }
+  // edificios de Belgrano
+  layer(camX, 0.5, 64, (i, x) => {
+    const tall = rnd(i + 2) < 0.45, h = tall ? 80 + rnd(i) * 30 : 44 + rnd(i) * 20, top = 140 - h;
+    const c = pal(['#e2d6c2', '#cfc4b4', '#d8cfc0', '#bdb2a4', '#e8e0d2'], (rnd(i + 4) * 97) | 0);
+    rect(ctx, x, top, 60, h, c);
+    for (let yy = top + 6; yy < 132; yy += 12) { rect(ctx, x + 4, yy, 52, 1, shade(c, 0.8)); for (let xx = 6; xx < 56; xx += 12) rect(ctx, x + xx, yy + 2, 8, 7, '#5a6878'); rect(ctx, x + 4, yy + 8, 52, 1, '#444'); }
+    if (i % 2 === 0) riverFlag(ctx, x + 22, top + 14 + ((i >> 1) % 3) * 12, 16, 10);
+    if (i % 3 === 1) poster(ctx, x + 12, 108, 'KIPER', 'PDTE');
+    if (i % 3 === 2) poster(ctx, x + 12, 108, 'VAMOS', 'TRILLO');
+  });
+  // jacarandás y pasacalles
+  layer(camX, 0.7, 110, (i, x) => { rect(ctx, x + 10, 116, 3, 28, '#4a3a2a'); ctx.fillStyle = '#9b6bd6'; ctx.beginPath(); ctx.arc(x + 11, 108, 15, 0, 7); ctx.arc(x + 1, 115, 9, 0, 7); ctx.arc(x + 21, 115, 9, 0, 7); ctx.fill(); });
+  layer(camX, 0.8, 360, (i, x) => {
+    ctx.strokeStyle = '#444'; ctx.beginPath(); ctx.moveTo(x, 70); ctx.lineTo(x + 140, 70); ctx.stroke();
+    rect(ctx, x + 20, 70, 100, 13, '#f4f4f4'); rect(ctx, x + 20, 70, 100, 2, '#e0161b'); rect(ctx, x + 20, 81, 100, 2, '#e0161b');
+    txt(ctx, i & 1 ? 'VAMOS TRILLO' : 'KIPER PRESIDENTE', x + 70, 73, '#c0101a', 5, 'center', null);
+  });
+  // vereda + calle
+  rect(ctx, 0, 144, W, 10, '#c6c0b4'); ctx.fillStyle = '#aaa498'; layer(camX, 1, 18, (i, x) => ctx.fillRect(x, 144, 1, 8)); rect(ctx, 0, 152, W, 2, '#8a8478');
+  rect(ctx, 0, 154, W, H - 154, '#56565c');
+  layer(camX, 1, 50, (i, x) => rect(ctx, x, 183, 26, 2, '#eee'));
+  // Aeroparque al inicio
+  const st = Math.round(0 - camX);
+  if (st > -460) {
+    rect(ctx, st - 10, 60, 450, 84, '#dfe6ec'); rect(ctx, st - 10, 56, 450, 6, '#75aadb');
+    for (let k = 0; k < 14; k++) rect(ctx, st + 4 + k * 32, 70, 26, 40, '#8ab4d4');
+    rect(ctx, st + 130, 116, 60, 28, '#6a8aa8');
+    rect(ctx, st + 90, 38, 150, 18, '#1f3a6e'); txt(ctx, 'AEROPARQUE', st + 165, 43, '#fff', 8, 'center', null);
+    txt(ctx, 'BIENVENIDOS A BUENOS AIRES', st + 165, 62, '#1f3a6e', 5, 'center', null);
+  }
+}
+
+// =====================================================================
+// CENTRO PORTEÑO (Santi nivel 2): San Telmo, Monserrat -> Casa Rosada
+// =====================================================================
+function bgCentro(ctx, camX, t, g) {
+  skyGrad(ctx, ['#f0a868', '#f8d0a0', '#fdeccc']);
+  clouds(ctx, camX, t, 'rgba(255,240,225,0.85)');
+  layer(camX, 0.15, 52, (i, x) => { const h = 40 + rnd(i + 8) * 50; rect(ctx, x, 140 - h, 48, h, '#c8a890'); if (i % 6 === 0) { rect(ctx, x + 18, 140 - h - 12, 12, 12, '#a88a76'); rect(ctx, x + 23, 140 - h - 20, 2, 8, '#a88a76'); } });
+  // fachadas coloniales / art nouveau
+  layer(camX, 0.5, 60, (i, x) => {
+    const h = 56 + rnd(i + 3) * 30, top = 140 - h, c = pal(['#e8c8a8', '#d8b890', '#f0dcc0', '#c8a080', '#e0b8a0', '#b8c8c0'], (rnd(i + 1) * 97) | 0);
+    rect(ctx, x, top, 56, h, c); rect(ctx, x - 2, top - 4, 60, 4, shade(c, 0.75)); rect(ctx, x + 2, top - 7, 52, 3, shade(c, 0.85));
+    for (let yy = top + 8; yy < 126; yy += 16) for (const xx of [6, 22, 38]) { rect(ctx, x + xx, yy, 11, 12, '#4a3a30'); rect(ctx, x + xx - 1, yy + 12, 13, 1, '#222'); for (let k = 0; k < 13; k += 2) rect(ctx, x + xx - 1 + k, yy + 9, 1, 3, '#222'); }
+    rect(ctx, x + 22, 122, 12, 18, '#3a2416');
+  });
+  // piso: adoquines en San Telmo, asfalto en Av. de Mayo
+  rect(ctx, 0, 144, W, 10, '#b8b0a2'); ctx.fillStyle = '#9a9284'; layer(camX, 1, 16, (i, x) => ctx.fillRect(x, 144, 1, 8)); rect(ctx, 0, 152, W, 2, '#7a7468');
+  rect(ctx, 0, 154, W, H - 154, '#5a5450');
+  for (let r = 0; r < 10; r++) { const y = 154 + r * 6, off = (r & 1) * 5; layer(camX, 1, 10, (i, x) => { if (i * 10 < 2000) rect(ctx, x + off, y, 9, 5, rnd(i * 13 + r) < 0.5 ? '#6e6660' : '#665e58'); else if (r === 5) rect(ctx, x, 184, 6, 2, '#ddd'); }); }
+  layer(camX, 1, 250, (i, x) => lamppost(ctx, x + 50, 147));
+  const at = (wx) => Math.round(wx - camX);
+  // Café London City
+  let x = at(650);
+  if (x > -170 && x < W + 10) {
+    rect(ctx, x, 62, 160, 86, '#ece0c8'); rect(ctx, x, 96, 160, 52, '#1f3a2a');
+    rect(ctx, x + 10, 100, 140, 14, '#14261c'); txt(ctx, 'LONDON CITY', x + 80, 103, '#e8c860', 8, 'center', null);
+    for (let k = 0; k < 3; k++) { rect(ctx, x + 8 + k * 52, 118, 40, 28, '#2a1a10'); rect(ctx, x + 10 + k * 52, 120, 36, 24, '#ffd890'); }
+    ctx.fillStyle = '#14261c'; ctx.beginPath(); ctx.arc(x + 150, 84, 8, 0, 7); ctx.fill(); txt(ctx, 'CAFE', x + 150, 82, '#e8c860', 3, 'center', null);
+    for (const tx of [x + 30, x + 110]) { rect(ctx, tx, 140, 12, 2, '#ddd'); rect(ctx, tx + 5, 142, 2, 6, '#888'); }
+    for (let k = 0; k < 6; k++) rect(ctx, x + 8 + k * 26, 70, 14, 20, '#5a6878');
+  }
+  // Cine Gaumont
+  x = at(1450);
+  if (x > -170 && x < W + 10) {
+    rect(ctx, x, 44, 150, 104, '#d8d0c4'); rect(ctx, x + 66, 30, 18, 70, '#8a1f2b');
+    'GAUMONT'.split('').forEach((ch, k) => txt(ctx, ch, x + 75, 33 + k * 9, ((t >> 3) + k) % 7 ? '#ffe680' : '#fff', 7, 'center', null));
+    rect(ctx, x + 10, 100, 130, 14, '#1a1a1a'); for (let k = 0; k < 26; k++) rect(ctx, x + 12 + k * 5, 101, 2, 2, ((t >> 2) + k) & 1 ? '#ffe680' : '#664');
+    txt(ctx, 'CINE ARGENTINO', x + 75, 105, '#fff', 5, 'center', null);
+    for (let k = 0; k < 3; k++) { rect(ctx, x + 14 + k * 44, 118, 34, 30, '#2a1a14'); rect(ctx, x + 18 + k * 44, 122, 26, 20, '#c8a060'); }
+  }
+  // El Imparcial
+  x = at(2250);
+  if (x > -170 && x < W + 10) {
+    rect(ctx, x, 60, 150, 88, '#e8d8b8'); rect(ctx, x + 10, 64, 130, 18, '#7a1414');
+    txt(ctx, 'EL IMPARCIAL', x + 75, 67, '#f5c400', 8, 'center', null); txt(ctx, 'RESTAURANT', x + 75, 76, '#fff', 3, 'center', null);
+    rect(ctx, x + 10, 88, 130, 3, '#c0141c'); rect(ctx, x + 10, 91, 130, 3, '#f5c400'); rect(ctx, x + 10, 94, 130, 3, '#c0141c');
+    for (let k = 0; k < 4; k++) { rect(ctx, x + 12 + k * 34, 102, 26, 40, '#3a2416'); rect(ctx, x + 15 + k * 34, 105, 20, 30, '#ffd890'); }
+  }
+  // Casa Rosada
+  x = at(g.lv.len - 330);
+  if (x > -330 && x < W + 10) {
+    rect(ctx, x, 46, 320, 102, '#e8a8a0'); rect(ctx, x - 4, 42, 328, 5, '#c88078');
+    for (let k = 0; k < 12; k++) { rect(ctx, x + 8 + k * 26, 56, 14, 24, '#8a5a58'); rect(ctx, x + 8 + k * 26, 90, 14, 24, '#8a5a58'); ctx.fillStyle = '#8a5a58'; ctx.beginPath(); ctx.arc(x + 15 + k * 26, 90, 7, Math.PI, 0); ctx.fill(); }
+    rect(ctx, x + 130, 100, 60, 48, '#d89890'); ctx.fillStyle = '#5a3a38'; ctx.beginPath(); ctx.arc(x + 160, 120, 18, Math.PI, 0); ctx.fill(); rect(ctx, x + 142, 120, 36, 28, '#5a3a38');
+    rect(ctx, x + 120, 30, 80, 14, '#e8a8a0'); rect(ctx, x + 158, 6, 2, 26, '#ccc');
+    const w = Math.round(Math.sin(t / 7) * 1); rect(ctx, x + 160, 6 + w, 22, 4, '#75aadb'); rect(ctx, x + 160, 10 + w, 22, 4, '#fff'); rect(ctx, x + 160, 14 + w, 22, 4, '#75aadb'); rect(ctx, x + 169, 11 + w, 3, 2, '#f5c400');
+    txt(ctx, 'CASA ROSADA', x + 160, 32, '#8a3a38', 6, 'center', null);
+    for (let k = 0; k < 40; k++) rect(ctx, x - 20 + k * 9, 132, 1, 14, '#222'); rect(ctx, x - 20, 132, 360, 1, '#222');
+  }
+}
+
+// =====================================================================
 // CONFIGURACIÓN DE NIVELES
 // =====================================================================
 const ENEMY_STATS = {
@@ -1281,7 +1418,7 @@ const LEVELS = [
   },
   {
     id: 'tokyo', hero: 'nico', p2: 'santi', title: 'TOKIO', sub: 'SHIBUYA - SHINJUKU - SKYTREE', len: 4100, bg: bgTokyo,
-    item: 'sushi', item2: 'ramen', caseus: 1250, p2Join: 'caseus',
+    item: 'sushi', item2: 'ramen', caseus: 1250, p2Join: 'caseus', next: 'river2',
     warp: { x: 2450, afterWave: 4, toX: 3000, text: 'SHINKANSEN A HIROSHIMA...' },
     enemyLooks: {
       thug: { skin: '#f0cfae', hair: '#111', hairStyle: 'side', shirt: 'suit', shirtCol: '#1b1b22', pants: '#1b1b22', shoes: '#111', glasses: '#000', tie: '#222', longSleeve: true },
@@ -1306,7 +1443,7 @@ const LEVELS = [
   },
   {
     id: 'ams', hero: 'santi', title: 'AMSTERDAM', sub: 'LOS CANALES', len: 4200, bg: bgAmsterdam, fg: fgAmsterdam,
-    item: 'stroop', item2: 'empanada', caseus: 1250, caseus2: 3420,
+    item: 'stroop', item2: 'empanada', caseus: 1250, caseus2: 3420, next: 'centro',
     warp: { x: 2500, afterWave: 4, toX: 3000, text: 'EL PORTAL TE LLEVA AL OBELISCO!' },
     enemyLooks: {
       thug: { skin: '#f2d0b5', hair: '#d9b44a', hairStyle: 'long', shirt: 'hawaii', shirtCol: '#38b6ff', pants: '#c8a060', shoes: '#222', glasses: '#222' },
@@ -1363,6 +1500,40 @@ const LEVELS = [
     intro: [['FRAN', 'ME BAJO DEL TREN EN LANUS... DE NOCHE Y TODO GRANATE.'], ['FRAN', 'LAS CALLES ESTAN ROTAS Y LA HINCHADA EN LA VEREDA. A NO DISTRAERSE.']],
     p2Auto: [['MARTIN', 'FRAN! EL PADRINO ES DURO, PERO EL ROJO NO TE DEJA SOLO!'], ['MARTIN', '(P2: APRETA F PARA MANEJAR A MARTIN)']],
     song: { bpm: 108, bassWave: 'square', bass: [0, null, 3, null, 7, null, 3, null, 5, null, 8, null, 7, null, 3, null], lead: [15, null, 15, 14, 12, null, 10, null, 12, null, 15, null, 19, 17, 15, null], drums: 'k.hsk.hsk.hsk.hs', leadLen: 1 },
+  },
+  {
+    id: 'river2', hero: 'nico', p2: 'santi', p2Start: true, stage2: true, label: 'TOKIO - NIVEL 2', title: 'BARRIO RIVER', sub: 'AEROPARQUE - BELGRANO - MONUMENTAL', len: 4000, bg: bgRiver2,
+    item: 'empanada', item2: 'chori', caseus: 1700,
+    enemyLooks: {
+      thug: { skin: '#e2a77f', hair: '#222', hairStyle: 'buzz', shirt: 'boca', pants: '#1a1a1a', shoes: '#fff' },
+      fast: { skin: '#d9a27a', hair: '#3a2a20', hairStyle: 'short', shirt: 'jacket', shirtCol: '#1a3fa8', pants: '#1a1a2e', shoes: '#f5d000', hat: 'cap', hatCol: '#f5d000', longSleeve: true },
+      big: { skin: '#c68a5e', hair: '#222', hairStyle: 'bald', shirt: 'boca', pants: '#1a1a1a', shoes: '#111', belly: true },
+    },
+    names: { thug: ['BOSTERO', 'EL XENEIZE', 'JUANCHO'], fast: ['EL INFILTRADO', 'GALLINERO NO'], big: ['EL BOMBO BOSTERO', 'TANQUE'] },
+    props: [[600, 'tacho'], [1250, 'caja'], [2050, 'tacho'], [2700, 'caja'], [3300, 'tacho']],
+    waves: [W8(450, 'thug', 'fast', 'thug'), W8(1000, 'fast', 'thug', 'big'), W8(1550, 'thug', 'fast', 'fast', 'thug'), W8(2200, 'big', 'thug', 'fast', 'thug', 'fast'), W8(2850, 'fast', 'big', 'thug', 'fast', 'big', 'thug')],
+    boss: { name: 'YAYO COZZA DI CARLO', hp: 380, scale: 1.75, speed: 0.8, dmg: 12, attacks: ['throw', 'throw', 'charge', 'combo', 'throw'], projs: ['mamadera', 'mamadera', 'fajo', 'butaca'],
+      look: { skin: '#eab896', hair: '#2a1d16', hairStyle: 'short', shirt: 'suit', shirtCol: '#1d1f2b', tie: '#c0141c', pants: '#1d1f2b', shoes: '#111', longSleeve: true, sleeveCol: '#1d1f2b' },
+      intro: [['YAYO COZZA DI CARLO', 'BIENVENIDOS AL MONUMENTAL, MUCHACHOS. TRAJE LA MAMADERA...'], ['NICO', 'VOLVIMOS DE JAPON SOLO PARA ESTO, YAYO.'], ['YAYO COZZA DI CARLO', 'ENTONCES QUE VUELEN LAS BUTACAS!']] },
+    intro: [['NICO', 'ATERRIZAMOS EN AEROPARQUE! DE TOKIO DERECHO A BELGRANO.'], ['SANTI', 'VAMOS CAMINANDO AL MONUMENTAL. ESTA TODO LLENO DE BANDERAS.']],
+    song: { bpm: 128, bassWave: 'square', bass: [0, null, 12, null, 7, null, 12, null, 5, null, 17, null, 7, null, 19, null], lead: [12, 14, 16, 19, 16, 14, 12, null, 14, 16, 19, 21, 19, 16, 14, null], drums: 'k.h.s.h.k.hks.h.', leadLen: 0.8 },
+  },
+  {
+    id: 'centro', hero: 'santi', stage2: true, label: 'AMSTERDAM - NIVEL 2', title: 'CENTRO PORTENO', sub: 'SAN TELMO - MONSERRAT - CASA ROSADA', len: 4000, bg: bgCentro,
+    item: 'empanada', item2: 'alfajor', caseus: 1900,
+    enemyLooks: {
+      thug: { skin: '#e8b58c', hair: '#222', hairStyle: 'side', shirt: 'suit', shirtCol: '#2a2a35', pants: '#2a2a35', shoes: '#111', glasses: '#000', longSleeve: true },
+      fast: { skin: '#d9a27a', hair: '#3a2a20', hairStyle: 'spiky', shirt: 'cuero3', pants: '#222', shoes: '#111', longSleeve: true },
+      big: { skin: '#c68a5e', hair: '#111', hairStyle: 'bald', shirt: 'suit', shirtCol: '#16161c', pants: '#16161c', shoes: '#111', glasses: '#000', belly: true, longSleeve: true },
+    },
+    names: { thug: ['ASESOR', 'EL TUITERO', 'EL ECONOMISTA'], fast: ['MOTOQUERO', 'EL CUERITO'], big: ['GUARDAESPALDAS', 'EL ROPERO'] },
+    props: [[560, 'barril'], [1250, 'tacho'], [1750, 'caja'], [2550, 'tacho'], [3200, 'caja']],
+    waves: [W8(450, 'thug', 'fast', 'thug'), W8(1050, 'fast', 'thug', 'big'), W8(1650, 'thug', 'fast', 'fast', 'thug'), W8(2400, 'big', 'thug', 'fast', 'thug', 'fast'), W8(3000, 'fast', 'big', 'thug', 'fast', 'big', 'thug')],
+    boss: { name: 'EL PELUCA', hp: 400, scale: 1.75, speed: 0.85, dmg: 13, attacks: ['throw', 'charge', 'throw', 'combo', 'throw'], projs: ['perro', 'perro', 'motosierra', 'campera'],
+      look: { skin: '#eab896', hair: '#3a2a20', hairStyle: 'peluca', shirt: 'cuero3', pants: '#1a1414', shoes: '#111', belly: true, longSleeve: true, sleeveCol: '#1a1414' },
+      intro: [['EL PELUCA', 'VIVA LA LIBERTAD, CARAJO!! BIENVENIDO A LA CASA ROSADA.'], ['SANTI', 'TENES TRES CAMPERAS DE CUERO PUESTAS? HACE CALOR, PELUCA.'], ['EL PELUCA', 'AFUERA! SUELTEN A LOS PERROS!']] },
+    intro: [['SANTI', 'DEL OBELISCO AL CENTRO: SAN TELMO, MONSERRAT... Y AL FINAL LA CASA ROSADA.']],
+    song: { bpm: 116, bassWave: 'triangle', bass: [0, null, null, 0, null, null, 5, null, 3, null, null, 3, null, null, 7, null], lead: [12, null, 15, 17, 19, null, 17, 15, 14, null, 12, null, 10, null, null, null], drums: 'k..hs.h.k.kh.s.h' },
   },
 ];
 
@@ -1446,6 +1617,7 @@ function startLevel(i) {
   const g = App.g = { lvIdx: i, lv, camX: 0, section: 0, ents: [], players: [], parts: [], waveIdx: 0, waveActive: false, spawnQ: [], t: 0,
     state: 'card', timer: 150, shake: 0, hitstop: 0, dialog: null, boss: null, bossPhase: 0, go: 0, warped: false, npcDone: false, slowmo: 0, lastHit: null, continueT: 0 };
   spawnPlayer(g, 0, lv.hero);
+  if (lv.p2Start) { const p2 = spawnPlayer(g, 1, lv.p2, true); p2.x += 10; }
   for (const [x, type] of lv.props) g.ents.push({ kind: 'prop', type, x, y: FLOOR_TOP + 6 + rnd(x) * 30, hp: 1, broken: false });
   if (lv.npc) g.ents.push({ kind: 'npc', x: lv.npc.x, y: FLOOR_TOP + 4, look: lv.npc.look(), face: -1 });
   for (const cx of [lv.caseus, lv.caseus2]) if (cx) g.ents.push({ kind: 'caseus', x: cx, y: FLOOR_TOP + 1, used: false });
@@ -1791,8 +1963,8 @@ function bossThrow(g, b, tgt) {
   const B = b.cfg, type = pick(B.projs);
   const spec = { poste: { spd: 3, dmg: 16, w: 22, knock: true }, contenedor: { spd: 2.2, dmg: 18, w: 14, knock: true }, pelota: { spd: 4.6, dmg: 9, w: 7 },
     trofeo: { spd: 3, dmg: 14, w: 8, knock: true }, copa: { spd: 3.4, dmg: 11, w: 8 }, medalla: { spd: 4, dmg: 8, w: 6 }, yerba: { spd: 3.2, dmg: 11, w: 8 },
-    fajo: { spd: 3.8, dmg: 9, w: 8 }, globo: { spd: 2.1, dmg: 8, w: 8 }, factura: { spd: 3.6, dmg: 10, w: 7 }, asfalto: { spd: 3.3, dmg: 13, w: 9, knock: true }, baldosa: { spd: 3.8, dmg: 10, w: 8 }, bufanda: { spd: 3.4, dmg: 8, w: 9 } }[type] || { spd: 3, dmg: 10, w: 8 };
-  g.ents.push({ kind: 'proj', type, x: b.x + b.face * 16, y: b.y, z: 22 * b.scale * 0.8, vx: b.face * spec.spd * (b.hp < b.maxhp / 2 ? 1.15 : 1), vz: type === 'contenedor' ? 0 : 0, dmg: spec.dmg, w: spec.w, knock: !!spec.knock, team: 1, t: 0 });
+    fajo: { spd: 3.8, dmg: 9, w: 8 }, globo: { spd: 2.1, dmg: 8, w: 8 }, mamadera: { spd: 3.6, dmg: 9, w: 7 }, butaca: { spd: 2.8, dmg: 15, w: 11, knock: true }, perro: { spd: 3.4, dmg: 11, w: 10, knock: true }, motosierra: { spd: 3.2, dmg: 14, w: 12, knock: true }, campera: { spd: 3, dmg: 9, w: 10 }, factura: { spd: 3.6, dmg: 10, w: 7 }, asfalto: { spd: 3.3, dmg: 13, w: 9, knock: true }, baldosa: { spd: 3.8, dmg: 10, w: 8 }, bufanda: { spd: 3.4, dmg: 8, w: 9 } }[type] || { spd: 3, dmg: 10, w: 8 };
+  g.ents.push({ kind: 'proj', type, x: b.x + b.face * 16, y: b.y, z: type === 'perro' ? 6 : 22 * b.scale * 0.8, vx: b.face * spec.spd * (b.hp < b.maxhp / 2 ? 1.15 : 1), vz: type === 'contenedor' ? 0 : 0, dmg: spec.dmg, w: spec.w, knock: !!spec.knock, team: 1, t: 0 });
   Sound.sfx('throw');
 }
 

@@ -114,6 +114,12 @@ function drawShirt(c, L, x, y, w, h) {
       for (let i = 0; i < 5; i++) { rect(c, x + i, y + i, 2, 1, '#1f4fbf'); rect(c, x + w - 2 - i, y + i, 2, 1, '#1f4fbf'); }
       rect(c, x + 3, y, w - 6, 1, '#1f4fbf');
       break;
+    case 'cuero3':
+      rect(c, x, y, w, h, '#1a1414');
+      rect(c, x + w - 6, y, 4, 9, '#f4f4f4'); rect(c, x + w - 5, y + 1, 1, 7, '#6aa0e0');
+      rect(c, x + w - 8, y, 2, h, '#2e2420'); rect(c, x + w - 10, y + 1, 2, h - 1, '#3a2c26'); rect(c, x + w - 12, y + 2, 2, h - 2, '#241c1a');
+      rect(c, x + 1, y + 6, 3, 1, '#4a3a34'); rect(c, x + 1, y + 2, 1, 1, '#c8c8c8');
+      break;
     case 'happi':
       rect(c, x, y, w, h, '#2245a8');
       rect(c, x + w - 3, y, 2, h, '#fff');
@@ -144,6 +150,10 @@ function hairCap(c, L) {
     case 'longStraight':
       rect(c, -5, -33, 10, 3, hc); rect(c, 3, -31, 2, 2, hc); rect(c, -6, -31, 5, 13, hc); rect(c, -6, -18, 4, 2, hc); rect(c, 4, -29, 1, 6, hc);
       rect(c, -3, -33, 4, 1, shade(hc, 1.6)); break;
+    case 'peluca':
+      rect(c, -6, -36, 13, 6, hc); rect(c, -7, -34, 3, 10, hc); rect(c, -5, -37, 4, 1, hc); rect(c, 1, -37, 3, 1, hc); rect(c, 5, -35, 2, 4, hc);
+      rect(c, -8, -31, 2, 5, hc); rect(c, -4, -30, 2, 7, hc); rect(c, 2, -38, 2, 1, hc); rect(c, -2, -33, 1, 2, hc);
+      rect(c, 3, -27, 2, 3, hc); break;
     case 'mullet':
       rect(c, -4, -33, 9, 3, hc); rect(c, 3, -31, 2, 1, hc);
       rect(c, -5, -31, 3, 5, hc); rect(c, -5, -26, 2, 2, hc); rect(c, -4, -33, 3, 1, shade(hc, 1.25)); break;
@@ -186,7 +196,7 @@ function hat(c, L) {
 // pose: idle walk p1 p2 p3 jump kick hurt special wave dance ride throw charge
 function paintPerson(c, L, pose, f) {
   const skin = L.skin || '#e8b58c';
-  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ velez: '#f4f4f4', boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1f2a4e', suitCeleste: '#bcd9f0', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
+  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ cuero3: '#1a1414', velez: '#f4f4f4', boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1f2a4e', suitCeleste: '#bcd9f0', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
   const armSkinSplit = L.longSleeve ? 0.85 : 0.45;
   const pants = L.pants || '#2e3f6b', shoes = L.shoes || '#222';
   const bw = L.belly ? 14 : 10, bx = -bw / 2;
@@ -384,6 +394,14 @@ function drawProj(ctx, p, camX) {
     case 'factura': rect(ctx, -5, -6, 10, 12, '#fff'); rect(ctx, -4, -4, 8, 1, '#c22'); rect(ctx, -4, -1, 6, 1, '#999'); rect(ctx, -4, 1, 7, 1, '#999'); rect(ctx, -4, 3, 4, 1, '#c22'); break;
     case 'pizza': ctx.fillStyle = '#e8b04a'; ctx.beginPath(); ctx.moveTo(-7, -4); ctx.lineTo(7, -4); ctx.lineTo(0, 7); ctx.fill(); rect(ctx, -7, -5, 14, 2, '#c07a2a'); rect(ctx, -3, -2, 2, 2, '#c22'); rect(ctx, 1, 0, 2, 2, '#c22'); rect(ctx, -1, 2, 2, 1, '#2a8a2a'); break;
     case 'adoquin': rect(ctx, -6, -4, 12, 8, '#6e6862'); rect(ctx, -6, -4, 12, 2, '#8a847c'); rect(ctx, -2, 0, 3, 1, '#4e4a46'); break;
+    case 'mamadera': rect(ctx, -3, -6, 6, 11, 'rgba(240,248,255,0.9)'); rect(ctx, -2, -2, 4, 6, '#fffef6'); rect(ctx, -3, -7, 6, 2, '#7ab8e8'); rect(ctx, -1, -10, 2, 3, '#e8c8a0'); break;
+    case 'butaca': rect(ctx, -7, -8, 12, 8, '#e0141c'); rect(ctx, -7, 0, 14, 4, '#c0101a'); rect(ctx, -6, 4, 2, 4, '#444'); rect(ctx, 4, 4, 2, 4, '#444'); rect(ctx, -6, -6, 10, 1, '#ff5a5a'); break;
+    case 'motosierra': rect(ctx, -8, -3, 10, 6, '#ff8a00'); rect(ctx, -6, -5, 5, 2, '#222'); rect(ctx, 2, -2, 12, 3, '#bbb'); for (let i = 2; i < 14; i += 2) rect(ctx, i, -3, 1, 1, '#555'); rect(ctx, -9, 3, 4, 1, '#222'); break;
+    case 'campera': rect(ctx, -7, -6, 14, 11, '#1a1414'); rect(ctx, -9, -6, 3, 9, '#1a1414'); rect(ctx, 6, -6, 3, 9, '#1a1414'); rect(ctx, -1, -6, 2, 11, '#3a2c26'); rect(ctx, -3, -6, 6, 2, '#2e2420'); break;
+    case 'perro': {
+      ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); const d = Math.sign(p.vx || 1), leg = (p.t >> 2) & 1;
+      ctx.scale(d, 1); rect(ctx, -7, -6, 12, 6, '#a8743e'); rect(ctx, 4, -9, 6, 6, '#a8743e'); rect(ctx, 9, -6, 2, 2, '#3a2a1a'); rect(ctx, 5, -10, 2, 2, '#6a4422');
+      rect(ctx, 7, -8, 1, 1, '#111'); rect(ctx, -9, -7, 3, 1, '#a8743e'); rect(ctx, -6 + leg, 0, 2, 3, '#8a5a2a'); rect(ctx, 2 - leg, 0, 2, 3, '#8a5a2a'); break; }
     case 'ola': ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); rect(ctx, -6, -8, 12, 8, 'rgba(120,200,255,0.8)'); rect(ctx, -4, -10, 8, 2, '#fff'); break;
   }
   ctx.restore();

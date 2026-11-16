@@ -71,6 +71,7 @@ function startLevel(i) {
   const g = App.g = { lvIdx: i, lv, camX: 0, section: 0, ents: [], players: [], parts: [], waveIdx: 0, waveActive: false, spawnQ: [], t: 0,
     state: 'card', timer: 150, shake: 0, hitstop: 0, dialog: null, boss: null, bossPhase: 0, go: 0, warped: false, npcDone: false, slowmo: 0, lastHit: null, continueT: 0 };
   spawnPlayer(g, 0, lv.hero);
+  if (lv.p2Start) { const p2 = spawnPlayer(g, 1, lv.p2, true); p2.x += 10; }
   for (const [x, type] of lv.props) g.ents.push({ kind: 'prop', type, x, y: FLOOR_TOP + 6 + rnd(x) * 30, hp: 1, broken: false });
   if (lv.npc) g.ents.push({ kind: 'npc', x: lv.npc.x, y: FLOOR_TOP + 4, look: lv.npc.look(), face: -1 });
   for (const cx of [lv.caseus, lv.caseus2]) if (cx) g.ents.push({ kind: 'caseus', x: cx, y: FLOOR_TOP + 1, used: false });
@@ -416,8 +417,8 @@ function bossThrow(g, b, tgt) {
   const B = b.cfg, type = pick(B.projs);
   const spec = { poste: { spd: 3, dmg: 16, w: 22, knock: true }, contenedor: { spd: 2.2, dmg: 18, w: 14, knock: true }, pelota: { spd: 4.6, dmg: 9, w: 7 },
     trofeo: { spd: 3, dmg: 14, w: 8, knock: true }, copa: { spd: 3.4, dmg: 11, w: 8 }, medalla: { spd: 4, dmg: 8, w: 6 }, yerba: { spd: 3.2, dmg: 11, w: 8 },
-    fajo: { spd: 3.8, dmg: 9, w: 8 }, globo: { spd: 2.1, dmg: 8, w: 8 }, factura: { spd: 3.6, dmg: 10, w: 7 }, asfalto: { spd: 3.3, dmg: 13, w: 9, knock: true }, baldosa: { spd: 3.8, dmg: 10, w: 8 }, bufanda: { spd: 3.4, dmg: 8, w: 9 } }[type] || { spd: 3, dmg: 10, w: 8 };
-  g.ents.push({ kind: 'proj', type, x: b.x + b.face * 16, y: b.y, z: 22 * b.scale * 0.8, vx: b.face * spec.spd * (b.hp < b.maxhp / 2 ? 1.15 : 1), vz: type === 'contenedor' ? 0 : 0, dmg: spec.dmg, w: spec.w, knock: !!spec.knock, team: 1, t: 0 });
+    fajo: { spd: 3.8, dmg: 9, w: 8 }, globo: { spd: 2.1, dmg: 8, w: 8 }, mamadera: { spd: 3.6, dmg: 9, w: 7 }, butaca: { spd: 2.8, dmg: 15, w: 11, knock: true }, perro: { spd: 3.4, dmg: 11, w: 10, knock: true }, motosierra: { spd: 3.2, dmg: 14, w: 12, knock: true }, campera: { spd: 3, dmg: 9, w: 10 }, factura: { spd: 3.6, dmg: 10, w: 7 }, asfalto: { spd: 3.3, dmg: 13, w: 9, knock: true }, baldosa: { spd: 3.8, dmg: 10, w: 8 }, bufanda: { spd: 3.4, dmg: 8, w: 9 } }[type] || { spd: 3, dmg: 10, w: 8 };
+  g.ents.push({ kind: 'proj', type, x: b.x + b.face * 16, y: b.y, z: type === 'perro' ? 6 : 22 * b.scale * 0.8, vx: b.face * spec.spd * (b.hp < b.maxhp / 2 ? 1.15 : 1), vz: type === 'contenedor' ? 0 : 0, dmg: spec.dmg, w: spec.w, knock: !!spec.knock, team: 1, t: 0 });
   Sound.sfx('throw');
 }
 
