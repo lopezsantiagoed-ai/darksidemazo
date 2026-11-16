@@ -185,6 +185,10 @@ function bgTokyo(ctx, camX, t, g) {
     if (i % 7 === 3) { rect(ctx, x + 4, 120, 58, 10, '#ff2e88'); txt(ctx, 'SHIBUYA', x + 33, 121, '#fff', 7, 'center', '#600'); }
     if (i % 7 === 6) { rect(ctx, x + 4, 120, 58, 10, '#22e6ff'); txt(ctx, 'SHINJUKU', x + 33, 121, '#023', 6, 'center', null); }
   });
+  // tren elevado (JR) que cruza cada tanto
+  rect(ctx, 0, 100, W, 3, '#2a2a3c'); layer(camX, 0.5, 72, (i, x) => rect(ctx, x + 30, 103, 4, 43, '#22222f'));
+  { const ph = (t % 700), tx = ph * 1.4 - 320;
+    if (tx < W + 10) { rect(ctx, tx, 84, 300, 16, '#c8ccd4'); rect(ctx, tx, 93, 300, 3, '#3cb44a'); for (let k = 0; k < 14; k++) rect(ctx, tx + 6 + k * 21, 86, 14, 6, '#ffe9a0'); rect(ctx, tx + 296, 86, 4, 12, '#888'); } }
   // multitud japonesa caminando
   layer(camX, 0.9, 22, (i, x) => {
     const dir = rnd(i * 5) < 0.5 ? 1 : -1, sp = 0.2 + rnd(i) * 0.25;
@@ -680,7 +684,7 @@ function W8(x, ...list) { // helper para oleadas: tipos con delays escalonados
 
 const LEVELS = [
   {
-    id: 'boca', hero: 'juani', title: 'LA BOCA', sub: 'CAMINITO - LA BOMBONERA', len: 3500, bg: bgBoca,
+    id: 'boca', zones: [[0, 'CAMINITO'], [900, 'CALLE MAGALLANES'], [1900, 'A LA SOMBRA DE LA BOMBONERA'], [2600, 'ALMACEN EL GENOVES']], colors: ['#123c8c', '#f5c400'], weather: 'papelitos', night: false, hero: 'juani', title: 'LA BOCA', sub: 'CAMINITO - LA BOMBONERA', len: 3500, bg: bgBoca,
     item: 'chori', genoves: 2700, caseus: 1700, next: 'boca2',
     enemyLooks: {
       thug: { skin: '#d9a27a', hair: '#222', hairStyle: 'buzz', shirt: 'tank', shirtCol: '#e8e8e8', pants: '#33415e', shoes: '#333' },
@@ -699,7 +703,7 @@ const LEVELS = [
     song: { bpm: 112, bassWave: 'triangle', bass: [0, null, null, 0, null, null, 7, null, 5, null, null, 5, null, null, 3, null], lead: [12, null, 15, 12, 19, null, 17, 15, 12, null, 10, null, 12, null, null, null, 12, null, 15, 17, 19, null, 22, 20, 19, null, 17, null, 15, null, null, null], drums: 'k..k..s.k.k.s..h' },
   },
   {
-    id: 'boca2', hero: 'juani', stage2: true, label: 'LA BOCA - NIVEL 2', title: 'LA BOCA II', sub: 'RIACHUELO DE NOCHE - BOMBONERA', len: 3600, bg: bgBoca2,
+    id: 'boca2', zones: [[0, 'VUELTA DE ROCHA'], [900, 'PUENTE TRANSBORDADOR'], [1900, 'COSTANERA DEL RIACHUELO'], [2900, 'LA BOMBONERA DE NOCHE']], colors: ['#0b1d48', '#f5c400'], weather: 'fog', night: true, hero: 'juani', stage2: true, label: 'LA BOCA - NIVEL 2', title: 'LA BOCA II', sub: 'RIACHUELO DE NOCHE - BOMBONERA', len: 3600, bg: bgBoca2,
     item: 'chori', item2: 'empanada', caseus: 1500,
     enemyLooks: {
       thug: { skin: '#e8b58c', hair: '#222', hairStyle: 'short', shirt: 'suit', shirtCol: '#16161c', pants: '#16161c', shoes: '#111', glasses: '#000', tie: '#222', longSleeve: true },
@@ -716,7 +720,7 @@ const LEVELS = [
     song: { bpm: 124, bassWave: 'triangle', bass: [0, null, null, 0, null, null, 7, null, 3, null, null, 3, null, null, 5, null], lead: [15, null, 12, 15, 19, null, 17, 15, 12, null, 10, null, 7, null, null, null, 15, null, 17, 19, 22, null, 24, 22, 19, null, 17, null, 15, null, null, null], drums: 'k.hk.hs.k.k.s.hh' },
   },
   {
-    id: 'tokyo', hero: 'nico', p2: 'santi', title: 'TOKIO', sub: 'SHIBUYA - SHINJUKU - SKYTREE', len: 4100, bg: bgTokyo,
+    id: 'tokyo', zones: [[0, 'SHIBUYA CROSSING'], [950, 'SHINJUKU'], [2100, 'ESTACION SHINKANSEN'], [3000, 'HIROSHIMA'], [3450, 'ESTADIO SANFRECCE']], colors: ['#ff2e88', '#22e6ff'], weather: 'rain', night: true, hero: 'nico', p2: 'santi', title: 'TOKIO', sub: 'SHIBUYA - SHINJUKU - SKYTREE', len: 4100, bg: bgTokyo,
     item: 'sushi', item2: 'ramen', caseus: 1250, p2Join: 'caseus', p2JoinText: 'SANTI APARECE EN EL PUESTO CASEUS', next: 'river2',
     warp: { x: 2450, afterWave: 4, toX: 3000, text: 'SHINKANSEN A HIROSHIMA...' },
     enemyLooks: {
@@ -741,7 +745,7 @@ const LEVELS = [
     song: { bpm: 132, bassWave: 'sawtooth', bass: [0, null, 0, 12, null, 0, 10, null, 7, null, 7, 19, null, 7, 5, null], lead: [12, 15, 17, 19, 22, 19, 17, 15, 24, null, 22, null, 19, null, 17, null], drums: 'k.h.s.h.k.k.s.hh', leadLen: 0.8 },
   },
   {
-    id: 'ams', hero: 'santi', title: 'AMSTERDAM', sub: 'LOS CANALES', len: 4200, bg: bgAmsterdam, fg: fgAmsterdam,
+    id: 'ams', zones: [[0, 'CANALES DE AMSTERDAM'], [1150, 'DE WALLEN'], [2150, 'HACIA EL PORTAL'], [3000, 'OBELISCO - AV. 9 DE JULIO']], colors: ['#ff7a00', '#4a2266'], weather: 'birds', night: false, hero: 'santi', title: 'AMSTERDAM', sub: 'LOS CANALES', len: 4200, bg: bgAmsterdam, fg: fgAmsterdam,
     item: 'stroop', item2: 'empanada', caseus: 1250, caseus2: 3420, next: 'centro',
     warp: { x: 2500, afterWave: 4, toX: 3000, text: 'EL PORTAL TE LLEVA AL OBELISCO!' },
     enemyLooks: {
@@ -757,7 +761,7 @@ const LEVELS = [
     names: { thug: ['JOOST', 'DAAN', 'PIETER', 'BRAM'], fast: ['SANDER', 'LARS', 'TIM'], big: ['HOOLIGAN NARANJA', 'KEES'] },
     props: [[560, 'maceta'], [1100, 'caja'], [1650, 'maceta'], [2200, 'tacho'], [3300, 'tacho']],
     waves: [W8(300, 'thug', 'thug'), W8(850, 'fast', 'thug', 'fast'), W8(1400, 'big', 'thug', 'fast'), W8(1950, 'thug', 'fast', 'big', 'fast', 'thug'), W8(3150, 'thug', 'fast', 'big', 'thug')],
-    boss: { name: 'BLACKRI', hp: 340, scale: 1.75, speed: 0.7, dmg: 13, attacks: ['throw', 'throw', 'throw', 'charge'], projs: ['asfalto', 'baldosa', 'contenedor', 'poste'],
+    boss: { name: 'BLACKRI', hp: 340, scale: 1.75, speed: 0.7, dmg: 13, attacks: ['throw', 'charge', 'throw', 'combo'], projs: ['asfalto', 'baldosa', 'contenedor', 'poste'],
       look: { skin: '#b07850', hair: '#6e6e6e', hairStyle: 'short', shirt: 'suitDark', pants: '#1f2a4e', shoes: '#111', longSleeve: true, sleeveCol: '#1f2a4e' },
       intro: [['BLACKRI', 'ESTA CIUDAD ES MIA. CADA BALDOSA, CADA POSTE... TODO ES MI ARMA.']] },
     intro: [['SANTI', 'AMSTERDAM... QUE OLOR A... TULIPANES. SI, TULIPANES.']],
@@ -765,7 +769,7 @@ const LEVELS = [
     song: { bpm: 92, bassWave: 'triangle', bass: [0, null, null, null, 0, null, 3, null, 5, null, null, null, 5, null, 3, null], lead: [null, null, 12, null, null, null, 15, null, null, null, 17, null, null, null, 15, null], drums: 'k...s...k.k.s...', leadLen: 2 },
   },
   {
-    id: 'banfield', hero: 'fran', p2: 'martin', title: 'BANFIELD', sub: 'CONURBANO - FLORENCIO SOLA', len: 3600, bg: bgBanfield,
+    id: 'banfield', zones: [[0, 'BANFIELD OESTE'], [1050, 'BARRIO INGLES'], [2250, 'ZONA DE GORRITAS'], [2950, 'FLORENCIO SOLA']], colors: ['#0d7a3a', '#f2f2f2'], weather: 'leaves', night: false, hero: 'fran', p2: 'martin', title: 'BANFIELD', sub: 'CONURBANO - FLORENCIO SOLA', len: 3600, bg: bgBanfield,
     item: 'empanada', item2: 'mate', caseus: 1750, next: 'lanus',
     enemyLooks: {
       thug: { skin: '#d9a27a', hair: '#222', hairStyle: 'buzz', shirt: 'jacket', shirtCol: '#1f2a5a', pants: '#1f2a5a', shoes: '#fff', hat: 'visor', longSleeve: true },
@@ -774,8 +778,8 @@ const LEVELS = [
     },
     names: { thug: ['EL TOTO', 'BRIAN', 'MAXI', 'TOBI'], fast: ['EL LAUCHA', 'DYLAN', 'KEVIN'], big: ['EL CHUECO', 'EL GORDO VALOR'] },
     props: [[540, 'tacho'], [1050, 'caja'], [1600, 'tacho'], [2150, 'caja'], [2700, 'tacho']],
-    waves: [W8(300, 'thug', 'fast', 'thug'), W8(850, 'fast', 'fast', 'thug'), W8(1400, 'thug', 'big', 'fast', 'thug'), W8(1950, 'fast', 'thug', 'fast', 'big', 'thug'), W8(2550, 'big', 'thug', 'fast', 'fast', 'thug', 'big')],
-    boss: { name: 'CHIQUI TAP', hp: 380, scale: 1.85, speed: 0.6, dmg: 14, attacks: ['throw', 'throw', 'charge', 'slam'], projs: ['copa', 'medalla', 'trofeo'],
+    waves: [W8(300, 'thug', 'fast', 'thug'), W8(850, 'fast', 'fast', 'thug'), W8(1400, 'thug', 'big', 'fast', 'thug'), W8(1950, 'fast', 'thug', 'fast', 'big', 'thug'), W8(2550, 'big', 'thug', 'fast', 'fast', 'thug')],
+    boss: { name: 'CHIQUI TAP', hp: 340, scale: 1.75, speed: 0.6, dmg: 12, attacks: ['throw', 'throw', 'charge', 'slam'], projs: ['copa', 'medalla', 'trofeo'],
       look: { skin: '#a8714c', hair: '#b8b8b8', hairStyle: 'slick', glasses: '#111', shirt: 'suitCeleste', pants: '#bcd9f0', shoes: '#fff', belly: true, longSleeve: true, sleeveCol: '#bcd9f0' },
       intro: [['CHIQUI TAP', 'ACA MANDA LA AFA, PIBE. TENGO COPAS, MEDALLAS Y TROFEOS PARA TIRAR.']] },
     intro: [['FRAN', 'MI BARRIO. CASITAS INGLESAS, PASTO CORTADO... Y LOS DE GORRITA.']],
@@ -783,7 +787,7 @@ const LEVELS = [
     song: { bpm: 100, bassWave: 'square', bass: [0, null, 7, null, 0, null, 7, null, 5, null, 12, null, 5, null, 12, null], lead: [19, null, 19, 17, 15, null, 17, null, 19, null, 22, null, 19, 17, 15, null], drums: 'k.hsk.hsk.hsk.hs', leadLen: 1 },
   },
   {
-    id: 'lanus', hero: 'fran', p2: 'martin', stage2: true, label: 'BANFIELD - NIVEL 2', title: 'LANUS', sub: 'DE NOCHE - DEL TREN A LA FORTALEZA', len: 4000, bg: bgLanus,
+    id: 'lanus', zones: [[0, 'ESTACION LANUS - LINEA ROCA'], [900, 'PIZZERIA LAS PALMAS'], [1850, 'LA FORTALEZA'], [2500, 'LA CALLE MAS ROTA'], [3300, 'TERRITORIO DEL PADRINO']], colors: ['#7a1f2b', '#f2f2f2'], weather: 'fog', night: true, hero: 'fran', p2: 'martin', stage2: true, label: 'BANFIELD - NIVEL 2', title: 'LANUS', sub: 'DE NOCHE - DEL TREN A LA FORTALEZA', len: 4000, bg: bgLanus,
     item: 'empanada', item2: 'pizza', caseus: 1700,
     enemyLooks: {
       thug: { skin: '#d9a27a', hair: '#222', hairStyle: 'buzz', shirt: 'plain', shirtCol: '#7a1f2b', pants: '#222', shoes: '#fff', hat: 'visor', longSleeve: false },
@@ -801,7 +805,7 @@ const LEVELS = [
     song: { bpm: 108, bassWave: 'square', bass: [0, null, 3, null, 7, null, 3, null, 5, null, 8, null, 7, null, 3, null], lead: [15, null, 15, 14, 12, null, 10, null, 12, null, 15, null, 19, 17, 15, null], drums: 'k.hsk.hsk.hsk.hs', leadLen: 1 },
   },
   {
-    id: 'river2', hero: 'nico', p2: 'santi', p2Start: true, stage2: true, label: 'TOKIO - NIVEL 2', title: 'BARRIO RIVER', sub: 'AEROPARQUE - BELGRANO - MONUMENTAL', len: 4000, bg: bgRiver2,
+    id: 'river2', zones: [[0, 'AEROPARQUE'], [700, 'BELGRANO'], [1900, 'NUNEZ'], [3000, 'EL MONUMENTAL']], colors: ['#e0161b', '#f4f4f4'], weather: 'papelitosRiver', night: false, hero: 'nico', p2: 'santi', p2Start: true, stage2: true, label: 'TOKIO - NIVEL 2', title: 'BARRIO RIVER', sub: 'AEROPARQUE - BELGRANO - MONUMENTAL', len: 4000, bg: bgRiver2,
     item: 'empanada', item2: 'chori', caseus: 1700,
     enemyLooks: {
       thug: { skin: '#e2a77f', hair: '#222', hairStyle: 'buzz', shirt: 'boca', pants: '#1a1a1a', shoes: '#fff' },
@@ -818,7 +822,7 @@ const LEVELS = [
     song: { bpm: 128, bassWave: 'square', bass: [0, null, 12, null, 7, null, 12, null, 5, null, 17, null, 7, null, 19, null], lead: [12, 14, 16, 19, 16, 14, 12, null, 14, 16, 19, 21, 19, 16, 14, null], drums: 'k.h.s.h.k.hks.h.', leadLen: 0.8 },
   },
   {
-    id: 'centro', hero: 'santi', p2: 'nico', p2Join: 'boss', stage2: true, label: 'AMSTERDAM - NIVEL 2', title: 'CENTRO PORTENO', sub: 'SAN TELMO - MONSERRAT - CASA ROSADA', len: 4000, bg: bgCentro,
+    id: 'centro', zones: [[0, 'SAN TELMO'], [550, 'AV. DE MAYO'], [1350, 'CINE GAUMONT'], [2150, 'MONSERRAT'], [3150, 'PLAZA DE MAYO']], colors: ['#75aadb', '#f4f4f4'], weather: 'birds', night: false, hero: 'santi', p2: 'nico', p2Join: 'boss', stage2: true, label: 'AMSTERDAM - NIVEL 2', title: 'CENTRO PORTENO', sub: 'SAN TELMO - MONSERRAT - CASA ROSADA', len: 4000, bg: bgCentro,
     item: 'empanada', item2: 'alfajor', caseus: 1900,
     enemyLooks: {
       thug: { skin: '#e8b58c', hair: '#222', hairStyle: 'side', shirt: 'suit', shirtCol: '#2a2a35', pants: '#2a2a35', shoes: '#111', glasses: '#000', longSleeve: true },

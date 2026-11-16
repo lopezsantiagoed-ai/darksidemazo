@@ -257,19 +257,27 @@ function paintPerson(c, L, pose, f) {
   const lean = (pose === 'p2' || pose === 'charge') ? 1 : 0;
 
   // dibujar
+  legs();
+  // rebote del torso al caminar
+  const bob = (pose === 'walk' && (f & 1)) ? -1 : 0;
+  c.save(); c.translate(0, bob);
   limb(c, shB.x + hurtShift, shB.y, armB[0], armB[1], armDark, skinDark, armSkinSplit);
   rect(c, armB[0] - 1, armB[1] - 1, 3, 3, skinDark);
-  legs();
   // torso
   const ty = -23;
   drawShirt(c, L, bx + hurtShift + lean, ty, bw, 11);
   if (L.belt) rect(c, bx + hurtShift + lean, -13, bw, 1, L.belt);
+  // sombreado: espalda más oscura, borde frontal iluminado, sombra bajo el pecho
+  rect(c, bx + hurtShift + lean, ty, 2, 11, 'rgba(0,0,0,0.16)');
+  rect(c, bx + bw - 1 + hurtShift + lean, ty + 1, 1, 9, 'rgba(255,255,255,0.14)');
+  rect(c, bx + hurtShift + lean, -13, bw, 1, 'rgba(0,0,0,0.18)');
   // cabeza
   c.save(); c.translate(hurtShift + lean, 0);
   if (L.bigHead) { rect(c, -5, -34, 11, 12, skin); rect(c, -6, -29, 1, 3, shade(skin, 0.85)); rect(c, -2, -34, 4, 1, shade(skin, 1.12)); rect(c, 4, -24, 2, 1, shade(skin, 0.8)); }
   rect(c, -4, -31, 8, 8, skin);
   rect(c, -1, -28, 1, 2, skinDark);
   rect(c, 4, -27, 1, 1, skin);
+  rect(c, -4, -31, 1, 8, 'rgba(0,0,0,0.10)'); rect(c, -3, -23, 7, 1, 'rgba(0,0,0,0.12)');
   if (L.stubble) { rect(c, -1, -26, 6, 3, L.stubble); rect(c, -2, -27, 1, 3, L.stubble); }
   if (L.beard) { rect(c, -1, -26, 6, 3, L.beard); rect(c, 2, -25, 2, 1, skin); }
   if (L.mustache) rect(c, 1, -25, 4, 1, L.mustache);
@@ -284,6 +292,18 @@ function paintPerson(c, L, pose, f) {
   // brazo delantero
   limb(c, sh.x + hurtShift + lean, sh.y, armF[0], armF[1], shirtArm, skin, armSkinSplit);
   rect(c, armF[0] - 1, armF[1] - 1, 3 + (pose === 'p1' ? 1 : 0), 3, skin);
+  c.restore();
+}
+
+// contorno oscuro de 1px alrededor del sprite (mejora mucho la lectura sobre fondos cargados)
+const OC = document.createElement('canvas'); OC.width = 64; OC.height = 64;
+const ocx = OC.getContext('2d');
+function outlined(col = '#120a16') {
+  ocx.clearRect(0, 0, 64, 64);
+  for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) ocx.drawImage(PC, dx, dy);
+  ocx.globalCompositeOperation = 'source-in'; ocx.fillStyle = col; ocx.fillRect(0, 0, 64, 64);
+  ocx.globalCompositeOperation = 'source-over'; ocx.drawImage(PC, 0, 0);
+  return OC;
 }
 
 function drawPerson(ctx, L, pose, f, sx, sy, face, scale, opts = {}) {
@@ -296,12 +316,13 @@ function drawPerson(ctx, L, pose, f, sx, sy, face, scale, opts = {}) {
     pcx.fillStyle = opts.tint; pcx.fillRect(0, 0, 64, 64);
     pcx.globalCompositeOperation = 'source-over';
   }
+  const img = (opts.outline !== undefined ? opts.outline : scale >= 1) ? outlined(opts.outlineCol) : PC;
   ctx.save();
   ctx.translate(Math.round(sx), Math.round(sy));
   if (opts.alpha !== undefined) ctx.globalAlpha = opts.alpha;
   ctx.scale(face * scale, scale * (L.h || 1));
   if (pose === 'down') { ctx.translate(0, -4); ctx.rotate(-Math.PI / 2); }
-  ctx.drawImage(PC, -PFX, -PFY);
+  ctx.drawImage(img, -PFX, -PFY);
   ctx.restore();
 }
 
@@ -476,5 +497,5 @@ function drawAnaFront(ctx, sx, sy, scale, wave, t) {
   rect(c, -3, -26, 1, 1, '#d88a7a'); rect(c, 2, -26, 1, 1, '#d88a7a');
   rect(c, -1, -22, 2, 1, '#d4af37');
   c.restore();
-  ctx.save(); ctx.translate(Math.round(sx), Math.round(sy)); ctx.scale(scale, scale); ctx.drawImage(PC, -PFX, -PFY); ctx.restore();
+  ctx.save(); ctx.translate(Math.round(sx), Math.round(sy)); ctx.scale(scale, scale); ctx.drawImage(outlined(), -PFX, -PFY); ctx.restore();
 }

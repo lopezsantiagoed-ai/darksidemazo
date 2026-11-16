@@ -46,6 +46,8 @@ const KEYMAP = {
        a: ['KeyF'], b: ['KeyG'], c: ['KeyH'], start: ['KeyR'] },
 };
 const keyDown = {};
+const keyLatch = {};   // teclas apretadas desde el último poll (para no perder toques rápidos)
+const touchLatch = {};
 const touchState = { left: 0, right: 0, up: 0, down: 0, a: 0, b: 0, c: 0, start: 0, p2: 0 };
 const BTNS = ['left', 'right', 'up', 'down', 'a', 'b', 'c', 'start'];
 
@@ -55,10 +57,12 @@ class Pad {
     this.prev = this.cur;
     const cur = {};
     for (const b of BTNS) {
-      let v = KEYMAP[this.i][b].some(k => keyDown[k]);
-      if (this.i === 0 && touchState[b]) v = true;
+      let v = KEYMAP[this.i][b].some(k => keyDown[k] || keyLatch[k]);
+      if (this.i === 0 && (touchState[b] || touchLatch[b])) v = true;
       cur[b] = v;
     }
+    for (const b of BTNS) for (const k of KEYMAP[this.i][b]) keyLatch[k] = false;
+    if (this.i === 0) for (const b of BTNS) touchLatch[b] = false;
     if (this.cpu) Object.assign(cur, this.cpu);
     this.cur = cur;
   }
@@ -71,7 +75,7 @@ let lastKeyCode = '';
 
 window.addEventListener('keydown', e => {
   if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Tab'].includes(e.code)) e.preventDefault();
-  if (!keyDown[e.code]) { anyKeyHit = true; lastKeyCode = e.code; }
+  if (!keyDown[e.code]) { anyKeyHit = true; lastKeyCode = e.code; keyLatch[e.code] = true; }
   keyDown[e.code] = true;
   Sound.unlock();
 });
