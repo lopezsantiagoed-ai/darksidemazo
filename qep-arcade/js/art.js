@@ -109,6 +109,11 @@ function drawShirt(c, L, x, y, w, h) {
       rect(c, x + w - 7, y, 1, 8, '#8ab6dc'); rect(c, x + w - 2, y, 1, 8, '#8ab6dc');
       rect(c, x + w - 9, y + 3, 1, 1, '#f5c400'); rect(c, x + w - 9, y + 5, 1, 1, '#75aadb');
       break;
+    case 'velez':
+      rect(c, x, y, w, h, '#f4f4f4');
+      for (let i = 0; i < 5; i++) { rect(c, x + i, y + i, 2, 1, '#1f4fbf'); rect(c, x + w - 2 - i, y + i, 2, 1, '#1f4fbf'); }
+      rect(c, x + 3, y, w - 6, 1, '#1f4fbf');
+      break;
     case 'happi':
       rect(c, x, y, w, h, '#2245a8');
       rect(c, x + w - 3, y, 2, h, '#fff');
@@ -136,6 +141,9 @@ function hairCap(c, L) {
       rect(c, -6, -36, 12, 6, hc); rect(c, -5, -37, 10, 1, hc); rect(c, -7, -34, 2, 8, hc); rect(c, -5, -31, 3, 7, hc);
       rect(c, 4, -33, 2, 3, hc); rect(c, -4, -37, 1, 1, '#000'); rect(c, 1, -38, 2, 1, hc); break;
     case 'receding': rect(c, -4, -31, 5, 2, hc); rect(c, -4, -29, 3, 3, hc); rect(c, -3, -32, 4, 1, hc); break;
+    case 'longStraight':
+      rect(c, -5, -33, 10, 3, hc); rect(c, 3, -31, 2, 2, hc); rect(c, -6, -31, 5, 13, hc); rect(c, -6, -18, 4, 2, hc); rect(c, 4, -29, 1, 6, hc);
+      rect(c, -3, -33, 4, 1, shade(hc, 1.6)); break;
     case 'mullet':
       rect(c, -4, -33, 9, 3, hc); rect(c, 3, -31, 2, 1, hc);
       rect(c, -5, -31, 3, 5, hc); rect(c, -5, -26, 2, 2, hc); rect(c, -4, -33, 3, 1, shade(hc, 1.25)); break;
@@ -178,7 +186,7 @@ function hat(c, L) {
 // pose: idle walk p1 p2 p3 jump kick hurt special wave dance ride throw charge
 function paintPerson(c, L, pose, f) {
   const skin = L.skin || '#e8b58c';
-  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1f2a4e', suitCeleste: '#bcd9f0', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
+  const shirtArm = L.shirt === 'sumo' ? skin : (L.sleeveCol || ({ velez: '#f4f4f4', boca: '#1a3fa8', river: '#f4f4f4', riverAlt: '#6a1a2c', banfield: '#f4f4f4', rojo: '#d3141b', rayasBW: '#f4f4f4', sanfrecce: '#5b2a8c', suitDark: '#1f2a4e', suitCeleste: '#bcd9f0', bus: '#8fc3e8', gakuran: '#16161e', orange: '#ff7a00', happi: '#2245a8' }[L.shirt] || L.shirtCol || '#ddd'));
   const armSkinSplit = L.longSleeve ? 0.85 : 0.45;
   const pants = L.pants || '#2e3f6b', shoes = L.shoes || '#222';
   const bw = L.belly ? 14 : 10, bx = -bw / 2;
@@ -310,6 +318,12 @@ function drawItem(ctx, type, x, y, t) {
     case 'empanada':
       ctx.fillStyle = '#e0a84a'; ctx.beginPath(); ctx.arc(x, y, 7, Math.PI, 0); ctx.fill();
       for (let i = -5; i <= 5; i += 2) rect(ctx, x + i, y - 1, 1, 1, '#a0601a'); break;
+    case 'picada':
+      ctx.fillStyle = '#9a6a3a'; ctx.beginPath(); ctx.ellipse(x, y - 2, 11, 5, 0, 0, 7); ctx.fill();
+      ctx.fillStyle = '#c8924a'; ctx.beginPath(); ctx.ellipse(x, y - 3, 10, 4, 0, 0, 7); ctx.fill();
+      for (let i = 0; i < 4; i++) { rect(ctx, x - 9 + i * 2, y - 4 + (i & 1), 2, 2, '#b8323a'); rect(ctx, x + 3 + i * 2, y - 5 + (i & 1), 2, 2, '#f2d36a'); }
+      rect(ctx, x - 2, y - 6, 4, 3, '#e89aa0'); rect(ctx, x - 1, y - 5, 2, 1, '#c86a74');
+      rect(ctx, x - 5, y - 2, 1, 1, '#2a3a8a'); rect(ctx, x + 4, y - 1, 1, 1, '#2a3a8a'); rect(ctx, x + 1, y - 2, 2, 1, '#f4f0e0'); break;
     case 'mate':
       rect(ctx, x - 4, y - 7, 8, 8, '#6b3e1f'); rect(ctx, x - 3, y - 8, 6, 2, '#4caf50'); rect(ctx, x + 1, y - 13, 1, 6, '#ccc'); break;
     case 'alfajor':
@@ -362,7 +376,52 @@ function drawProj(ctx, p, camX) {
     case 'copa': rect(ctx, -5, -7, 10, 6, '#f5c400'); rect(ctx, -7, -6, 2, 3, '#f5c400'); rect(ctx, 5, -6, 2, 3, '#f5c400'); rect(ctx, -1, -1, 2, 4, '#d4a000'); rect(ctx, -4, 3, 8, 3, '#7a4a1a'); break;
     case 'medalla': rect(ctx, -3, -8, 2, 5, '#74b9e8'); rect(ctx, 1, -8, 2, 5, '#fff'); ctx.fillStyle = '#f5c400'; ctx.beginPath(); ctx.arc(0, 0, 4, 0, 7); ctx.fill(); rect(ctx, -1, -1, 2, 2, '#c89200'); break;
     case 'trofeo': rect(ctx, -3, -10, 6, 8, '#e8c840'); rect(ctx, -1, -13, 2, 3, '#e8c840'); ctx.fillStyle = '#e8c840'; ctx.beginPath(); ctx.arc(0, -13, 3, 0, 7); ctx.fill(); rect(ctx, -5, -2, 10, 5, '#333'); rect(ctx, -3, 0, 6, 1, '#f5c400'); break;
+    case 'globo': ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); ctx.fillStyle = '#ffd500'; ctx.beginPath(); ctx.ellipse(0, -4 + Math.sin(p.t / 6) * 2, 5, 6, 0, 0, 7); ctx.fill(); rect(ctx, -1, -6, 1, 2, '#fff8b0'); rect(ctx, 0, 2, 1, 6, '#eee'); break;
+    case 'factura': rect(ctx, -5, -6, 10, 12, '#fff'); rect(ctx, -4, -4, 8, 1, '#c22'); rect(ctx, -4, -1, 6, 1, '#999'); rect(ctx, -4, 1, 7, 1, '#999'); rect(ctx, -4, 3, 4, 1, '#c22'); break;
     case 'ola': ctx.rotate(-p.t * 0.3 * Math.sign(p.vx || 1)); rect(ctx, -6, -8, 12, 8, 'rgba(120,200,255,0.8)'); rect(ctx, -4, -10, 8, 2, '#fff'); break;
   }
   ctx.restore();
+}
+
+// ---------- puesto CASEUS (quesos & fiambres) con Ana ----------
+const ANA_LOOK = { skin: '#c99068', hair: '#141010', hairStyle: 'longStraight', shirt: 'velez', pants: '#f2efe6', shoes: '#222' };
+function drawCaseus(ctx, x, y, t, near) {
+  x = Math.round(x); y = Math.round(y);
+  const L = x - 48, R = x + 48;
+  // postes
+  rect(ctx, L, y - 76, 3, 76, '#5a3a22'); rect(ctx, R - 3, y - 76, 3, 76, '#5a3a22');
+  // fondo del puesto con estantes de quesos
+  rect(ctx, L + 3, y - 64, 90, 46, '#6b4a2e');
+  for (let k = 0; k < 3; k++) rect(ctx, L + 6, y - 50 + k * 12, 84, 1, '#4e3420');
+  for (let k = 0; k < 7; k++) { if (k === 3) continue; const cy = y - 55 + (k % 2) * 12; rect(ctx, L + 8 + k * 12, cy, 8, 5, k % 3 ? '#f2d36a' : '#e8c048'); rect(ctx, L + 10 + k * 12, cy + 1, 1, 1, '#c89a20'); }
+  // Ana atrás del mostrador
+  drawPerson(ctx, ANA_LOOK, near ? 'wave' : 'idle', (t >> 3) & 3, x + 4, y - 2, -1, 1.3);
+  // toldo a rayas
+  for (let k = 0; k < 9; k++) {
+    rect(ctx, L - 2 + k * 11, y - 78, 11, 8, k & 1 ? '#1c1c1c' : '#f3e6b0');
+    ctx.fillStyle = k & 1 ? '#1c1c1c' : '#f3e6b0'; ctx.beginPath(); ctx.arc(L + 3.5 + k * 11, y - 70, 5.5, 0, Math.PI); ctx.fill();
+  }
+  // salames colgando a los costados
+  for (const k of [0, 1, 4, 5]) {
+    const sx = L + 6 + k * 16, sw = Math.round(Math.sin(t / 25 + k) * 1);
+    rect(ctx, sx + sw, y - 70, 1, 4, '#ddd'); rect(ctx, sx - 1 + sw, y - 66, 4, 10, '#8a2a2a'); rect(ctx, sx + sw, y - 65, 1, 6, '#c86060'); rect(ctx, sx + sw, y - 56, 2, 1, '#5a1a1a');
+  }
+  // cartel con logo
+  const sy = y - 102;
+  rect(ctx, x - 40, sy, 80, 24, '#1c1c1c'); rect(ctx, x - 39, sy + 1, 78, 22, '#f3e6b0');
+  txt(ctx, 'QUESOS & FIAMBRES', x, sy + 3, '#1c1c1c', 3, 'center', null);
+  txt(ctx, 'CASEUS', x, sy + 8, '#1c1c1c', 8, 'center', null);
+  rect(ctx, x - 30, sy + 17, 60, 1, '#1c1c1c');
+  txt(ctx, 'DESDE 2021', x, sy + 19, '#5a4a2a', 2, 'center', null);
+  for (const [cx, cy] of [[x - 35, sy + 5], [x + 34, sy + 5], [x - 35, sy + 17], [x + 34, sy + 17]]) { rect(ctx, cx, cy - 1, 1, 3, '#1c1c1c'); rect(ctx, cx - 1, cy, 3, 1, '#1c1c1c'); }
+  rect(ctx, x - 30, sy + 24, 2, 2, '#5a3a22'); rect(ctx, x + 28, sy + 24, 2, 2, '#5a3a22');
+  // mostrador
+  rect(ctx, L - 2, y - 20, 100, 4, '#e2c68e'); rect(ctx, L, y - 16, 96, 16, '#8a5a34');
+  for (let k = 0; k < 6; k++) rect(ctx, L + 2 + k * 16, y - 14, 1, 12, '#6e4426');
+  rect(ctx, x - 26, y - 12, 52, 8, '#f3e6b0'); txt(ctx, 'PICADAS', x, y - 10, '#8a2a2a', 4, 'center', null);
+  // productos sobre el mostrador
+  ctx.fillStyle = '#f2d36a'; ctx.beginPath(); ctx.moveTo(L + 4, y - 20); ctx.lineTo(L + 18, y - 20); ctx.lineTo(L + 18, y - 28); ctx.fill();
+  rect(ctx, L + 12, y - 23, 2, 2, '#c89a20');
+  ctx.fillStyle = '#e8c048'; ctx.beginPath(); ctx.ellipse(R - 14, y - 23, 8, 3, 0, 0, 7); ctx.fill(); rect(ctx, R - 22, y - 23, 16, 3, '#d8b038');
+  drawItem(ctx, 'picada', x - 24, y - 16, 0);
 }

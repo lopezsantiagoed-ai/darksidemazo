@@ -71,7 +71,7 @@ function bgBoca(ctx, camX, t, g) {
   for (let r = 0; r < 3; r++) for (let k = 0; k < 30; k++) rect(ctx, bx + 6 + k * 8, 61 + r * 6, 5, 4, '#0e2660');
   rect(ctx, bx, 80, 250, 3, '#f5c400');
   for (let k = 0; k < 12; k++) { rect(ctx, bx + 8 + k * 20, 88, 12, 18, '#0e2660'); rect(ctx, bx + 8 + k * 20, 86, 12, 2, '#f5c400'); }
-  [bx + 4, bx + 242].forEach(lx => { rect(ctx, lx, 2, 3, 22, '#555'); rect(ctx, lx - 6, 0, 15, 6, '#ddd'); for (let a = 0; a < 3; a++) rect(ctx, lx - 5 + a * 5, 1, 3, 3, '#fffbe0'); });
+  [bx + 4, bx + 242].forEach(lx => { rect(ctx, lx, 14, 3, 10, '#555'); rect(ctx, lx - 6, 10, 15, 6, '#ddd'); for (let a = 0; a < 3; a++) rect(ctx, lx - 5 + a * 5, 11, 3, 3, '#fffbe0'); });
   // casas de chapa de Caminito
   const cols = ['#e63946', '#f4a300', '#1d70b8', '#2a9d58', '#f2d22e', '#e76fae', '#46b3c9', '#8e44ad'];
   layer(camX, 0.45, 64, (i, x) => {
@@ -423,6 +423,54 @@ function bgBanfield(ctx, camX, t, g) {
 }
 
 // =====================================================================
+// LA BOCA NIVEL 2 (de noche: Riachuelo, Puente Transbordador, Bombonera)
+// =====================================================================
+function bgBoca2(ctx, camX, t, g) {
+  skyGrad(ctx, ['#070b24', '#14204a', '#2a3a6e']);
+  for (let i = 0; i < 45; i++) rect(ctx, (rnd(i + 3) * W) | 0, (rnd(i + 70) * 80) | 0, 1, 1, (t + i * 11) % 120 < 105 ? '#fff' : '#557');
+  ctx.fillStyle = '#f4f0d8'; ctx.beginPath(); ctx.arc(330 - camX * 0.01, 28, 10, 0, 7); ctx.fill();
+  ctx.fillStyle = '#14204a'; ctx.beginPath(); ctx.arc(326 - camX * 0.01, 25, 9, 0, 7); ctx.fill();
+  // Puente Transbordador
+  const px = Math.round(40 - camX * 0.12);
+  const tower = (tx) => { for (let y = 20; y < 122; y += 6) { rect(ctx, tx, y, 2, 6, '#3a3a48'); rect(ctx, tx + 12, y, 2, 6, '#3a3a48'); ctx.strokeStyle = '#3a3a48'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(tx + 1, y); ctx.lineTo(tx + 13, y + 6); ctx.moveTo(tx + 13, y); ctx.lineTo(tx + 1, y + 6); ctx.stroke(); } };
+  for (let rep = 0; rep < 2; rep++) {
+    const ox = px + rep * 520;
+    if (ox > W + 10 || ox < -180) continue;
+    tower(ox); tower(ox + 140);
+    rect(ctx, ox, 18, 154, 3, '#3a3a48'); rect(ctx, ox, 28, 154, 2, '#3a3a48');
+    for (let k = 0; k < 154; k += 8) { ctx.strokeStyle = '#3a3a48'; ctx.beginPath(); ctx.moveTo(ox + k, 20); ctx.lineTo(ox + k + 8, 29); ctx.stroke(); }
+    const gx = ox + 20 + ((Math.sin(t / 200) + 1) / 2) * 100;
+    rect(ctx, gx + 6, 30, 1, 80, '#2a2a34'); rect(ctx, gx, 108, 16, 8, '#c0392b'); rect(ctx, gx + 2, 110, 3, 3, '#ffe9a0');
+  }
+  // Bombonera iluminada
+  const bx = Math.round(200 - camX * 0.05);
+  rect(ctx, bx, 40, 200, 80, '#14306e'); rect(ctx, bx - 3, 36, 206, 5, '#f5c400');
+  rect(ctx, bx, 56, 200, 10, '#f5c400'); txt(ctx, 'LA BOMBONERA', bx + 100, 58, '#14306e', 7, 'center', null);
+  for (let r = 0; r < 4; r++) for (let k = 0; k < 24; k++) rect(ctx, bx + 6 + k * 8, 70 + r * 7, 5, 4, rnd(k * 7 + r) < 0.6 ? '#ffe9a0' : '#0b1d48');
+  [bx + 4, bx + 192].forEach(lx => { rect(ctx, lx, 26, 3, 12, '#444'); rect(ctx, lx - 6, 22, 15, 6, '#fffbe0');
+    ctx.fillStyle = 'rgba(255,250,210,0.07)'; ctx.beginPath(); ctx.moveTo(lx - 6, 28); ctx.lineTo(lx + 60, 120); ctx.lineTo(lx - 60, 120); ctx.fill(); });
+  // casas de chapa de noche
+  const cols = ['#a8323d', '#b27a10', '#16508a', '#1f7442', '#b09a20', '#a85080', '#2f7f90'];
+  layer(camX, 0.4, 58, (i, x) => {
+    const h = 30 + Math.floor(rnd(i + 40) * 20), top = 118 - h;
+    rect(ctx, x, top, 54, h, pal(cols, (rnd(i + 9) * 97) | 0)); rect(ctx, x - 2, top - 3, 58, 3, '#4a5560');
+    ctx.fillStyle = 'rgba(0,0,0,0.18)'; for (let k = 0; k < 54; k += 3) ctx.fillRect(x + k, top, 1, h);
+    rect(ctx, x + 8, top + 6, 10, 10, rnd(i) < 0.6 ? '#ffd27a' : '#1a2238'); rect(ctx, x + 34, top + 6, 10, 10, rnd(i + 1) < 0.6 ? '#ffd27a' : '#1a2238');
+  });
+  // Riachuelo
+  rect(ctx, 0, 118, W, 22, '#0f1e30');
+  for (let k = 0; k < 5; k++) layer(camX + Math.sin(t / 25 + k) * 5, 0.5, 30, (i, x) => rect(ctx, x + (k * 9) % 30, 121 + k * 4, 8 + (i % 3) * 3, 1, k & 1 ? 'rgba(255,210,120,0.35)' : 'rgba(120,160,255,0.25)'));
+  layer(camX, 0.6, 420, (i, x) => { rect(ctx, x, 124, 80, 10, '#3a2a2a'); rect(ctx, x + 6, 116, 30, 8, '#5a4a40'); rect(ctx, x + 50, 112, 4, 12, '#2a2a2a'); rect(ctx, x + 10, 118, 3, 3, '#ffe9a0'); });
+  // costanera
+  rect(ctx, 0, 140, W, 4, '#555a62'); for (let k = 0; k < 4; k++) rect(ctx, 0, 136 + k, W, 0, '#000');
+  layer(camX, 1, 16, (i, x) => rect(ctx, x, 134, 1, 8, '#2a2a30')); rect(ctx, 0, 134, W, 1, '#2a2a30');
+  rect(ctx, 0, 144, W, 10, '#5a5650'); rect(ctx, 0, 152, W, 2, '#3e3a36');
+  rect(ctx, 0, 154, W, H - 154, '#3a3632');
+  for (let r = 0; r < 11; r++) { const y = 154 + r * 6, off = (r & 1) * 5; layer(camX, 1, 10, (i, x) => rect(ctx, x + off, y, 9, 5, rnd(i * 31 + r) < 0.5 ? '#4a4540' : '#44403a')); }
+  layer(camX, 1, 240, (i, x) => { lamppost(ctx, x + 40, 147); ctx.fillStyle = 'rgba(255,220,140,0.12)'; ctx.beginPath(); ctx.moveTo(x + 46, 101); ctx.lineTo(x + 70, 200); ctx.lineTo(x + 22, 200); ctx.fill(); });
+}
+
+// =====================================================================
 // CONFIGURACIÓN DE NIVELES
 // =====================================================================
 const ENEMY_STATS = {
@@ -438,7 +486,7 @@ function W8(x, ...list) { // helper para oleadas: tipos con delays escalonados
 const LEVELS = [
   {
     id: 'boca', hero: 'juani', title: 'LA BOCA', sub: 'CAMINITO - LA BOMBONERA', len: 3500, bg: bgBoca,
-    item: 'chori', genoves: 2700,
+    item: 'chori', genoves: 2700, caseus: 1700, next: 'boca2',
     enemyLooks: {
       thug: { skin: '#d9a27a', hair: '#222', hairStyle: 'buzz', shirt: 'tank', shirtCol: '#e8e8e8', pants: '#33415e', shoes: '#333' },
       fast: { skin: '#e8b58c', hair: '#3a2a20', hairStyle: 'short', shirt: 'jacket', shirtCol: '#30303a', pants: '#30303a', shoes: '#eee', hat: 'cap', hatCol: '#c62828' },
@@ -456,8 +504,25 @@ const LEVELS = [
     song: { bpm: 112, bassWave: 'triangle', bass: [0, null, null, 0, null, null, 7, null, 5, null, null, 5, null, null, 3, null], lead: [12, null, 15, 12, 19, null, 17, 15, 12, null, 10, null, 12, null, null, null, 12, null, 15, 17, 19, null, 22, 20, 19, null, 17, null, 15, null, null, null], drums: 'k..k..s.k.k.s..h' },
   },
   {
+    id: 'boca2', hero: 'juani', stage2: true, label: 'LA BOCA - NIVEL 2', title: 'LA BOCA II', sub: 'RIACHUELO DE NOCHE - BOMBONERA', len: 3600, bg: bgBoca2,
+    item: 'chori', item2: 'empanada', caseus: 1500,
+    enemyLooks: {
+      thug: { skin: '#e8b58c', hair: '#222', hairStyle: 'short', shirt: 'suit', shirtCol: '#16161c', pants: '#16161c', shoes: '#111', glasses: '#000', tie: '#222', longSleeve: true },
+      fast: { skin: '#d9a27a', hair: '#3a2a20', hairStyle: 'side', shirt: 'jacket', shirtCol: '#f5d000', pants: '#222', shoes: '#fff', hat: 'cap', hatCol: '#f5d000' },
+      big: { skin: '#c68a5e', hair: '#222', hairStyle: 'bald', shirt: 'suit', shirtCol: '#16161c', pants: '#16161c', shoes: '#111', glasses: '#000', belly: true, longSleeve: true },
+    },
+    names: { thug: ['CUSTODIO', 'EL ROPERO', 'AGENTE K'], fast: ['MILITANTE', 'GLOBERO', 'TIMBREADOR'], big: ['GUARDAESPALDAS', 'EL MOAI'] },
+    props: [[520, 'barril'], [1000, 'caja'], [1950, 'barril'], [2500, 'tacho']],
+    waves: [W8(300, 'thug', 'fast', 'thug'), W8(800, 'fast', 'fast', 'thug', 'thug'), W8(1250, 'big', 'thug', 'fast'), W8(1900, 'fast', 'thug', 'big', 'fast', 'thug'), W8(2550, 'thug', 'big', 'fast', 'fast', 'thug', 'big')],
+    boss: { name: 'MACRI', hp: 360, scale: 1.75, speed: 0.75, dmg: 12, attacks: ['throw', 'dance', 'charge', 'throw', 'combo'], projs: ['globo', 'globo', 'factura'],
+      look: { skin: '#eab896', hair: '#8c8c8c', hairStyle: 'side', shirt: 'suit', shirtCol: '#1b2238', tie: '#6e2a52', pants: '#1b2238', shoes: '#111', longSleeve: true, sleeveCol: '#1b2238' },
+      intro: [['MACRI', 'JUANI! QUE BUENO VERTE POR LA BOMBONERA... SI SE PUEDE!'], ['JUANI', 'NO ME VENGAS CON GLOBOS AMARILLOS, EH.'], ['MACRI', 'TRANQUILO... PRIMERO BAILAMOS UN POQUITO.']] },
+    intro: [['JUANI', 'SE HIZO DE NOCHE EN LA BOCA. EL RIACHUELO BRILLA... Y HAY CUSTODIOS POR TODOS LADOS.']],
+    song: { bpm: 124, bassWave: 'triangle', bass: [0, null, null, 0, null, null, 7, null, 3, null, null, 3, null, null, 5, null], lead: [15, null, 12, 15, 19, null, 17, 15, 12, null, 10, null, 7, null, null, null, 15, null, 17, 19, 22, null, 24, 22, 19, null, 17, null, 15, null, null, null], drums: 'k.hk.hs.k.k.s.hh' },
+  },
+  {
     id: 'tokyo', hero: 'nico', p2: 'santi', title: 'TOKIO', sub: 'SHIBUYA - SHINJUKU - SKYTREE', len: 4100, bg: bgTokyo,
-    item: 'sushi', item2: 'ramen',
+    item: 'sushi', item2: 'ramen', caseus: 1250,
     warp: { x: 2450, afterWave: 4, toX: 3000, text: 'SHINKANSEN A HIROSHIMA...' },
     enemyLooks: {
       thug: { skin: '#f0cfae', hair: '#111', hairStyle: 'side', shirt: 'suit', shirtCol: '#1b1b22', pants: '#1b1b22', shoes: '#111', glasses: '#000', tie: '#222', longSleeve: true },
@@ -481,7 +546,7 @@ const LEVELS = [
   },
   {
     id: 'ams', hero: 'santi', title: 'AMSTERDAM', sub: 'LOS CANALES', len: 4200, bg: bgAmsterdam, fg: fgAmsterdam,
-    item: 'stroop', item2: 'empanada',
+    item: 'stroop', item2: 'empanada', caseus: 1250, caseus2: 3420,
     warp: { x: 2500, afterWave: 4, toX: 3000, text: 'EL PORTAL TE LLEVA AL OBELISCO!' },
     enemyLooks: {
       thug: { skin: '#f2d0b5', hair: '#d9b44a', hairStyle: 'long', shirt: 'hawaii', shirtCol: '#38b6ff', pants: '#c8a060', shoes: '#222', glasses: '#222' },
@@ -505,7 +570,7 @@ const LEVELS = [
   },
   {
     id: 'banfield', hero: 'fran', p2: 'martin', title: 'BANFIELD', sub: 'CONURBANO - FLORENCIO SOLA', len: 3600, bg: bgBanfield,
-    item: 'empanada', item2: 'mate',
+    item: 'empanada', item2: 'mate', caseus: 1750,
     enemyLooks: {
       thug: { skin: '#d9a27a', hair: '#222', hairStyle: 'buzz', shirt: 'jacket', shirtCol: '#1f2a5a', pants: '#1f2a5a', shoes: '#fff', hat: 'visor', longSleeve: true },
       fast: { skin: '#c68a5e', hair: '#222', hairStyle: 'short', shirt: 'jacket', shirtCol: '#222', pants: '#222', shoes: '#fff', hat: 'visor', longSleeve: true },
@@ -524,3 +589,5 @@ const LEVELS = [
 
 const SONG_TITLE = { bpm: 120, bassWave: 'triangle', bass: [0, null, 12, null, 7, null, 12, null, 5, null, 17, null, 7, null, 19, null], lead: [12, 15, 19, 24, 19, 15, 12, null, 10, 14, 17, 22, 17, 14, 10, null], drums: 'k.h.s.h.k.hks.h.', leadLen: 0.8 };
 const SONG_BOSS = { bpm: 150, bassWave: 'sawtooth', bass: [0, 0, 12, 0, 1, 1, 13, 1, 0, 0, 12, 0, 3, 3, 15, 3], lead: [12, null, 13, null, 12, null, 10, null, 12, null, 15, null, 13, 12, 10, null], drums: 'k.s.kks.k.s.kkss', leadLen: 0.7 };
+
+const MAIN_LEVELS = LEVELS.filter(l => !l.stage2);

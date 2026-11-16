@@ -73,6 +73,7 @@ function startLevel(i) {
   spawnPlayer(g, 0, lv.hero);
   for (const [x, type] of lv.props) g.ents.push({ kind: 'prop', type, x, y: FLOOR_TOP + 6 + rnd(x) * 30, hp: 1, broken: false });
   if (lv.npc) g.ents.push({ kind: 'npc', x: lv.npc.x, y: FLOOR_TOP + 4, look: lv.npc.look(), face: -1 });
+  for (const cx of [lv.caseus, lv.caseus2]) if (cx) g.ents.push({ kind: 'caseus', x: cx, y: FLOOR_TOP + 1, used: false });
   Sound.play(lv.song);
   App.mode = 'game';
 }
@@ -131,6 +132,18 @@ function updateLevel(g) {
       g.ents.push({ kind: 'item', type: lv.npc.gift, x: lv.npc.x - 26, y: FLOOR_TOP + 16, heal: 100, t: 0 });
       Sound.sfx('pickup');
     });
+  }
+  // puestos CASEUS: Ana regala una picada
+  for (const c of g.ents) {
+    if (c.kind !== 'caseus' || c.used || g.dialog) continue;
+    if (alive.some(p => Math.abs(p.x - c.x) < 36)) {
+      c.used = true;
+      const hero = HEROES[lv.hero].name;
+      sayLines(g, [['ANA', hero + '! BIENVENIDO A CASEUS: SALAME, QUESOS ARTESANALES Y LAS MEJORES PICADAS.'], ['ANA', 'TOMA, LLEVATE UNA PICADA PARA RECUPERAR FUERZAS!'], [hero, 'GRACIAS ANA! AGUANTE CASEUS!']], () => {
+        g.ents.push({ kind: 'item', type: 'picada', x: c.x - 10, y: FLOOR_TOP + 14, heal: 100, t: 0 });
+        Sound.sfx('pickup');
+      });
+    }
   }
   // jefe
   if (!g.bossPhase && !lv.waves[g.waveIdx] && (!lv.warp || g.warped) && g.camX >= lv.len - W - 1) {
@@ -381,7 +394,7 @@ function bossThrow(g, b, tgt) {
   const B = b.cfg, type = pick(B.projs);
   const spec = { poste: { spd: 3, dmg: 16, w: 22, knock: true }, contenedor: { spd: 2.2, dmg: 18, w: 14, knock: true }, pelota: { spd: 4.6, dmg: 9, w: 7 },
     trofeo: { spd: 3, dmg: 14, w: 8, knock: true }, copa: { spd: 3.4, dmg: 11, w: 8 }, medalla: { spd: 4, dmg: 8, w: 6 }, yerba: { spd: 3.2, dmg: 11, w: 8 },
-    fajo: { spd: 3.8, dmg: 9, w: 8 }, asfalto: { spd: 3.3, dmg: 13, w: 9, knock: true }, baldosa: { spd: 3.8, dmg: 10, w: 8 }, bufanda: { spd: 3.4, dmg: 8, w: 9 } }[type] || { spd: 3, dmg: 10, w: 8 };
+    fajo: { spd: 3.8, dmg: 9, w: 8 }, globo: { spd: 2.1, dmg: 8, w: 8 }, factura: { spd: 3.6, dmg: 10, w: 7 }, asfalto: { spd: 3.3, dmg: 13, w: 9, knock: true }, baldosa: { spd: 3.8, dmg: 10, w: 8 }, bufanda: { spd: 3.4, dmg: 8, w: 9 } }[type] || { spd: 3, dmg: 10, w: 8 };
   g.ents.push({ kind: 'proj', type, x: b.x + b.face * 16, y: b.y, z: 22 * b.scale * 0.8, vx: b.face * spec.spd * (b.hp < b.maxhp / 2 ? 1.15 : 1), vz: type === 'contenedor' ? 0 : 0, dmg: spec.dmg, w: spec.w, knock: !!spec.knock, team: 1, t: 0 });
   Sound.sfx('throw');
 }
@@ -467,6 +480,17 @@ function updateBoss(g, b) {
       if (b.st > 1030) { b.state = 'idle'; ai.cool = rage ? 30 : 60; }
       break;
     }
+    case 'b_dance': { // baile en el balcón: gira y pega alrededor
+      b.st++;
+      if (b.st === 1) addText(g, b.x, b.y - 75, 'SI SE PUEDE!', '#ffd500');
+      const dx = tgt.x - b.x, dy = tgt.y - b.y;
+      b.vx = Math.abs(dx) > 8 ? Math.sign(dx) * spd * 0.9 : 0; b.vy = Math.abs(dy) > 3 ? Math.sign(dy) * spd * 0.6 : 0;
+      if (b.st % 8 === 0) b.face = -b.face;
+      if (b.st % 6 === 0) addPart(g, b.x + (Math.random() - 0.5) * 40, b.y - 60, pick(['#ffd500', '#fff', '#75aadb']), 2, 1.5);
+      if (b.st % 14 === 0) { b.hitList = []; hitBox(g, b, 34, 7, b.st % 42 === 0, { around: true }); }
+      if (b.st > 120) { b.state = 'idle'; b.vx = b.vy = 0; ai.cool = rage ? 30 : 60; }
+      break;
+    }
     case 'b_summon': {
       b.st++;
       if (b.st === 20) {
@@ -499,7 +523,7 @@ function updateGame() {
     if (g.timer === 35) {
       g.section = 1; g.warped = true; g.camX = g.lv.warp.toX;
       g.players.forEach((p, i) => { if (p) { p.x = g.camX + 60 + i * 24; p.y = 172 + i * 14; p.z = 40; p.state = 'jump'; p.vz = 0; } });
-      g.ents = g.ents.filter(e => e.kind === 'player' || e.kind === 'prop' || e.kind === 'npc');
+      g.ents = g.ents.filter(e => e.kind === 'player' || e.kind === 'prop' || e.kind === 'npc' || e.kind === 'caseus');
     }
     if (g.timer <= 0) { g.state = 'play'; if (g.lv.warpLines) sayLines(g, g.lv.warpLines); }
     return;
@@ -585,11 +609,15 @@ function updateGame() {
   if (g.players.filter(p => p).every(p => p.out)) { g.state = 'over'; g.timer = 600; }
 }
 
+function heroCleared(lv) { return LEVELS.filter(l => l.hero === lv.hero).every(l => cleared[l.id]); }
+
 function finishLevel() {
+  const g = App.g;
+  if (g && g.lv.next) { const ni = LEVELS.findIndex(l => l.id === g.lv.next); if (ni >= 0) { startLevel(ni); return; } }
   const all = LEVELS.every(l => cleared[l.id]);
   if (all && !App.endingShown) { App.mode = 'ending'; App.endT = 0; App.endingShown = true; Sound.play(SONG_TITLE); return; }
   App.mode = 'select'; Sound.play(SONG_TITLE);
-  const next = LEVELS.findIndex(l => !cleared[l.id]);
+  const next = MAIN_LEVELS.findIndex(l => !heroCleared(l));
   if (next >= 0) App.sel = next;
 }
 
@@ -615,6 +643,7 @@ function poseOf(e) {
     case 'b_charge': return [e.st < 36 ? 'idle' : 'charge', 0];
     case 'b_slam': return [e.z > 0 ? 'jump' : 'idle', 0];
     case 'b_summon': return ['wave', f];
+    case 'b_dance': return ['dance', f];
   }
   return ['idle', 0];
 }
@@ -659,6 +688,7 @@ function drawWorld(g) {
   for (const e of sorted) {
     if (e.kind === 'prop') drawProp(ctx, e.type, e.x - g.camX, e.y, e.broken);
     else if (e.kind === 'item') drawItem(ctx, e.type, e.x - g.camX, e.y, e.t);
+    else if (e.kind === 'caseus') drawCaseus(ctx, e.x - g.camX, e.y, g.t, g.players.some(p => p && Math.abs(p.x - e.x) < 90));
     else if (e.kind === 'npc') {
       const near = g.players.some(p => p && Math.abs(p.x - e.x) < 120);
       drawPerson(ctx, e.look, near ? 'wave' : 'idle', (g.t >> 3) & 3, e.x - g.camX, e.y, e.face, 1);
@@ -735,6 +765,7 @@ function drawDialog(g) {
   const hk = Object.keys(HEROES).find(k => HEROES[k].name === who);
   let look = hk ? HEROES[hk].look : null;
   if (!look && g.lv.boss && g.lv.boss.name === who) look = g.lv.boss.look;
+  if (who === 'ANA') look = ANA_LOOK;
   if (look) { rect(ctx, 14, y + 6, 38, 38, '#223'); ctx.save(); ctx.beginPath(); ctx.rect(14, y + 6, 38, 38); ctx.clip(); drawPerson(ctx, look, 'idle', 0, 33, y + 104, 1, 2.6); ctx.restore(); }
   txt(ctx, who, 60, y + 6, '#ffe14d', 7);
   const lines = wrapText(line.slice(0, d.ch), 38);
@@ -747,7 +778,7 @@ function drawGame() {
   drawWorld(g);
   if (g.state === 'card') {
     rect(ctx, 0, 0, W, H, 'rgba(0,0,0,0.7)');
-    txt(ctx, 'NIVEL ' + (g.lvIdx + 1), W / 2, 58, '#ffe14d', 8, 'center');
+    txt(ctx, g.lv.label || ('NIVEL ' + (MAIN_LEVELS.indexOf(g.lv) + 1)), W / 2, 58, '#ffe14d', 8, 'center');
     txt(ctx, g.lv.title, W / 2, 74, '#fff', 24, 'center');
     txt(ctx, g.lv.sub, W / 2, 108, '#9ff', 6, 'center');
     txt(ctx, 'CON ' + HEROES[g.lv.hero].name + (g.lv.p2 ? ' + ' + HEROES[g.lv.p2].name + ' (P2)' : ''), W / 2, 124, '#ff8', 7, 'center');
@@ -769,7 +800,7 @@ function drawGame() {
     txt(ctx, g.lv.title + ' LIBERADO', W / 2, 98, '#fff', 8, 'center');
     const tot = g.players.reduce((s, p) => s + (p ? p.score : 0), 0);
     txt(ctx, 'PUNTOS: ' + tot, W / 2, 112, '#9ff', 7, 'center');
-    if (g.timer < 0 && (g.t >> 4) & 1) txt(ctx, 'APRETA GOLPE', W / 2, 126, '#fff', 6, 'center');
+    if (g.timer < 0 && (g.t >> 4) & 1) txt(ctx, g.lv.next ? 'APRETA GOLPE: SIGUE EL NIVEL 2!' : 'APRETA GOLPE', W / 2, 126, '#fff', 6, 'center');
   }
   if (g.state === 'over') {
     rect(ctx, 0, 0, W, H, 'rgba(0,0,0,0.7)');
@@ -804,7 +835,7 @@ function drawSelect() {
   rect(ctx, 0, 0, W, H, '#120a26');
   for (let i = 0; i < 30; i++) rect(ctx, (rnd(i) * W + t * (0.2 + rnd(i + 4))) % W, rnd(i + 9) * H, 2, 2, '#2a1f50');
   txt(ctx, 'ELEGI TU PIBE', W / 2, 8, '#ffe14d', 12, 'center');
-  LEVELS.forEach((lv, i) => {
+  MAIN_LEVELS.forEach((lv, i) => {
     const x = 10 + i * 93, y = 30, sel = App.sel === i;
     rect(ctx, x - 2, y - 2, 89, 150, sel ? ((t >> 3) & 1 ? '#ffe14d' : '#ff8a00') : '#2a2050');
     rect(ctx, x, y, 85, 146, '#1b1438');
@@ -819,11 +850,12 @@ function drawSelect() {
     txt(ctx, h.name, x + 42, y + 96, sel ? '#ffe14d' : '#fff', 8, 'center');
     txt(ctx, lv.title, x + 42, y + 110, '#9ff', 6, 'center');
     txt(ctx, 'JEFE:', x + 42, y + 122, '#888', 4, 'center');
-    wrapText(lv.boss.name, 14).forEach((l, k) => txt(ctx, l, x + 42, y + 128 + k * 7, '#ff7070', 4, 'center'));
+    wrapText(lv.boss.name + (lv.next ? ' + ' + LEVELS.find(l => l.id === lv.next).boss.name : ''), 14).forEach((l, k) => txt(ctx, l, x + 42, y + 128 + k * 6, '#ff7070', 4, 'center'));
     if (lv.p2) txt(ctx, '2P', x + 76, y + 4, '#7dff5a', 6, 'center');
-    if (cleared[lv.id]) txt(ctx, '*', x + 8, y + 4, '#ffe14d', 10, 'center');
+    if (heroCleared(lv)) txt(ctx, '*', x + 8, y + 4, '#ffe14d', 10, 'center');
+    if (lv.next) txt(ctx, '2 NIVELES', x + 42, y + 4, '#ffe14d', 4, 'center');
   });
-  const lv = LEVELS[App.sel];
+  const lv = MAIN_LEVELS[App.sel];
   txt(ctx, lv.p2 ? 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' PUEDE SUMARSE COMO P2' : 'MAPA PARA 1 JUGADOR', W / 2, 186, '#9ff', 5, 'center');
   if ((t >> 5) & 1) txt(ctx, '< >  ELEGIR    GOLPE / ENTER  JUGAR', W / 2, 200, '#fff', 6, 'center');
 }
@@ -854,8 +886,8 @@ function updateMenus() {
     if (pads[0].hit('right')) { App.sel = (App.sel + 1) % 4; Sound.sfx('move'); }
     if (pads[0].hit('up')) { App.sel = (App.sel + 2) % 4; Sound.sfx('move'); }
     if (pads[0].hit('down')) { App.sel = (App.sel + 2) % 4; Sound.sfx('move'); }
-    if (App.tapSel !== undefined) { if (App.tapSel === App.sel) { Sound.sfx('select'); startLevel(App.sel); } else { App.sel = App.tapSel; Sound.sfx('move'); } App.tapSel = undefined; }
-    else if (pads[0].hit('start') || pads[0].hit('a')) { Sound.sfx('select'); startLevel(App.sel); }
+    if (App.tapSel !== undefined) { if (App.tapSel === App.sel) { Sound.sfx('select'); startLevel(LEVELS.indexOf(MAIN_LEVELS[App.sel])); } else { App.sel = App.tapSel; Sound.sfx('move'); } App.tapSel = undefined; }
+    else if (pads[0].hit('start') || pads[0].hit('a')) { Sound.sfx('select'); startLevel(LEVELS.indexOf(MAIN_LEVELS[App.sel])); }
   } else if (App.mode === 'ending') {
     App.endT++;
     if (App.endT > 120 && (pads[0].hit('start') || pads[0].hit('a'))) { App.mode = 'select'; }

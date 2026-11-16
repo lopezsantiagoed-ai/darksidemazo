@@ -22,9 +22,14 @@ Abrí `index.html` en el navegador (doble click alcanza). En celular aparecen co
 | Pibe | Mapa | 2P | Jefe |
 |---|---|---|---|
 | Juani (Boca) | La Boca: Caminito, la Bombonera y el almacén El Genovés con Fran de cameo | — | Super Iacobellis |
+| Juani (nivel 2) | La Boca de noche: Riachuelo, Puente Transbordador y la Bombonera iluminada | — | Macri |
 | Nico (River bordó) | Tokio: Shibuya, Shinjuku, Skytree, neones → Estadio Sanfrecce en Hiroshima | Santi | Sanfreche-San |
 | Santi (River) | Amsterdam: canales, humo, gente extrovertida → portal al Obelisco | — | Blackri |
 | Fran (Banfield) | Banfield: casas inglesas, farolas, adoquines, Florencio Solá | Martín (el hincha del Rojo) | Chiqui TAP |
+
+## Sponsor: CASEUS
+
+En todos los mapas hay un puesto de **CASEUS · Quesos & Fiambres**. Ana, con la de Vélez, te regala una picada que recarga toda la vida.
 
 ## Estructura
 
