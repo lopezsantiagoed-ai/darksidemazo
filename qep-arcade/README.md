@@ -19,6 +19,10 @@ Después de cambiar algo en `js/`, regenerá el archivo único con `python3 buil
 - **F** suma al jugador 2 en los mapas co-op; **2** (o el botón `+2P CPU` en celular) lo suma manejado por la CPU.
 - **M** activa o silencia el sonido.
 
+## Dificultad
+
+En la pantalla de selección, **↑ / ↓** (o tocar la dificultad en el celular) elige entre **FÁCIL**, **NORMAL**, **DIFÍCIL** y **PESADILLA QEP**. Cambia la vida y el daño de enemigos y jefes, su agresividad, cuántos te rodean, enemigos extra por oleada, las vidas y cuánto cura la comida. Las más difíciles dan más bonus de puntos.
+
 ## Personajes y mapas
 
 | Pibe | Mapa | 2P | Jefe |

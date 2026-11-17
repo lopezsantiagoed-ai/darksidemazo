@@ -12,6 +12,18 @@ let cleared = {};
 try { cleared = JSON.parse(localStorage.getItem('qep_cleared') || '{}') || {}; } catch (e) { cleared = {}; }
 function saveCleared() { try { localStorage.setItem('qep_cleared', JSON.stringify(cleared)); } catch (e) { } }
 
+// ---------- DIFICULTAD ----------
+const DIFFS = [
+  { name: 'FACIL', col: '#7dff5a', ehp: 0.8, edmg: 0.7, agg: 0.75, espd: 0.9, engage: 2, extra: 0, bhp: 0.8, proj: 0.9, lives: 5, heal: 1.25, rage: 0.4, score: 0.8 },
+  { name: 'NORMAL', col: '#ffe14d', ehp: 1, edmg: 1, agg: 1, espd: 1, engage: 2, extra: 0, bhp: 1, proj: 1, lives: 3, heal: 1, rage: 0.5, score: 1 },
+  { name: 'DIFICIL', col: '#ff8a3a', ehp: 1.35, edmg: 1.4, agg: 1.45, espd: 1.15, engage: 3, extra: 1, bhp: 1.4, proj: 1.15, lives: 3, heal: 0.7, rage: 0.6, score: 1.5 },
+  { name: 'PESADILLA QEP', col: '#ff3a3a', ehp: 1.7, edmg: 1.8, agg: 1.9, espd: 1.3, engage: 4, extra: 2, bhp: 1.8, proj: 1.3, lives: 2, heal: 0.5, rage: 0.75, score: 2 },
+];
+let diffIdx = 1;
+try { const v = parseInt(localStorage.getItem('qep_diff'), 10); if (v >= 0 && v < DIFFS.length) diffIdx = v; } catch (e) { }
+const D = () => DIFFS[diffIdx];
+function setDiff(i) { diffIdx = (i + DIFFS.length) % DIFFS.length; try { localStorage.setItem('qep_diff', diffIdx); } catch (e) { } }
+
 const App = { mode: 'title', t: 0, sel: 0, g: null, paused: false, fade: 0, endT: 0 };
 
 // =====================================================================
@@ -27,7 +39,7 @@ function makeFighter(o) {
 function spawnPlayer(g, idx, heroKey, cpu = false) {
   const H_ = HEROES[heroKey];
   const p = makeFighter({ kind: 'player', idx, heroKey, name: H_.name, look: H_.look, x: g.camX + 40 + idx * 20, y: 170 + idx * 16, z: 90, state: 'jump', vz: 0,
-    lives: 3, score: 0, invul: 90, speed: 1.4, scale: 1.25 });
+    lives: D().lives, score: 0, invul: 90, speed: 1.4, scale: 1.25 });
   pads[idx].cpu = cpu ? {} : null;
   p.cpu = cpu;
   g.players[idx] = p; g.ents.push(p);
@@ -43,7 +55,7 @@ function enemyLookFor(g, type) {
 function spawnEnemy(g, type, side, lookSet) {
   const s = ENEMY_STATS[type];
   const look = lookSet ? g.lv[lookSet][type] : enemyLookFor(g, type);
-  const e = makeFighter({ kind: 'enemy', team: 1, etype: type, look, hp: s.hp, maxhp: s.hp, speed: s.speed * (0.9 + Math.random() * 0.2), dmg: s.dmg, scale: s.scale, score: s.score,
+  const e = makeFighter({ kind: 'enemy', team: 1, etype: type, look, hp: Math.round(s.hp * D().ehp), maxhp: Math.round(s.hp * D().ehp), speed: s.speed * D().espd * (0.9 + Math.random() * 0.2), dmg: s.dmg, scale: s.scale, score: s.score,
     name: pick(g.lv.names[type]), x: side > 0 ? g.camX + W + 24 : g.camX - 24, y: FLOOR_TOP + 6 + Math.random() * (FLOOR_BOT - FLOOR_TOP - 10), face: -side,
     ai: { cool: 40 + Math.random() * 60, jitter: Math.random() * 30 - 15 } });
   g.ents.push(e);
@@ -52,7 +64,7 @@ function spawnEnemy(g, type, side, lookSet) {
 
 function spawnBoss(g) {
   const B = g.lv.boss;
-  const b = makeFighter({ kind: 'boss', team: 1, look: B.look, hp: B.hp, maxhp: B.hp, speed: B.speed, dmg: B.dmg, scale: B.scale, name: B.name, cfg: B,
+  const b = makeFighter({ kind: 'boss', team: 1, look: B.look, hp: Math.round(B.hp * D().bhp), maxhp: Math.round(B.hp * D().bhp), speed: B.speed * (0.9 + D().espd * 0.1), dmg: B.dmg, scale: B.scale, name: B.name, cfg: B,
     x: g.camX + W + 30, y: 180, face: -1, score: 5000, poise: 3, ai: { cool: 90, entering: true, n: 0 } });
   g.ents.push(b); g.boss = b;
   return b;
@@ -117,6 +129,7 @@ function updateLevel(g) {
   if (!g.waveActive && wv && !portalBlock && g.camX >= wv.x - 0.5) {
     g.waveActive = true;
     g.spawnQ = wv.list.map(s => Object.assign({}, s, { d: s.d + 10 }));
+    for (let k = 0; k < D().extra; k++) g.spawnQ.push({ t: pick(['thug', 'fast', 'thug', 'big']), d: 60 + wv.list.length * 40 + k * 50, side: k & 1 ? -1 : 1 });
   }
   if (g.waveActive) {
     for (const s of g.spawnQ) s.d--;
@@ -201,6 +214,7 @@ function damage(g, t, dmg, a, knock) {
   if (t.kind === 'boss') {
     if (knock) { t.poise--; if (t.poise > 0) knock = false; else t.poise = 3; }
   }
+  if (t.kind === 'player') dmg = Math.max(1, Math.round(dmg * D().edmg));
   t.hp -= dmg; t.flash = 6;
   const hx = t.x, hy = t.y - t.z - 22 * t.scale;
   addPart(g, hx, hy, '#fff', 5, 2); addPart(g, hx, hy, '#ffd23f', 4, 2.5);
@@ -388,7 +402,7 @@ function updateEnemy(g, e, engaged) {
   if (commonStates(g, e)) { physics(g, e); return; }
   const tgt = nearestPlayer(g, e);
   const ai = e.ai;
-  if (ai.cool > 0) ai.cool--;
+  if (ai.cool > 0) ai.cool -= D().agg;
   if (!tgt) { e.state = 'idle'; e.vx = e.vy = 0; physics(g, e); return; }
   switch (e.state) {
     case 'idle': case 'walk': {
@@ -436,7 +450,7 @@ function bossThrow(g, b, tgt) {
   const spec = { poste: { spd: 3, dmg: 16, w: 22, knock: true }, contenedor: { spd: 2.2, dmg: 18, w: 14, knock: true }, pelota: { spd: 4.6, dmg: 9, w: 7 },
     trofeo: { spd: 3, dmg: 14, w: 8, knock: true }, copa: { spd: 3.4, dmg: 11, w: 8 }, medalla: { spd: 4, dmg: 8, w: 6 }, yerba: { spd: 3.2, dmg: 11, w: 8 },
     fajo: { spd: 3.8, dmg: 9, w: 8 }, globo: { spd: 2.1, dmg: 8, w: 8 }, mamadera: { spd: 3.6, dmg: 9, w: 7 }, butaca: { spd: 2.8, dmg: 15, w: 11, knock: true }, perro: { spd: 3.4, dmg: 11, w: 10, knock: true }, motosierra: { spd: 3.2, dmg: 14, w: 12, knock: true }, campera: { spd: 3, dmg: 9, w: 10 }, factura: { spd: 3.6, dmg: 10, w: 7 }, asfalto: { spd: 3.3, dmg: 13, w: 9, knock: true }, baldosa: { spd: 3.8, dmg: 10, w: 8 }, bufanda: { spd: 3.4, dmg: 8, w: 9 } }[type] || { spd: 3, dmg: 10, w: 8 };
-  g.ents.push({ kind: 'proj', type, x: b.x + b.face * 16, y: b.y, z: type === 'perro' ? 6 : 22 * b.scale * 0.8, vx: b.face * spec.spd * (b.hp < b.maxhp / 2 ? 1.15 : 1), vz: type === 'contenedor' ? 0 : 0, dmg: Math.round(spec.dmg * 0.85), w: spec.w, knock: !!spec.knock, team: 1, t: 0 });
+  g.ents.push({ kind: 'proj', type, x: b.x + b.face * 16, y: b.y, z: type === 'perro' ? 6 : 22 * b.scale * 0.8, vx: b.face * spec.spd * D().proj * (b.hp < b.maxhp * D().rage ? 1.15 : 1), vz: type === 'contenedor' ? 0 : 0, dmg: Math.round(spec.dmg * 0.85), w: spec.w, knock: !!spec.knock, team: 1, t: 0 });
   Sound.sfx('throw');
 }
 
@@ -444,7 +458,7 @@ function updateBoss(g, b) {
   if (b.flash > 0) b.flash--;
   if (b.invul > 0) b.invul--;
   b.anim++;
-  const ai = b.ai, B = b.cfg, rage = b.hp < b.maxhp / 2;
+  const ai = b.ai, B = b.cfg, rage = b.hp < b.maxhp * D().rage;
   if (b.state === 'dead') { b.st--; if (b.st <= 0) b.remove = true; return; }
   if (commonStates(g, b)) { physics(g, b); return; }
   const tgt = nearestPlayer(g, b);
@@ -454,7 +468,7 @@ function updateBoss(g, b) {
     physics(g, b); return;
   }
   if (!tgt) { b.state = 'idle'; b.vx = b.vy = 0; physics(g, b); return; }
-  if (ai.cool > 0) ai.cool--;
+  if (ai.cool > 0) ai.cool -= D().agg;
   const spd = b.speed * (rage ? 1.3 : 1);
   switch (b.state) {
     case 'idle': case 'walk': {
@@ -615,7 +629,7 @@ function updateGame() {
   const enemies = g.ents.filter(e => e.kind === 'enemy' && e.state !== 'dead');
   const nAlive = g.players.filter(p => p && !p.out).length || 1;
   enemies.sort((a, b) => { const ta = nearestPlayer(g, a), tb = nearestPlayer(g, b); return (ta ? Math.abs(ta.x - a.x) : 999) - (tb ? Math.abs(tb.x - b.x) : 999); });
-  const engagedSet = new Set(enemies.slice(0, 2 * nAlive));
+  const engagedSet = new Set(enemies.slice(0, D().engage * nAlive));
 
   for (const e of g.ents) {
     if (e.kind === 'player') updatePlayer(g, e);
@@ -634,8 +648,8 @@ function updateGame() {
       for (const p of g.players) {
         if (!p || p.out || p.state === 'dead' || p.z > 4) continue;
         if (Math.abs(p.x - e.x) < 12 && Math.abs(p.y - e.y) < 8) {
-          p.hp = Math.min(p.maxhp, p.hp + e.heal); p.score += 200; e.remove = true; Sound.sfx('pickup');
-          addText(g, e.x, e.y - 30, '+' + e.heal, '#7dff5a'); break;
+          p.hp = Math.min(p.maxhp, p.hp + Math.round(e.heal * D().heal)); p.score += 200; e.remove = true; Sound.sfx('pickup');
+          addText(g, e.x, e.y - 30, '+' + Math.round(e.heal * D().heal), '#7dff5a'); break;
         }
       }
     }
@@ -662,7 +676,7 @@ function updateGame() {
   if (g.boss && g.boss.remove && g.state === 'play') {
     g.state = 'win'; g.timer = 120; Sound.sfx('win');
     const secs = Math.round((g.playT || 0) / 60), kos = g.kos || 0;
-    const bonus = Math.max(0, 6000 - secs * 12) + kos * 100 + (g.maxCombo || 0) * 50;
+    const bonus = Math.round((Math.max(0, 6000 - secs * 12) + kos * 100 + (g.maxCombo || 0) * 50) * D().score);
     g.tally = { secs, kos, combo: g.maxCombo || 0, bonus };
     const p1 = g.players[0]; if (p1) p1.score += bonus;
     cleared[g.lv.id] = true; saveCleared();
@@ -965,7 +979,8 @@ function drawGame() {
     txt(ctx, lv.sub, W / 2 + sl, 94, '#9ff', 6, 'center');
     const co = lv.p2 ? ' + ' + HEROES[lv.p2].name + (lv.p2Join ? ' (MAS ADELANTE)' : ' (P2)') : '';
     txt(ctx, 'CON ' + HEROES[lv.hero].name + co, W / 2, 110, '#ff8', 6, 'center');
-    txt(ctx, 'JEFE FINAL: ' + lv.boss.name, W / 2, 126, '#ff6a6a', 7, 'center');
+    txt(ctx, 'JEFE FINAL: ' + lv.boss.name, W / 2, 124, '#ff6a6a', 7, 'center');
+    txt(ctx, 'DIFICULTAD: ' + D().name, W / 2, 138, D().col, 5, 'center');
     const hx = Math.min(70, -40 + el * 6);
     drawPerson(ctx, HEROES[lv.hero].look, el < 18 ? 'walk' : 'idle', (el >> 3) & 3, hx, 206, 1, 2.2);
     drawPerson(ctx, lv.boss.look, 'idle', 0, Math.max(W - 70, W + 60 - el * 6), 206, -1, 2.6, { tint: 'rgba(0,0,0,0.55)' });
@@ -993,8 +1008,8 @@ function drawGame() {
     rect(ctx, 30, 34, W - 60, 148, 'rgba(6,4,18,0.88)'); rect(ctx, 30, 34, W - 60, 3, lv.colors[0]); rect(ctx, 30, 179, W - 60, 3, lv.colors[1]);
     txt(ctx, 'NIVEL SUPERADO!', W / 2, 44, '#ffe14d', 14, 'center');
     txt(ctx, lv.title + ' LIBERADO', W / 2, 66, '#fff', 7, 'center');
-    const rows = [['ENEMIGOS K.O.', T.kos], ['TIEMPO', Math.floor(T.secs / 60) + ':' + String(T.secs % 60).padStart(2, '0')], ['COMBO MAXIMO', T.combo + ' HITS'], ['BONUS', '+' + Math.round(T.bonus * clamp((el - 50) / 40, 0, 1))]];
-    rows.forEach((r, i) => { if (el > 12 + i * 10) { txt(ctx, r[0], 70, 86 + i * 14, '#9ff', 7, 'left'); txt(ctx, String(r[1]), W - 70, 86 + i * 14, '#fff', 7, 'right'); } });
+    const rows = [['DIFICULTAD', D().name], ['ENEMIGOS K.O.', T.kos], ['TIEMPO', Math.floor(T.secs / 60) + ':' + String(T.secs % 60).padStart(2, '0')], ['COMBO MAXIMO', T.combo + ' HITS'], ['BONUS', '+' + Math.round(T.bonus * clamp((el - 50) / 40, 0, 1))]];
+    rows.forEach((r, i) => { if (el > 12 + i * 10) { txt(ctx, r[0], 60, 80 + i * 12, '#9ff', 6, 'left'); txt(ctx, String(r[1]), W - 60, 80 + i * 12, i === 0 ? D().col : '#fff', 6, 'right'); } });
     const tot = g.players.reduce((s, p) => s + (p ? p.score : 0), 0);
     if (el > 92) txt(ctx, 'TOTAL ' + tot, W / 2, 146, '#ffe14d', 9, 'center');
     if (g.timer < 0 && (g.t >> 4) & 1) txt(ctx, g.lv.next ? 'GOLPE: SIGUE EL NIVEL 2 >>' : 'GOLPE PARA CONTINUAR', W / 2, 164, '#fff', 6, 'center');
@@ -1057,8 +1072,14 @@ function drawSelect() {
     if (heroCleared(lv)) { rect(ctx, x + 3, y + 3, 30, 9, '#000'); txt(ctx, 'HECHO', x + 18, y + 5, '#ffe14d', 4, 'center', null); }
   });
   const lv = MAIN_LEVELS[App.sel];
-  txt(ctx, lv.p2 ? (lv.p2Join ? 'MAPA CO-OP: ' + (lv.p2JoinText || HEROES[lv.p2].name + ' APARECE MAS ADELANTE') : 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' PUEDE SUMARSE COMO P2') : 'MAPA PARA 1 JUGADOR', W / 2, 186, '#9ff', 5, 'center');
-  if ((t >> 5) & 1) txt(ctx, '< >  ELEGIR    GOLPE / ENTER  JUGAR', W / 2, 200, '#fff', 6, 'center');
+  txt(ctx, lv.p2 ? (lv.p2Join ? 'MAPA CO-OP: ' + (lv.p2JoinText || HEROES[lv.p2].name + ' APARECE MAS ADELANTE') : 'MAPA CO-OP: ' + HEROES[lv.p2].name + ' PUEDE SUMARSE COMO P2') : 'MAPA PARA 1 JUGADOR', W / 2, 182, '#9ff', 5, 'center');
+  // selector de dificultad
+  const dd = D();
+  rect(ctx, W / 2 - 96, 192, 192, 13, 'rgba(0,0,0,0.6)'); rect(ctx, W / 2 - 96, 192, 192, 1, dd.col); rect(ctx, W / 2 - 96, 204, 192, 1, dd.col);
+  txt(ctx, 'DIFICULTAD:', W / 2 - 90, 195, '#aaa', 5, 'left', null);
+  txt(ctx, '< ' + dd.name + ' >', W / 2 + 40, 195, dd.col, 6, 'center', null);
+  for (let k = 0; k < DIFFS.length; k++) rect(ctx, W / 2 - 90 + k * 8, 201, 6, 2, k <= diffIdx ? DIFFS[k].col : '#333');
+  if ((t >> 5) & 1) txt(ctx, '<> ELEGIR PIBE   ^v DIFICULTAD   GOLPE: JUGAR', W / 2, 208, '#fff', 4, 'center');
 }
 
 // ---------- FINAL ----------
@@ -1087,8 +1108,9 @@ function updateMenus() {
   } else if (App.mode === 'select') {
     if (pads[0].hit('left')) { App.sel = (App.sel + 3) % 4; Sound.sfx('move'); }
     if (pads[0].hit('right')) { App.sel = (App.sel + 1) % 4; Sound.sfx('move'); }
-    if (pads[0].hit('up')) { App.sel = (App.sel + 2) % 4; Sound.sfx('move'); }
-    if (pads[0].hit('down')) { App.sel = (App.sel + 2) % 4; Sound.sfx('move'); }
+    if (pads[0].hit('up')) { setDiff(diffIdx + 1); Sound.sfx('select'); }
+    if (pads[0].hit('down')) { setDiff(diffIdx - 1); Sound.sfx('select'); }
+    if (App.tapDiff) { setDiff(diffIdx + 1); Sound.sfx('select'); App.tapDiff = false; }
     if (App.tapSel !== undefined) { if (App.tapSel === App.sel) { Sound.sfx('select'); startLevel(LEVELS.indexOf(MAIN_LEVELS[App.sel])); } else { App.sel = App.tapSel; Sound.sfx('move'); } App.tapSel = undefined; }
     else if (pads[0].hit('start') || pads[0].hit('a')) { Sound.sfx('select'); startLevel(LEVELS.indexOf(MAIN_LEVELS[App.sel])); }
   } else if (App.mode === 'ending') {
@@ -1124,7 +1146,7 @@ cv.addEventListener('pointerdown', ev => {
   const r = cv.getBoundingClientRect();
   const x = (ev.clientX - r.left) / r.width * W, y = (ev.clientY - r.top) / r.height * H;
   if (App.mode === 'title') App.tap = true;
-  else if (App.mode === 'select') { const i = Math.floor((x - 8) / 93); if (i >= 0 && i < 4 && y > 25 && y < 185) App.tapSel = i; }
+  else if (App.mode === 'select') { const i = Math.floor((x - 8) / 93); if (y >= 188 && y <= 210) App.tapDiff = true; else if (i >= 0 && i < 4 && y > 25 && y < 180) App.tapSel = i; }
   else if (App.mode === 'ending' && App.endT > 120) App.mode = 'select';
   else if (App.mode === 'game' && App.g) {
     const g = App.g;
@@ -1135,7 +1157,7 @@ cv.addEventListener('pointerdown', ev => {
 document.addEventListener('visibilitychange', () => { if (document.hidden && App.mode === 'game') App.autoPause = true; });
 window.addEventListener('blur', () => { if (App.mode === 'game') App.autoPause = true; });
 
-window.QEP = { App, LEVELS, startLevel,
+window.QEP = { App, LEVELS, startLevel, setDiff,
   // herramientas de testeo: simulación rápida sin dibujar
   step(n) { for (let i = 0; i < n; i++) { App.t++; if (App.mode === 'game') updateGame(); else updateMenus(); } },
 };
